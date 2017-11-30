@@ -17,10 +17,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-<<<<<<< HEAD
+
 import javafx.util.Duration;
-||||||| merged common ancestors
-=======
+
+
 import window.SceneManager;
 
 
