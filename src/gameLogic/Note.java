@@ -2,12 +2,19 @@ package gameLogic;
 
 import gameInterface.IRenderable;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class Note implements IRenderable {
-	private Double time;
-	private Integer direction;
+	private Integer type;
+	private KeyCode direction;
 	private Double startTime;
+
+	public Note(Integer type, KeyCode direction) {
+		// TODO Auto-generated constructor stub
+		this.type = type;
+		this.direction = direction;
+	}
 
 	public Double getStartTime() {
 		return startTime;
@@ -15,12 +22,6 @@ public class Note implements IRenderable {
 
 	public void setStartTime(Double startTime) {
 		this.startTime = startTime;
-	}
-
-	public Note(Double time, Integer direction) {
-		// TODO Auto-generated constructor stub
-		this.time = time;
-		this.direction = direction;
 	}
 
 	public int getZ() {
@@ -31,18 +32,20 @@ public class Note implements IRenderable {
 		gc.setLineWidth(2);
 		gc.setFill(Color.BLACK);
 		gc.strokeRoundRect(x, 200, 50, 50, 50, 50);
+		gc.fillText(direction.toString(), x + 10, 225);
+
 	}
 
 	public boolean isVisible() {
 		return false;
 	}
 
-	public Double getTime() {
-		return time;
+	public KeyCode getDirection() {
+		return direction;
 	}
 
-	public Integer getDirection() {
-		return direction;
+	public Integer getType() {
+		return type;
 	}
 
 }

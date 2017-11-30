@@ -1,94 +1,110 @@
 package gameLogic;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class GameManager {
-	private ArrayList<KeyEvent> keys = new ArrayList<>();
-	private ArrayList<Note> notes = new ArrayList<>();
 
-	public MediaPlayer getMediaPlayer() {
-		return mediaPlayer;
-	}
-
-	private File filestring = new File("res/test.wav");
-	private Media file = new Media(filestring.toURI().toString());
-	private MediaPlayer mediaPlayer = new MediaPlayer(file);
+	private int currentNoteIndex;
 	private double mediaStartTime;
-	private int sum = 0;
-	private int idx = 0;
+	private double offset;
+	private double lastBeat;
+	private double speed;
+	private double startTime;
+	private MusicChart musicChart;
+	private File filestring;
+	private Media file;
+	private MediaPlayer mediaPlayer;
 
 	public GameManager() {
 		// TODO Auto-generated constructor stub
-		notes.add(new Note(1780.0, 1));
-		notes.add(new Note(1940.0, 2));
-		notes.add(new Note(2100.0, 3));
-		notes.add(new Note(2290.0, 4));
+		musicChart = new MusicChart("test", 175.0, 1);
+		filestring = new File("res/" + "test" + ".wav");
+		file = new Media(filestring.toURI().toString());
+		mediaPlayer = new MediaPlayer(file);
+		lastBeat = 0;
+		currentNoteIndex = 0;
 	}
 
-	public void setTapEventRelease(Scene scene) {
-		scene.setOnKeyReleased((KeyEvent e) -> {
-			if (keys.size() <= 2 && keys.size() != 0) {
-				checkTiming(e);
+	public void checkTiming(KeyCode e, double currentTime) {
+		Note currentNote = musicChart.getChart().get(currentNoteIndex);
+		System.out.println("Perfect : " + currentTime + " ");
+		if (e == currentNote.getDirection()) {
+			if (isPerfect(currentTime, (currentNoteIndex - 2) * musicChart.getDelayPerHit()) == true) {
+				System.out.println("Perfect : " + currentTime + " " + currentNoteIndex * musicChart.getDelayPerHit());
 			}
-			keys.clear();
-		});
-	}
-
-	public void checkTiming(KeyEvent e) {
-		Note note = notes.get(idx++);
-		double current = mediaPlayer.getCurrentTime().toMillis();
-		int key = stringToIntDirection(e.getCode().toString());
-		int direction = note.getDirection();
-		double lower_bound = note.getTime() - 200;
-		double upper_bound = note.getTime() + 200;
-		if (current <= upper_bound && current >= lower_bound && key == direction) {
-			sum += 1;
 		}
-		System.out.println(current);
-		System.out.println("sum = " + sum);
 	}
 
 	public void setTapEventPressed(Scene scene) {
 		scene.setOnKeyPressed((KeyEvent e) -> {
-			keys.add(e);
-			System.out.println(e);
+			if (e.getCode().isArrowKey()) {
+				checkTiming(e.getCode(), System.nanoTime() / 1000000000.0 - startTime - offset);
+			}
 		});
 	}
 
-	public void setMediaPlayer() {
-		mediaPlayer.setOnReady(new Runnable() {
-			@Override
-			public void run() {
-				System.out.println("Duration: " + file.getDuration().toSeconds());
-				mediaStartTime = System.nanoTime();
-				mediaPlayer.play();
-			}
-		});
+	public void start() {
+		System.out.println("Duration: " + file.getDuration().toSeconds());
+		mediaPlayer.play();
+		mediaStartTime = System.nanoTime() / 1000000000.0;
+	}
+
+	private boolean isPerfect(double tappedTime, double noteTime) {
+		double lowerBound = noteTime - 0.20;
+		double upperBound = noteTime + 0.20;
+		if (tappedTime >= lowerBound && tappedTime <= upperBound)
+			return true;
+		return false;
+	}
+
+	public void setStartTime(double startTime) {
+		this.startTime = startTime;
 	}
 
 	public double getMediaStartTime() {
 		return mediaStartTime;
 	}
 
-	public int stringToIntDirection(String s) {
-		if (s.equals("LEFT"))
-			return 1;
-		if (s.equals("UP"))
-			return 2;
-		if (s.equals("RIGHT"))
-			return 3;
-		if (s.equals("DOWN"))
-			return 4;
-		return 0;
+	public double getLastBeat() {
+		return lastBeat;
 	}
 
-	public ArrayList<Note> getNotes() {
-		return notes;
+	public void setLastBeat(double lastBeat) {
+		this.lastBeat = lastBeat;
 	}
+
+	public MediaPlayer getMediaPlayer() {
+		return mediaPlayer;
+	}
+
+	public void setMediaPlayer(MediaPlayer mediaPlayer) {
+		this.mediaPlayer = mediaPlayer;
+	}
+
+	public MusicChart getMusicChart() {
+		return musicChart;
+	}
+
+	public double getOffset() {
+		return offset;
+	}
+
+	public void setOffset(double offset) {
+		this.offset = offset;
+	}
+
+	public int getCurrentNoteIndex() {
+		return currentNoteIndex;
+	}
+
+	public void setCurrentNoteIndex(int currentNoteIndex) {
+		this.currentNoteIndex = currentNoteIndex;
+	}
+
 }
