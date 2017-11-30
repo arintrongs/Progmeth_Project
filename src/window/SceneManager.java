@@ -12,8 +12,8 @@ public class SceneManager {
 	private static Stage primaryStage;
 	private static Canvas welcomeCanvas = new WelcomeScreen();
 	private static Scene welcomeSceen = new Scene(new Pane(welcomeCanvas));
-	public static final int SCENE_WIDTH = 600;
-	public static final int SCENE_HEIGHT = 800;
+	public static final int SCENE_WIDTH = 800;
+	public static final int SCENE_HEIGHT = 600;
 	
 	public static void initialize(Stage stage) {
 		primaryStage = stage;

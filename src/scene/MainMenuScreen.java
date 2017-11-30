@@ -11,8 +11,8 @@ import javafx.scene.text.TextAlignment;
 import window.SceneManager;
 
 public class MainMenuScreen extends Pane {
-	private static final Font TITLE_FONT = new Font("Monospace", 80);
-	private static final Font MENU_FONT = new Font("Monospace", 40);
+	private static final Font TITLE_FONT = new Font("Monospace", 55);
+	private static final Font MENU_FONT = new Font("Monospace", 20);
 	private Canvas cha1;
 	private Canvas cha2;
 	private Canvas cha3;
@@ -32,9 +32,9 @@ public class MainMenuScreen extends Pane {
 		addCanvasEvents(cha3,"Clown");
 		cha4 = drawButton("Priest",width/4 ,150, width*3/4, 0);
 		addCanvasEvents(cha4,"Priest");
-		farm = drawButton("FARM",250 ,250, 200, 250);
+		farm = drawButton("FARM",width/3 ,width*2/5, width/8, width/4);
 		addCanvasEvents(farm,"FARM");
-		boss = drawButton("BOSS",250 ,250, 500, 250);
+		boss = drawButton("BOSS",width/3 ,width*2/5, width-width/8-width/3, width/4);
 		addCanvasEvents(boss,"BOSS");
 		
 		getChildren().add(cha1);
@@ -47,22 +47,49 @@ public class MainMenuScreen extends Pane {
 		
 	}
 	
-	private Canvas drawButton(String name, int width, int height, int posX ,int posY) {
+	private Canvas drawButton(String name, double width, double height, int posX ,int posY) {
 		Canvas btn = new Canvas(width,height);
 		GraphicsContext gc = btn.getGraphicsContext2D();
 		
-		gc.setFill(Color.DARKGRAY);
-		gc.fillRect(0, 0, width, height);
 		btn.setTranslateX(posX);
 		btn.setTranslateY(posY);
 		
-	
-		//gc.setFont(SceneManager.theFont); **will get font later**
-		gc.setFill(Color.WHITE);
-	    
-		gc.setTextAlign(TextAlignment.CENTER);
-		gc.setTextBaseline(VPos.CENTER);
-		gc.fillText(name, width/2, height/2);
+		if(name!="FARM" && name!="BOSS") {
+			gc.setFill(Color.DARKSALMON);
+			//gc.setFill(Color.CORAL);
+			gc.fillRect(0, 0, width, height);
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(7);
+			gc.strokeLine(0, 0, width, 0);
+			gc.strokeLine(0, 0, 0, height);
+			gc.strokeLine(0, height, width, height);
+			if(name=="Priest") {
+				gc.strokeLine(width, 0, width, height);
+			}
+			gc.setFont(MENU_FONT);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.fillText(name, width/2, height/8);
+			gc.fillText("Level: \nAtk: \nExp: \n", width*7/10, height*2/3);
+		}
+		
+		else {
+			gc.setFill(Color.CORAL);
+			gc.fillRoundRect(0, 0, width, height, 50, 50);
+			gc.setFont(TITLE_FONT);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.fillText(name, width/2, height/2);
+		}
+		
+		
+		
+		
+		
+		
+		
 		
 		return btn;
 	}
@@ -71,14 +98,39 @@ public class MainMenuScreen extends Pane {
 		//TODO Fill Code
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		gc.setFill(Color.RED);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.setFill(Color.GOLD);
+		//gc.setFill(Color.RED);
 		
-		//gc.setFont(SceneManager.theFont);
-		gc.setFill(Color.WHITE);
-		gc.setTextAlign(TextAlignment.CENTER);
-		gc.setTextBaseline(VPos.CENTER);
-		gc.fillText(name, canvas.getWidth()/2, canvas.getHeight()/2);
+		if(name!="FARM" && name!="BOSS") {
+			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(7);
+			gc.strokeLine(0, 0, canvas.getWidth(), 0);
+			gc.strokeLine(0, 0, 0, canvas.getHeight());
+			gc.strokeLine(0, canvas.getHeight(), canvas.getWidth(), canvas.getHeight());
+			if(name=="Priest") {
+				gc.strokeLine(canvas.getWidth(), 0, canvas.getWidth(), canvas.getHeight());
+			}
+			gc.setFont(MENU_FONT);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.fillText(name, canvas.getWidth()/2, canvas.getHeight()/8);
+			gc.fillText("Level: \nAtk: \nExp: \n", canvas.getWidth()*7/10, canvas.getHeight()*2/3);
+		}
+		
+		else {
+		
+			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.fillText(name, canvas.getWidth()/2, canvas.getHeight()/2);
+			
+		}
+		
+
+		
 			
 	}
 
@@ -86,14 +138,39 @@ public class MainMenuScreen extends Pane {
 		//TODO Fill Code
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
-		gc.setFill(Color.DARKGRAY);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		if(name!="FARM" && name!="BOSS") {
+			gc.setFill(Color.DARKSALMON);
+			gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(7);
+			gc.strokeLine(0, 0, canvas.getWidth(), 0);
+			gc.strokeLine(0, 0, 0, canvas.getHeight());
+			gc.strokeLine(0, canvas.getHeight(), canvas.getWidth(), canvas.getHeight());
+			if(name=="Priest") {
+				gc.strokeLine(canvas.getWidth(), 0, canvas.getWidth(), canvas.getHeight());
+			}
+			gc.setFont(MENU_FONT);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.fillText(name, canvas.getWidth()/2, canvas.getHeight()/8);
+			gc.fillText("Level: \nAtk: \nExp: \n", canvas.getWidth()*7/10, canvas.getHeight()*2/3);
+		}
+		
+		else {
+			gc.setFill(Color.CORAL);
+			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
+			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.fillText(name, canvas.getWidth()/2, canvas.getHeight()/2);
+			
+		}
 	
-		//gc.setFont(SceneManager.theFont);
-		gc.setFill(Color.WHITE);
-		gc.setTextAlign(TextAlignment.CENTER);
-		gc.setTextBaseline(VPos.CENTER);
-		gc.fillText(name, canvas.getWidth()/2, canvas.getHeight()/2);
+		
+		
 	}
 	
 	private void addCanvasEvents(Canvas canvas, String buttonName) {
