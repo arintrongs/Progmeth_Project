@@ -1,4 +1,4 @@
-package Character;
+package character;
 
 public class Clown extends Hero {
 	public Clown(String name, int level, String skillName) {

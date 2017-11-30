@@ -1,4 +1,2 @@
-/application/
-/gameInterface/
-/gameLogic/
-/Character/
+/scene/
+/window/
