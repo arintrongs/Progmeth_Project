@@ -18,7 +18,7 @@ public class WelcomeScreen extends Canvas {
 	private static final Font TITLE_FONT = new Font("Monospace", 80);
 	private static final Font MENU_FONT = new Font("Monospace", 40);
 
-	
+	 
 	public WelcomeScreen() {
 		super(SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 		GraphicsContext gc = this.getGraphicsContext2D();

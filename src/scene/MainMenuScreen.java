@@ -192,7 +192,7 @@ public class MainMenuScreen extends Pane {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				drawHoverIndicator(canvas,buttonName);
+				drawHoverIndicator(canvas,buttonName); 
 			}	
 		});
 		
