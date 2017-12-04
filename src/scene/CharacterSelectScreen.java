@@ -150,7 +150,8 @@ public class CharacterSelectScreen extends Pane {
 				// if current cha != NULL 
 				//SceneManager.gotoSceneOf(gamePlay);
 				// test
-				SceneManager.gotoSceneOf(test);
+				SceneManager.gotoSceneOf(gamePlay);
+				gamePlay.setFocusTraversable(true);
 			}
 			else if(name=="Back") {
 				SceneManager.gotoSceneOf(mainMenu);

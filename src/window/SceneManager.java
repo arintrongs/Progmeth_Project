@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import scene.GamePlayScreen;
 import scene.WelcomeScreen;
 
 
@@ -19,6 +20,8 @@ public class SceneManager {
 		primaryStage = stage;
 		primaryStage.show();
 		gotoWelcomeScreen();
+		//Pane test = new GamePlayScreen();
+		//gotoSceneOf(test);
 	}
 
 	public static void gotoWelcomeScreen() {

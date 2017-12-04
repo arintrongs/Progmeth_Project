@@ -3,6 +3,7 @@ package scene;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,6 +22,9 @@ public class ResultScreen2 extends Pane {
 	private Canvas backBtn;
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
+	
+
+	
 	
 	public ResultScreen2(){
 		super();
@@ -47,8 +51,10 @@ public class ResultScreen2 extends Pane {
 	public Canvas drawButton(String name, double width, double height, double posX ,double posY) {
 		Canvas canvas = new Canvas(width,height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
+		
 		canvas.setTranslateX(posX);
 		canvas.setTranslateY(posY);
+		
 		
 		if(name=="Well Done!") {
 			gc.setFill(Color.BLACK);
