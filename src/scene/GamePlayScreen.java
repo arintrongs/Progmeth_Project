@@ -4,6 +4,7 @@ package scene;
 import character.Boss;
 import character.Hero;
 import character.Monster;
+import gameLogic.MusicControl;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -28,15 +29,24 @@ public class GamePlayScreen extends Pane {
 	private Canvas heroInfo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
-	private Image monsterImg, monsterHarmImg, heroImg, backgroundImg, playzoneImg;
+	private Image monsterImg, monsterHarmImg, heroImg, backgroundImg, playzoneImg, perfectTap, criTap, greatTap,
+			goodTap, missTap, tapZone;
 	private ImageView ivMon = new ImageView();
 	private ImageView ivHero = new ImageView();
 	private ImageView ivMonHarm = new ImageView();
 	private ImageView ivBackground = new ImageView();
 	private ImageView ivPlayzone = new ImageView();
+	private ImageView ivCriTap = new ImageView();
+	private ImageView ivPerfectTap = new ImageView();
+	private ImageView ivGreatTap = new ImageView();
+	private ImageView ivGoodTap = new ImageView();
+	private ImageView ivMissTap = new ImageView();
+	private ImageView ivTapZone = new ImageView();
 	private Monster currentMon;
 	private Hero currentHero;
 	private Boss currentBoss;
+
+	private MusicControl musicControl = new MusicControl();
 
 	public GamePlayScreen() {
 		// TODO Auto-generated constructor stub
@@ -65,8 +75,12 @@ public class GamePlayScreen extends Pane {
 		setImage();
 		setIv();
 
-		this.getChildren().addAll(ivBackground, ivPlayzone, monsInfo, heroInfo, gamePlay, ivMon, ivHero, ivMonHarm,
-				exitMenu, yesBtn, noBtn);
+		this.getChildren().addAll(ivBackground, ivPlayzone, ivCriTap, ivPerfectTap, ivGreatTap, ivGoodTap, ivMissTap,
+				ivTapZone, monsInfo, heroInfo, gamePlay, ivMon, ivHero, ivMonHarm, exitMenu, yesBtn, noBtn);
+
+		javafx.application.Platform.runLater(() -> {
+			musicControl.start();
+		});
 
 	}
 
@@ -77,6 +91,12 @@ public class GamePlayScreen extends Pane {
 		this.heroImg = new Image("Clown1.png");
 		this.backgroundImg = new Image("Gameplay_bg1.png");
 		this.playzoneImg = new Image("Playzone.png");
+		this.criTap = new Image("Cri_Perfect.png");
+		this.perfectTap = new Image("Perfect.png");
+		this.greatTap = new Image("Great.png");
+		this.goodTap = new Image("Good.png");
+		this.missTap = new Image("Miss.png");
+		this.tapZone = new Image("Tapzone.png");
 	}
 
 	public void setIv() {
@@ -86,7 +106,19 @@ public class GamePlayScreen extends Pane {
 		ivMonHarm.setImage(monsterHarmImg);
 		ivBackground.setImage(backgroundImg);
 		ivPlayzone.setImage(playzoneImg);
+		ivCriTap.setImage(criTap);
+		ivPerfectTap.setImage(perfectTap);
+		ivGreatTap.setImage(greatTap);
+		ivGoodTap.setImage(goodTap);
+		ivMissTap.setImage(missTap);
+		ivTapZone.setImage(tapZone);
+
 		ivMonHarm.setVisible(false);
+		ivCriTap.setVisible(false);
+		ivPerfectTap.setVisible(false);
+		ivGreatTap.setVisible(false);
+		ivGoodTap.setVisible(false);
+		ivMissTap.setVisible(false);
 
 		ivHero.setFitWidth(heroImg.getWidth() / 3);
 		ivHero.setFitHeight(heroImg.getHeight() / 3);
@@ -107,6 +139,20 @@ public class GamePlayScreen extends Pane {
 		ivBackground.setFitHeight(height);
 
 		ivPlayzone.setTranslateY(height * 2 / 3 - 20);
+
+		// Set Tap Judge Effect Position
+		ivTapZone.setTranslateX(700 - 59);
+		ivTapZone.setTranslateY(600 - 170);
+		ivCriTap.setTranslateX(700 - 59);
+		ivCriTap.setTranslateY(600 - 170);
+		ivPerfectTap.setTranslateX(700 - 59);
+		ivPerfectTap.setTranslateY(600 - 170);
+		ivGreatTap.setTranslateX(700 - 59);
+		ivGreatTap.setTranslateY(600 - 170);
+		ivGoodTap.setTranslateX(700 - 59);
+		ivGoodTap.setTranslateY(600 - 170);
+		ivMissTap.setTranslateX(700 - 59);
+		ivMissTap.setTranslateY(600 - 170);
 
 	}
 
@@ -175,6 +221,7 @@ public class GamePlayScreen extends Pane {
 
 	private void addCanvasEvents(Canvas canvas, String name) {
 		canvas.setOnKeyPressed((KeyEvent e) -> {
+			System.out.println(e.getCode().getName());
 			if (e.getCode() == KeyCode.ESCAPE) {
 
 				this.exitMenu.setVisible(true);

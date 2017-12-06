@@ -23,7 +23,7 @@ public class GameManager {
 
 	public GameManager() {
 		// TODO Auto-generated constructor stub
-		musicChart = new MusicChart("test", 175.0, 1);
+		musicChart = new MusicChart("test2", 73.0, 1);
 		filestring = new File("res/" + "test" + ".wav");
 		file = new Media(filestring.toURI().toString());
 		mediaPlayer = new MediaPlayer(file);
