@@ -19,6 +19,7 @@ public class CharacterSelectScreen extends Pane {
 	private Canvas cha1,cha2,cha3,cha4;
 	private Canvas backBtn;
 	private Canvas startBtn;
+	private String name = "";
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
 	
@@ -28,7 +29,6 @@ public class CharacterSelectScreen extends Pane {
 		
 		title = drawButton("Select Character", width , height/5 ,0 ,0);
 		addCanvasEvents(title,"Select Character");
-	
 		cha1 = drawButton("Knight",			width/3 ,	height*2/7, width/8, 				height/4-30);
 		addCanvasEvents(cha1,"Knight");
 		cha2 = drawButton("SpellCaster",	width/3 ,	height*2/7, width-width/8-width/3, 	height/4-30);
@@ -62,7 +62,7 @@ public class CharacterSelectScreen extends Pane {
 			gc.fillText(name, width/2 ,height/2);
 		}
 		else if(name=="Start" || name=="Back") {
-			gc.setFill(Color.LIGHTGREY);
+			gc.setFill(Color.LIGHTGREY.darker());
 			gc.fillRoundRect(0, 0, width, height, 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -71,9 +71,9 @@ public class CharacterSelectScreen extends Pane {
 			gc.fillText(name, width/2 ,height/2);
 		}
 		else {
-			gc.setFill(Color.BLACK);
+			gc.setFill(Color.BLACK.darker());
 			gc.fillRoundRect(5, 5, width-10, height-10, 50, 50);
-			gc.setStroke(Color.TAN);
+			gc.setStroke(Color.TAN.darker());
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, width-10, height-10, 50, 50);
 			gc.setFill(Color.WHITE);
@@ -89,7 +89,7 @@ public class CharacterSelectScreen extends Pane {
 	public void drawHoverIndicator(Canvas canvas, String name) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		if(name=="Start" || name=="Back") {
-			gc.setFill(Color.LIGHTGREY.darker());
+			gc.setFill(Color.LIGHTGREY);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -99,9 +99,9 @@ public class CharacterSelectScreen extends Pane {
 		}
 		
 		else if(name!="Select Character") {
-			gc.setFill(Color.BLACK.darker());
+			gc.setFill(Color.BLACK);
 			gc.fillRoundRect(5, 5, canvas.getWidth()-10, canvas.getHeight()-10, 50, 50);
-			gc.setStroke(Color.TAN.darker());
+			gc.setStroke(Color.TAN);
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, canvas.getWidth()-10, canvas.getHeight()-10, 50, 50);
 			gc.setFill(Color.WHITE);
@@ -117,7 +117,7 @@ public class CharacterSelectScreen extends Pane {
 	public void undrawHoverIndicator(Canvas canvas, String name) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		 if(name=="Start" || name=="Back") {
-			gc.setFill(Color.LIGHTGREY);
+			gc.setFill(Color.LIGHTGREY.darker());
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -128,7 +128,7 @@ public class CharacterSelectScreen extends Pane {
 		else if(name!="Select Character") {
 			gc.setFill(Color.BLACK);
 			gc.fillRoundRect(5, 5, canvas.getWidth()-10, canvas.getHeight()-10, 50, 50);
-			gc.setStroke(Color.TAN);
+			gc.setStroke(Color.TAN.darker());
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, canvas.getWidth()-10, canvas.getHeight()-10, 50, 50);
 			gc.setFill(Color.WHITE);
@@ -158,6 +158,16 @@ public class CharacterSelectScreen extends Pane {
 			}
 			else {
 				// set current character
+			
+				if(this.name!="") {
+					undrawHoverIndicator(cha1,"Knight");
+					undrawHoverIndicator(cha2, "SpellCaster");
+					undrawHoverIndicator(cha3, "Clown");
+					undrawHoverIndicator(cha4, "Priest");
+				}
+				drawHoverIndicator(canvas, name);
+				this.name=name;
+				
 			}
 		});
 		
@@ -166,7 +176,7 @@ public class CharacterSelectScreen extends Pane {
 		});
 		
 		canvas.setOnMouseExited((MouseEvent event)->{
-			undrawHoverIndicator(canvas,name);
+			if(this.name!=name) undrawHoverIndicator(canvas,name);
 		});
 			
 		

@@ -87,20 +87,20 @@ public class GamePlayScreen extends Pane {
 		ivMonHarm.setImage(monsterHarmImg);
 		ivMonHarm.setVisible(false);
 
-		ivMon.setFitWidth(monsterImg.getWidth() / 3);
-		ivMon.setFitHeight(monsterImg.getHeight() / 3);
-		ivMon.setTranslateX(width / 7);
-		ivMon.setTranslateY(height / 3);
-
-		ivMonHarm.setFitWidth(monsterImg.getWidth() / 2);
-		ivMonHarm.setFitHeight(monsterImg.getHeight() / 2);
-		ivMonHarm.setTranslateX(width / 7);
-		ivMonHarm.setTranslateY(height / 3);
-
 		ivHero.setFitWidth(heroImg.getWidth() / 3);
 		ivHero.setFitHeight(heroImg.getHeight() / 3);
-		ivHero.setTranslateX(width / 3 * 2);
-		ivHero.setTranslateY(height / 6 - 10);
+		ivHero.setTranslateX(width / 7);
+		ivHero.setTranslateY(height / 6);
+
+		ivMon.setFitWidth(monsterImg.getWidth() / 3);
+		ivMon.setFitHeight(monsterImg.getHeight() / 3);
+		ivMon.setTranslateX(width / 3 * 2-20);
+		ivMon.setTranslateY(height / 3);
+		
+		ivMonHarm.setFitWidth(monsterHarmImg.getWidth() / 3);
+		ivMonHarm.setFitHeight(monsterHarmImg.getHeight() / 3);
+		ivMonHarm.setTranslateX(width / 3 * 2);
+		ivMonHarm.setTranslateY(height / 6 - 10);
 
 	}
 
@@ -186,13 +186,15 @@ public class GamePlayScreen extends Pane {
 		
 		canvas.setOnMouseClicked((MouseEvent e)->{
 			Pane mainMenu = new MainMenuScreen();
+			Pane test = new ResultScreen(); 
+			
 			if(name=="No") {
 				this.exitMenu.setVisible(false);
 				this.yesBtn.setVisible(false);
 				this.noBtn.setVisible(false);
 			}
 			else if(name=="Yes") {
-				SceneManager.gotoSceneOf(mainMenu);
+				SceneManager.gotoSceneOf(test);
 			}
 		});
 		

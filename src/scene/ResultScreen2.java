@@ -109,7 +109,7 @@ public class ResultScreen2 extends Pane {
 		}
 		
 		else {
-			gc.setFill(Color.LIGHTGREY);
+			gc.setFill(Color.LIGHTGREY.darker());
 			gc.fillRoundRect(0, 0, width, height, 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -124,7 +124,7 @@ public class ResultScreen2 extends Pane {
 	public void drawHoverIndicator(Canvas canvas, String name) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		if(name=="Next" || name=="Back") {
-			gc.setFill(Color.LIGHTGREY.darker());
+			gc.setFill(Color.LIGHTGREY);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -141,7 +141,7 @@ public class ResultScreen2 extends Pane {
 	public void undrawHoverIndicator(Canvas canvas, String name) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		 if(name=="Next" || name=="Back") {
-			gc.setFill(Color.LIGHTGREY);
+			gc.setFill(Color.LIGHTGREY.darker());
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
