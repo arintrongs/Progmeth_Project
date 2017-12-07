@@ -2,6 +2,7 @@ package scene;
 
 import com.sun.corba.se.spi.ior.Writeable;
 
+import gameLogic.GameManager;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,6 +21,7 @@ public class MainMenuScreen extends Pane {
 	private static final Font MENU_FONT = new Font("Monospace", 20);
 	private Canvas cha1, cha2, cha3, cha4, farm, boss;
 	private Canvas boardCha,boardFarm, boardBoss;
+
 
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
@@ -58,14 +60,16 @@ public class MainMenuScreen extends Pane {
 	}
 
 	private Canvas drawButton(Canvas canvas, String name, double width, double height, int posX, int posY) {
+
 		Canvas btn = new Canvas(width, height);
 		GraphicsContext gc = btn.getGraphicsContext2D();
 
 		btn.setTranslateX(posX);
 		btn.setTranslateY(posY);
 
+
 		 if (name == "BoardFarm" || name == "BoardBoss") {
-			gc.setFill(Color.CORAL.darker());
+			gc.setFill(Color.CORAL.desaturate());
 			gc.fillRoundRect(5, 5, width - 10, height - 10, 50, 50);
 			btn.setOpacity(0.5);
 			
@@ -83,13 +87,22 @@ public class MainMenuScreen extends Pane {
 			 
 		}
 		else if(name=="BoardCha")  {
-				gc.setFill(Color.WHITE);
+				gc.setFill(Color.BISQUE);
 				gc.fillRect(0, 0, width, height);
-				btn.setOpacity(0.8);
+				//btn.setOpacity(1);
 				 
 
 			}
+		
 		else {
+			
+			Image img;
+			if(name=="Knight") img = new Image("Knight1_head.png");
+			else if(name=="SpellCaster") img = new Image("Spellcaster1_head.png");
+			else if(name=="Clown") img = new Image("Clown1_head.png");
+			else img = new Image("Priest1_head.png");
+			
+			gc.drawImage(img, 15, 45, 90, 90);
 			
 			gc.setStroke(Color.BLACK); 
 			gc.setLineWidth(7); 
@@ -104,41 +117,47 @@ public class MainMenuScreen extends Pane {
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText(name, width/2, height/8); 
-			gc.fillText("Level: \nAtk: \nExp: \n",
-			width*7/10, height*2/3);
-			
+			gc.setTextAlign(TextAlignment.LEFT);
+			if(name=="Knight") {
+				gc.fillText("Level: "+GameManager.getKnight().getLevel()+'\n'+"Atk: "+GameManager.getKnight().getAtk()+'\n'
+						+"Exp: "+GameManager.getKnight().getCurrentExp()+'\n',width*6/10-5, height*2/3);
+			}
+			else if(name=="SpellCaster") {
+				gc.fillText("Level: "+GameManager.getSpellCaster().getLevel()+'\n'+"Atk: "+GameManager.getSpellCaster().getAtk()+'\n'
+						+"Exp: "+GameManager.getSpellCaster().getCurrentExp()+'\n',width*6/10-5, height*2/3);
+			}
+			else if(name=="Clown") {
+				gc.fillText("Level: "+GameManager.getClown().getLevel()+'\n'+"Atk: "+GameManager.getClown().getAtk()+'\n'
+						+"Exp: "+GameManager.getClown().getCurrentExp()+'\n',width*6/10-5, height*2/3);
+			}
+			else   {
+				gc.fillText("Level: "+GameManager.getPriest().getLevel()+'\n'+"Atk: "+GameManager.getPriest().getAtk()+'\n'
+						+"Exp: "+GameManager.getPriest().getCurrentExp()+'\n',width*6/10-5, height*2/3);
+			}
 		}
 
 			
 		
-		
-
 		return btn;
 	}
 
 	public void drawHoverIndicator(Canvas canvas, String name) {
 		// TODO Fill Code
-		System.out.println("555");
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-
 		gc.setFill(Color.CORAL);
-		// gc.setFill(Color.RED);
-
 		gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
-		/*
-		 * gc.setFill(Color.WHITE); gc.setTextAlign(TextAlignment.CENTER);
-		 * gc.setTextBaseline(VPos.CENTER); gc.fillText(name, canvas.getWidth()/2,
-		 * canvas.getHeight()/2);
-		 */
+
 
 	}
 
 	public void undrawHoverIndicator(Canvas canvas, String name) {
 		// TODO Fill Code
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.setFill(Color.CORAL.darker());
-		gc.fillRoundRect(5, 5, width - 10, height - 10, 50, 50);
+		gc.setFill(Color.CORAL.desaturate());
+		gc.fillRoundRect(5, 5, canvas.getWidth() - 10, canvas.getHeight() - 10, 50, 50);
 		
+
+
 
 	}
 
@@ -151,10 +170,14 @@ public class MainMenuScreen extends Pane {
 				// TODO Auto-generated method stub
 				Pane chaselect = new CharacterSelectScreen();
 				Pane gamePlayScreen = new GamePlayScreen();
-				if (buttonName == "FARM")
+				if (buttonName == "FARM") {
+					GameManager.setCurrentMode("Farm");
 					SceneManager.gotoSceneOf(chaselect);
-				if (buttonName == "BOSS")
+				}
+				else if (buttonName == "BOSS") {
+					GameManager.setCurrentMode("Boss");
 					SceneManager.gotoSceneOf(gamePlayScreen);
+				}
 			}
 		});
 
@@ -163,11 +186,13 @@ public class MainMenuScreen extends Pane {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+
 				if(buttonName=="FARM")
 					drawHoverIndicator(boardFarm, buttonName);
 				else {
 					drawHoverIndicator(boardBoss, buttonName);
 				}
+
 			}
 		});
 
@@ -176,11 +201,13 @@ public class MainMenuScreen extends Pane {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+
 				if(buttonName=="FARM")
 					undrawHoverIndicator(boardFarm, buttonName);
 				else {
 					undrawHoverIndicator(boardBoss, buttonName);
 				}
+
 			}
 
 		});

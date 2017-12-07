@@ -1,110 +1,118 @@
 package gameLogic;
 
-import java.io.File;
-
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import character.Boss;
+import character.Clown;
+import character.Hero;
+import character.Knight;
+import character.Monster;
+import character.Priest;
+import character.SpellCaster;
+import scene.CharacterSelectScreen;
+import scene.MainMenuScreen;
+import window.SceneManager;
 
 public class GameManager {
+	private static Hero currentCha;
+	private static Monster currentMon;
+	private static Boss currentBoss;
+	private static Hero knight;
+	private static Hero spellCaster;
+	private static Hero clown;
+	private static Hero priest;
+	private static String currentMode;
+	
+	
+	public static void newGame(){
+		knight = new Knight("Knight", 1, "skill1");
+		spellCaster = new SpellCaster("SpellCaster", 1, "skill2");
+		clown = new Clown("Clown",1,"skill3");
+		priest = new Priest("Priset",1,"skill4");
+		SceneManager.gotoSceneOf(new MainMenuScreen());
+		
+	}
+	
+	
 
-	private int currentNoteIndex;
-	private double mediaStartTime;
-	private double offset;
-	private double lastBeat;
-	private double speed;
-	private double startTime;
-	private MusicChart musicChart;
-	private File filestring;
-	private Media file;
-	private MediaPlayer mediaPlayer;
-
-	public GameManager() {
-		// TODO Auto-generated constructor stub
-		musicChart = new MusicChart("test", 175.0, 1);
-		filestring = new File("res/" + "test" + ".wav");
-		file = new Media(filestring.toURI().toString());
-		mediaPlayer = new MediaPlayer(file);
-		lastBeat = 0;
-		currentNoteIndex = 0;
+	public static Hero getCurrentCha() {
+		return currentCha;
 	}
 
-	public void checkTiming(KeyCode e, double currentTime) {
-		Note currentNote = musicChart.getChart().get(currentNoteIndex);
-		System.out.println("Perfect : " + currentTime + " ");
-		if (e == currentNote.getDirection()) {
-			if (isPerfect(currentTime, (currentNoteIndex - 2) * musicChart.getDelayPerHit()) == true) {
-				System.out.println("Perfect : " + currentTime + " " + currentNoteIndex * musicChart.getDelayPerHit());
-			}
+	public static void setCurrentCha(String hero) {
+		if(hero=="Knight") {
+			currentCha = knight;
+		}
+		else if(hero=="spellCaster") {
+			currentCha = spellCaster;
+		}
+		else if(hero=="clown") {
+			currentCha = clown;
+		}
+		else  {
+			currentCha = priest;
 		}
 	}
 
-	public void setTapEventPressed(Scene scene) {
-		scene.setOnKeyPressed((KeyEvent e) -> {
-			if (e.getCode().isArrowKey()) {
-				checkTiming(e.getCode(), System.nanoTime() / 1000000000.0 - startTime - offset);
-			}
-		});
+	public Boss getCurrentBoss() {
+		return currentBoss;
 	}
 
-	public void start() {
-		System.out.println("Duration: " + file.getDuration().toSeconds());
-		mediaPlayer.play();
-		mediaStartTime = System.nanoTime() / 1000000000.0;
+	public void setCurrentBoss(Boss currentBoss) {
+		GameManager.currentBoss = currentBoss;
 	}
 
-	private boolean isPerfect(double tappedTime, double noteTime) {
-		double lowerBound = noteTime - 0.20;
-		double upperBound = noteTime + 0.20;
-		if (tappedTime >= lowerBound && tappedTime <= upperBound)
-			return true;
-		return false;
+	public String getCurrentMode() {
+		return currentMode;
 	}
 
-	public void setStartTime(double startTime) {
-		this.startTime = startTime;
+	public static void setCurrentMode(String mode) {
+		currentMode = mode;
 	}
 
-	public double getMediaStartTime() {
-		return mediaStartTime;
+
+
+	public static Monster getCurrentMon() {
+		return currentMon;
 	}
 
-	public double getLastBeat() {
-		return lastBeat;
+
+
+	public static void setCurrentMon(Monster currentMon) {
+		GameManager.currentMon = currentMon;
 	}
 
-	public void setLastBeat(double lastBeat) {
-		this.lastBeat = lastBeat;
+
+
+	public static Hero getKnight() {
+		return knight;
 	}
 
-	public MediaPlayer getMediaPlayer() {
-		return mediaPlayer;
+
+
+
+	public static Hero getSpellCaster() {
+		return spellCaster;
 	}
 
-	public void setMediaPlayer(MediaPlayer mediaPlayer) {
-		this.mediaPlayer = mediaPlayer;
+
+
+
+	public static Hero getClown() {
+		return clown;
 	}
 
-	public MusicChart getMusicChart() {
-		return musicChart;
+
+
+
+
+
+	public static Hero getPriest() {
+		return priest;
 	}
 
-	public double getOffset() {
-		return offset;
-	}
 
-	public void setOffset(double offset) {
-		this.offset = offset;
-	}
 
-	public int getCurrentNoteIndex() {
-		return currentNoteIndex;
-	}
 
-	public void setCurrentNoteIndex(int currentNoteIndex) {
-		this.currentNoteIndex = currentNoteIndex;
-	}
-
+	
+	
+	
 }
