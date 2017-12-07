@@ -168,7 +168,9 @@ public class MainMenuScreen extends Pane {
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
+				// Wait for fix Boss gameplay
 				Pane chaselect = new CharacterSelectScreen();
+
 				Pane gamePlayScreen = new GamePlayScreen();
 				if (buttonName == "FARM") {
 					GameManager.setCurrentMode("Farm");
@@ -178,6 +180,7 @@ public class MainMenuScreen extends Pane {
 					GameManager.setCurrentMode("Boss");
 					SceneManager.gotoSceneOf(gamePlayScreen);
 				}
+
 			}
 		});
 

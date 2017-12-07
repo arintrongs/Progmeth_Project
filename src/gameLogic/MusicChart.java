@@ -2,8 +2,6 @@ package gameLogic;
 
 import java.util.ArrayList;
 
-import javafx.scene.input.KeyCode;
-
 public class MusicChart {
 	private ArrayList<Note> chart;
 	private String name;
@@ -12,9 +10,11 @@ public class MusicChart {
 	private Double hitPerSecond;
 	private Double delayPerHit;
 	private long mediaStartTime;
+	private int currentNoteIdx;
 
 	public MusicChart(String name, Double bpm, int notesperbar) {
 		// TODO Auto-generated constructor stub
+		this.currentNoteIdx = 0;
 		this.name = name;
 		this.bpm = bpm;
 		this.notesPerBar = notesperbar;
@@ -24,35 +24,6 @@ public class MusicChart {
 
 		chart.add(new Note(0, null));
 		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(1, KeyCode.LEFT));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(1, KeyCode.UP));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(1, KeyCode.RIGHT));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(1, KeyCode.DOWN));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(1, KeyCode.DOWN));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(1, KeyCode.DOWN));
 		chart.add(new Note(0, null));
 		chart.add(new Note(0, null));
 
@@ -108,6 +79,14 @@ public class MusicChart {
 
 	public void setDelayPerHit(Double delayPerHit) {
 		this.delayPerHit = delayPerHit;
+	}
+
+	public int getCurrentNoteIdx() {
+		return currentNoteIdx;
+	}
+
+	public void setCurrentNoteIdx(int currentNoteIdx) {
+		this.currentNoteIdx = currentNoteIdx;
 	}
 
 }

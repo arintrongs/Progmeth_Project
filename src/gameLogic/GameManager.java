@@ -12,6 +12,7 @@ import scene.MainMenuScreen;
 import window.SceneManager;
 
 public class GameManager {
+
 	private static Hero currentCha;
 	private static Monster currentMon;
 	private static Boss currentBoss;
@@ -49,6 +50,7 @@ public class GameManager {
 		}
 		else  {
 			currentCha = priest;
+
 		}
 	}
 
