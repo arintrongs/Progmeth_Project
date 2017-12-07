@@ -1,5 +1,5 @@
 package sharedObject;
 
-public class IRenderable {
+public interface IRenderable {
 
 }

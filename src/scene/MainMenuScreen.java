@@ -171,14 +171,14 @@ public class MainMenuScreen extends Pane {
 				// Wait for fix Boss gameplay
 				Pane chaselect = new CharacterSelectScreen();
 
-				Pane gamePlayScreen = new GamePlayScreen();
+				//Pane gamePlayScreen = new GamePlayScreen();
 				if (buttonName == "FARM") {
 					GameManager.setCurrentMode("Farm");
 					SceneManager.gotoSceneOf(chaselect);
 				}
 				else if (buttonName == "BOSS") {
 					GameManager.setCurrentMode("Boss");
-					SceneManager.gotoSceneOf(gamePlayScreen);
+					//SceneManager.gotoSceneOf(gamePlayScreen);
 				}
 
 			}
