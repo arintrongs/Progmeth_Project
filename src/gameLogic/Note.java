@@ -1,18 +1,11 @@
 package gameLogic;
 
-<<<<<<< HEAD
-||||||| merged common ancestors
-import gameInterface.IRenderable;
-=======
-
->>>>>>> 6e83c45ab8d25b2fad0dbe4f24a7b8e67caabbb6
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import sharedObject.IRenderable;
 
 public class Note {
 	private Integer type;
@@ -30,6 +23,7 @@ public class Note {
 		this.canvas.getGraphicsContext2D().drawImage(this.image, 0, 0, 70, 70);
 		this.canvas.setTranslateY(472);
 		this.canvas.setTranslateX(-100);
+
 	}
 
 	public Double getStartTime() {
@@ -44,17 +38,12 @@ public class Note {
 		return 1;
 	}
 
-<<<<<<< HEAD
 	public Canvas getCanvas() {
 		return this.canvas;
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {
-||||||| merged common ancestors
-	public void draw(GraphicsContext gc, double x) {
-=======
-	public void draw(GraphicsContext gc, double x, double y) {
->>>>>>> 6e83c45ab8d25b2fad0dbe4f24a7b8e67caabbb6
+
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setLineWidth(2);
 		gc.setFill(Color.BLACK);

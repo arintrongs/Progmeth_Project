@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import model.Field;
 import model.Hero;
 import model.Monster;
 import sharedObject.IRenderable;
@@ -25,23 +26,20 @@ public class GamePlayScreen extends Pane {
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
-	private int width = SceneManager.SCENE_WIDTH;
-	private int height = SceneManager.SCENE_HEIGHT;
+	private static int width = SceneManager.SCENE_WIDTH;
+	private static int height = SceneManager.SCENE_HEIGHT;
 	private Canvas bg = new Canvas(width, height);
 
-	private Canvas monsInfo;
+	private boolean singlepulse = false;
+
+	private static Canvas monsInfo;
 	private Canvas heroInfo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
 
-	private Image playzoneImg, perfectTap, criTap, greatTap, goodTap, missTap, tapZone;
+	private Image playzoneImg, tapZone;
 
 	private ImageView ivPlayzone = new ImageView();
-	public ImageView ivCriTap = new ImageView();
-	public ImageView ivPerfectTap = new ImageView();
-	public ImageView ivGreatTap = new ImageView();
-	public ImageView ivGoodTap = new ImageView();
-	public ImageView ivMissTap = new ImageView();
 	private ImageView ivTapZone = new ImageView();
 
 	private MusicControl musicControl;
@@ -72,8 +70,7 @@ public class GamePlayScreen extends Pane {
 		setImage();
 		setIv();
 
-		this.getChildren().addAll(bg, ivPlayzone, ivCriTap, ivPerfectTap, ivGreatTap, ivGoodTap, ivMissTap, ivTapZone,
-				monsInfo, heroInfo, gamePlay, exitMenu, yesBtn, noBtn);
+		this.getChildren().addAll(bg, ivPlayzone, ivTapZone, monsInfo, heroInfo, gamePlay, exitMenu, yesBtn, noBtn);
 
 		musicControl = new MusicControl(this);
 
@@ -87,14 +84,11 @@ public class GamePlayScreen extends Pane {
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
 
 			if (e.isVisible()) {
-
 				if (e instanceof Field) {
-
 					((Field) e).setBg();
 					e.draw(gc, 0, 0);
 
 				} else if (e instanceof Hero && GameManager.getCurrentMode() == "Farm") {
-
 					e.draw(gc, width / 7, height / 6);
 				} else if (e instanceof Monster && GameManager.getCurrentMode() == "Farm") {
 					e.draw(gc, width / 3 * 2 - 20, height / 3);
@@ -107,49 +101,23 @@ public class GamePlayScreen extends Pane {
 		// ask current mon and hero
 
 		this.playzoneImg = new Image("Playzone.png");
-		this.criTap = new Image("Cri_Perfect.png");
-		this.perfectTap = new Image("Perfect.png");
-		this.greatTap = new Image("Great.png");
-		this.goodTap = new Image("Good.png");
-		this.missTap = new Image("Miss.png");
 		this.tapZone = new Image("Tapzone.png");
 	}
 
 	public void setIv() {
 
 		ivPlayzone.setImage(playzoneImg);
-		ivCriTap.setImage(criTap);
-		ivPerfectTap.setImage(perfectTap);
-		ivGreatTap.setImage(greatTap);
-		ivGoodTap.setImage(goodTap);
-		ivMissTap.setImage(missTap);
 		ivTapZone.setImage(tapZone);
-
-		ivCriTap.setVisible(false);
-		ivPerfectTap.setVisible(false);
-		ivGreatTap.setVisible(false);
-		ivGoodTap.setVisible(false);
-		ivMissTap.setVisible(false);
 
 		ivPlayzone.setTranslateY(height * 2 / 3 - 20);
 
 		// Set Tap Judge Effect Position
 		ivTapZone.setTranslateX(700 - 59);
 		ivTapZone.setTranslateY(600 - 170);
-		ivCriTap.setTranslateX(700 - 59);
-		ivCriTap.setTranslateY(600 - 170);
-		ivPerfectTap.setTranslateX(700 - 59);
-		ivPerfectTap.setTranslateY(600 - 170);
-		ivGreatTap.setTranslateX(700 - 59);
-		ivGreatTap.setTranslateY(600 - 170);
-		ivGoodTap.setTranslateX(700 - 59);
-		ivGoodTap.setTranslateY(600 - 170);
-		ivMissTap.setTranslateX(700 - 59);
-		ivMissTap.setTranslateY(600 - 170);
 
 	}
 
-	public Canvas drawButton(String name, double width, double height, double posX, double posY) {
+	public static Canvas drawButton(String name, double width, double height, double posX, double posY) {
 		Canvas canvas = new Canvas(width, height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -167,7 +135,6 @@ public class GamePlayScreen extends Pane {
 
 			gc.fillText("Name : " + GameManager.getCurrentMon().getName(), 20, height / 2 - 15);
 			gc.fillText("Level : " + GameManager.getCurrentMon().getLevel(), 200, height / 2 - 15);
-
 			gc.fillText("Hp : " + GameManager.getCurrentMon().getCurrentHp().intValue(), 20, height / 2 + 10);
 
 		} else if (name == "HeroInfo") {
@@ -223,16 +190,25 @@ public class GamePlayScreen extends Pane {
 
 	private void addCanvasEvents(Canvas canvas, String name) {
 		canvas.setOnKeyPressed((KeyEvent e) -> {
-			System.out
-					.println(e.getCode().getName() + " " + (System.nanoTime() - musicControl.startTime) / 1000000000.0);
-			if (e.getCode().isArrowKey() == true)
+			if (e.getCode().isArrowKey() == true && singlepulse == false) {
 				musicControl.judge(e);
+				singlepulse = true;
+			}
 			if (e.getCode() == KeyCode.ESCAPE) {
 				this.exitMenu.setVisible(true);
 				this.yesBtn.setVisible(true);
 				this.noBtn.setVisible(true);
 			}
+			if (e.getCode() == KeyCode.E) {
+				musicControl.end();
+			}
 
+		});
+
+		canvas.setOnKeyReleased((KeyEvent e) -> {
+			if (e.getCode().isArrowKey() == true) {
+				singlepulse = false;
+			}
 		});
 
 		canvas.setOnMouseClicked((MouseEvent e) -> {
@@ -250,4 +226,9 @@ public class GamePlayScreen extends Pane {
 
 	}
 
+	public void setMonsInfo() {
+		this.getChildren().remove(monsInfo);
+		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
+		this.getChildren().add(monsInfo);
+	}
 }

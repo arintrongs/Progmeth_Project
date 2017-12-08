@@ -174,12 +174,9 @@ public class CharacterSelectScreen extends Pane {
 	private void addCanvasEvents(Canvas canvas, String name) {
 		canvas.setOnMouseClicked((MouseEvent event) -> {
 
-			ResultScreen r = new ResultScreen();
 			if (name != "Start" && name != "Back") {
 				GameManager.setCurrentCha(name);
-
 				this.name = name;
-
 				if (name != "Knight")
 					undrawHoverIndicator(boardCha1, name);
 				if (name != "SpellCaster")
@@ -194,7 +191,7 @@ public class CharacterSelectScreen extends Pane {
 
 				if (name == "Start") {
 
-					SceneManager.gotoSceneOf(r);
+					SceneManager.gotoSceneOf(gamePlay);
 					gamePlay.setFocusTraversable(true);
 					((GamePlayScreen) gamePlay).start();
 				}

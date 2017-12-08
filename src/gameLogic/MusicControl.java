@@ -2,42 +2,46 @@ package gameLogic;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
+import model.JudgeStyle;
 import scene.GamePlayScreen;
+import scene.ResultScreen;
+import window.SceneManager;
 
 public class MusicControl extends AnimationTimer {
 
-	private static double mediaStartTime;
 	private static double offset;
-	private double speed;
-	public static double startTime;
+	private double speed, temps;
+	private double startTime;
 	private MusicChart musicChart;
 	private File filestring;
 	private Media file;
 	private GamePlayScreen gamePlayScreen;
 	private ArrayList<Note> render, notes;
+	private ArrayList<Integer> judgeResult;
 	private Note current_note;
-	private int idx;
-	private int t = 0;
+	private int idx, toRenderIdx = 0, offsetCheck = 0, judges = 0, isSleep = 0;
 	public static final double NANO = 1000000000.0;
-
 	private MediaPlayer mediaPlayer, knock;
+	private Thread updater;
 
 	public MusicControl(Pane pane) {
 
-		musicChart = new MusicChart("test2", 146.0, 1);
+		musicChart = new MusicChart("test2", 146.0, 4);
 		filestring = new File("res/song/test2.wav");
 		file = new Media(filestring.toURI().toString());
 		mediaPlayer = new MediaPlayer(file);
 		knock = new MediaPlayer(new Media((new File("res/song/Knock.wav")).toURI().toString()));
 
 		this.gamePlayScreen = (GamePlayScreen) pane;
+		this.judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
 		this.render = new ArrayList<>();
 		this.notes = new ArrayList<>();
 
@@ -46,19 +50,25 @@ public class MusicControl extends AnimationTimer {
 			if (current_note.getType() == 1) {
 				current_note.setStartTime(i * this.musicChart.getDelayPerHit() - 2.0);
 				this.notes.add(current_note);
-				pane.getChildren().add(current_note.getCanvas());
 			}
 		}
 
+		setUpdater();
 	}
 
 	@Override
 	public void handle(long now) {
-		if (mediaPlayer.getStatus() == Status.PLAYING && t++ == 0) {
-			startTime = System.nanoTime();
-		}
 		double current_time = (now - startTime) / NANO;
-		if (current_time >= musicChart.currentNoteIdx * musicChart.getDelayPerHit() + 0.3) {
+		if (current_time >= musicChart.getNotesPerBar() * musicChart.getDelayPerHit() && offsetCheck == 0) {
+			offsetCheck = 1;
+			mediaPlayer.play();
+			updater.start();
+		}
+
+		while (current_time >= notes.get(toRenderIdx).getStartTime()) {
+			gamePlayScreen.getChildren().add(notes.get(toRenderIdx++).getCanvas());
+		}
+		if (current_time >= musicChart.currentNoteIdx * musicChart.getDelayPerHit() + 0.15) {
 			musicChart.currentNoteIdx++;
 		}
 		current_note = (idx < notes.size()) ? notes.get(idx) : null;
@@ -71,26 +81,22 @@ public class MusicControl extends AnimationTimer {
 			Note current_render = render.get(i);
 			double pos_x = 665 * (current_time - current_render.getStartTime()) / 2.0;
 			// System.out.println(pos_x + " " + i);
-			if (pos_x >= 0 && pos_x <= 800) {
+			if (pos_x >= 0 && pos_x <= 750) {
 				current_render.getCanvas().setTranslateX(pos_x);
 			}
-			if (pos_x >= 800) {
-				gamePlayScreen.ivCriTap.setVisible(false);
-				gamePlayScreen.ivPerfectTap.setVisible(false);
-				gamePlayScreen.ivGreatTap.setVisible(false);
-				gamePlayScreen.ivGoodTap.setVisible(false);
-				gamePlayScreen.ivMissTap.setVisible(false);
-			}
-			if (pos_x >= 800) {
+			if (pos_x >= 750) {
+				new JudgeStyle(4, gamePlayScreen).show();
+				judgeResult.set(4, judgeResult.get(4) + 1);
 				gamePlayScreen.getChildren().remove(current_render.getCanvas());
 				render.remove(current_render);
+
 			}
 		}
+
 	}
 
 	public void run() {
-
-		mediaPlayer.play();
+		startTime = System.nanoTime();
 		this.start();
 	}
 
@@ -100,31 +106,64 @@ public class MusicControl extends AnimationTimer {
 		double current_tapped_time = (System.nanoTime() - startTime) / NANO;
 		Note current_note = musicChart.getChart().get(idx);
 		double judge_time = idx * musicChart.getDelayPerHit();
-		System.out.println(
-				idx + " " + judge_time + " " + current_tapped_time + " " + mediaPlayer.getCurrentTime().toSeconds());
-		if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()) {
-			double lower_bound = judge_time - 0.025;
-			double upper_bound = judge_time + 0.025;
+		double lower_bound = judge_time - 0.025;
+		double upper_bound = judge_time + 0.025;
+		System.out.println(idx + " " + judge_time + " " + current_tapped_time);
+		if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
+				&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
 			if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
 				System.out.println("CriTical - PerFect~~~");
-				gamePlayScreen.ivCriTap.setVisible(true);
+				judgeResult.set(0, judgeResult.get(0) + 1);
+				judges = 0;
+
 			} else if (current_tapped_time >= lower_bound - 0.075 && current_tapped_time <= upper_bound + 0.075) {
 				System.out.println("PerFect~~~");
-				gamePlayScreen.ivPerfectTap.setVisible(true);
+				judgeResult.set(1, judgeResult.get(1) + 1);
+				judges = 1;
+
 			} else if (current_tapped_time >= lower_bound - 0.125 && current_tapped_time <= upper_bound + 0.125) {
 				System.out.println("Great~~~");
-				gamePlayScreen.ivGreatTap.setVisible(true);
-			} else if (current_tapped_time >= lower_bound - 0.25 && current_tapped_time <= upper_bound + 0.25) {
-				System.out.println("Good~~~");
-				gamePlayScreen.ivGoodTap.setVisible(true);
-			}
+				judgeResult.set(2, judgeResult.get(2) + 1);
+				judges = 2;
 
+			} else if (current_tapped_time >= lower_bound - 0.2 && current_tapped_time <= upper_bound + 0.2) {
+				System.out.println("Good~~~");
+				judgeResult.set(3, judgeResult.get(3) + 1);
+				judges = 3;
+
+			}
+			render.remove(current_note);
+			gamePlayScreen.getChildren().remove(current_note.getCanvas());
+			new JudgeStyle(judges, gamePlayScreen).show();
+			System.out.println(judgeResult);
 		}
 
 	}
 
-	public static double getMediaStartTime() {
-		return mediaStartTime;
+	public void end() {
+		mediaPlayer.stop();
+		this.stop();
+		updater.interrupt();
+		SceneManager.gotoSceneOf(new ResultScreen());
+		System.out.println(mediaPlayer.getStatus());
+	}
+
+	public void setUpdater() {
+		updater = new Thread(() -> {
+			try {
+				while (true) {
+					Thread.sleep(5000);
+					Platform.runLater(() -> {
+						GameManager.update(judgeResult, gamePlayScreen);
+					});
+
+					judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
+				}
+			} catch (InterruptedException e) {
+				updater.interrupt();
+			}
+
+		});
 	}
 
 	public double getOffset() {
@@ -154,10 +193,6 @@ public class MusicControl extends AnimationTimer {
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
 
-	}
-
-	public static void setStartTime(double starttime) {
-		startTime = starttime;
 	}
 
 }

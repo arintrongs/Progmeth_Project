@@ -20,9 +20,10 @@ public class MusicChart {
 	public MusicChart(String name, Double bpm, int notesperbar) {
 		this.currentNoteIdx = 0;
 		this.songname = name;
-		this.bpm = bpm;
 		this.notesPerBar = notesperbar;
-		hitPerSecond = bpm / 60;
+		this.bpm = bpm * notesperbar / 4;
+
+		hitPerSecond = this.bpm / 60;
 		delayPerHit = 1 / hitPerSecond;
 		chart = new ArrayList<>();
 		addChart();
@@ -89,7 +90,10 @@ public class MusicChart {
 	}
 
 	public void addChart() {
-
+		System.out.println(notesPerBar);
+		for (int i = 0; i < notesPerBar; i++) {
+			chart.add(new Note(0, KeyCode.LEFT));
+		}
 		for (int i = 0; i < 100; i++) {
 			chart.add(new Note(1, KeyCode.LEFT));
 			chart.add(new Note(1, KeyCode.LEFT));
