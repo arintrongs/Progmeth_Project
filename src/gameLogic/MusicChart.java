@@ -2,34 +2,37 @@ package gameLogic;
 
 import java.util.ArrayList;
 
+import javafx.scene.input.KeyCode;
+
 public class MusicChart {
 	private ArrayList<Note> chart;
-	private String name;
+	private String songname;
 	private Double bpm;
 	private Integer notesPerBar;
 	private Double hitPerSecond;
 	private Double delayPerHit;
-	private long mediaStartTime;
-	private int currentNoteIdx;
+	private double mediaStartTime;
+	public static int currentNoteIdx;
+	public static final double NANO = 1000000000.0;
+	private Note current_note;
+	private double offset;
 
 	public MusicChart(String name, Double bpm, int notesperbar) {
-		// TODO Auto-generated constructor stub
 		this.currentNoteIdx = 0;
-		this.name = name;
+		this.songname = name;
 		this.bpm = bpm;
 		this.notesPerBar = notesperbar;
 		hitPerSecond = bpm / 60;
 		delayPerHit = 1 / hitPerSecond;
 		chart = new ArrayList<>();
-
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-		chart.add(new Note(0, null));
-
+		addChart();
 	}
 
-	public long getMediaStartTime() {
+	public void setOffset(double offset) {
+		this.offset = offset;
+	}
+
+	public double getMediaStartTime() {
 		return mediaStartTime;
 	}
 
@@ -39,14 +42,6 @@ public class MusicChart {
 
 	public void setChart(ArrayList<Note> chart) {
 		this.chart = chart;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Double getBpm() {
@@ -89,4 +84,19 @@ public class MusicChart {
 		this.currentNoteIdx = currentNoteIdx;
 	}
 
+	public void setMediaStartTime(double mediaStartTime) {
+		this.mediaStartTime = mediaStartTime;
+	}
+
+	public void addChart() {
+
+		for (int i = 0; i < 100; i++) {
+			chart.add(new Note(1, KeyCode.LEFT));
+			chart.add(new Note(1, KeyCode.LEFT));
+			chart.add(new Note(1, KeyCode.LEFT));
+			chart.add(new Note(0, KeyCode.LEFT));
+
+		}
+
+	}
 }

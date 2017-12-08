@@ -36,17 +36,16 @@ public class GamePlayScreen extends Pane {
 	private ImageView ivMonHarm = new ImageView();
 	private ImageView ivBackground = new ImageView();
 	private ImageView ivPlayzone = new ImageView();
-	private ImageView ivCriTap = new ImageView();
-	private ImageView ivPerfectTap = new ImageView();
-	private ImageView ivGreatTap = new ImageView();
-	private ImageView ivGoodTap = new ImageView();
-	private ImageView ivMissTap = new ImageView();
+	public ImageView ivCriTap = new ImageView();
+	public ImageView ivPerfectTap = new ImageView();
+	public ImageView ivGreatTap = new ImageView();
+	public ImageView ivGoodTap = new ImageView();
+	public ImageView ivMissTap = new ImageView();
 	private ImageView ivTapZone = new ImageView();
 	private Monster currentMon;
 	private Hero currentHero;
 	private Boss currentBoss;
-
-	private MusicControl musicControl = new MusicControl();
+	private MusicControl musicControl;
 
 	public GamePlayScreen() {
 		// TODO Auto-generated constructor stub
@@ -75,12 +74,10 @@ public class GamePlayScreen extends Pane {
 		setImage();
 		setIv();
 
-		this.getChildren().addAll(ivBackground, ivPlayzone, ivCriTap, ivPerfectTap, ivGreatTap, ivGoodTap, ivMissTap,
-				ivTapZone, monsInfo, heroInfo, gamePlay, ivMon, ivHero, ivMonHarm, exitMenu, yesBtn, noBtn);
+		this.getChildren().addAll(ivBackground, gamePlay, ivPlayzone, ivCriTap, ivPerfectTap, ivGreatTap, ivGoodTap,
+				ivMissTap, ivTapZone, monsInfo, heroInfo, ivMon, ivHero, ivMonHarm, exitMenu, yesBtn, noBtn);
 
-		javafx.application.Platform.runLater(() -> {
-			musicControl.start();
-		});
+		musicControl = new MusicControl(this);
 
 	}
 
@@ -131,18 +128,15 @@ public class GamePlayScreen extends Pane {
 		ivMon.setTranslateX(width / 3 * 2 - 20);
 		ivMon.setTranslateY(height / 3);
 
-
 		ivMonHarm.setFitWidth(monsterHarmImg.getWidth() / 3);
 		ivMonHarm.setFitHeight(monsterHarmImg.getHeight() / 3);
 		ivMonHarm.setTranslateX(width / 3 * 2);
 		ivMonHarm.setTranslateY(height / 6 - 10);
 
-
 		ivBackground.setFitWidth(width);
 		ivBackground.setFitHeight(height);
 
 		ivPlayzone.setTranslateY(height * 2 / 3 - 20);
-
 
 		// Set Tap Judge Effect Position
 		ivTapZone.setTranslateX(700 - 59);
@@ -157,7 +151,6 @@ public class GamePlayScreen extends Pane {
 		ivGoodTap.setTranslateY(600 - 170);
 		ivMissTap.setTranslateX(700 - 59);
 		ivMissTap.setTranslateY(600 - 170);
-
 
 	}
 
@@ -224,15 +217,22 @@ public class GamePlayScreen extends Pane {
 
 	}
 
+	public void start() {
+		musicControl.run();
+	}
+
 	private void addCanvasEvents(Canvas canvas, String name) {
 		canvas.setOnKeyPressed((KeyEvent e) -> {
-			System.out.println(e.getCode().getName());
+			System.out
+					.println(e.getCode().getName() + " " + (System.nanoTime() - musicControl.startTime) / 1000000000.0);
+			if (e.getCode().isArrowKey() == true)
+				musicControl.judge(e);
 			if (e.getCode() == KeyCode.ESCAPE) {
-
 				this.exitMenu.setVisible(true);
 				this.yesBtn.setVisible(true);
 				this.noBtn.setVisible(true);
 			}
+
 		});
 
 		canvas.setOnMouseClicked((MouseEvent e) -> {
