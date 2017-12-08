@@ -1,9 +1,7 @@
 
 package scene;
 
-import character.Boss;
-import character.Hero;
-import character.Monster;
+import gameLogic.GameManager;
 import gameLogic.MusicControl;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -17,6 +15,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import model.Hero;
+import model.Monster;
+import sharedObject.IRenderable;
+import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class GamePlayScreen extends Pane {
@@ -25,16 +27,15 @@ public class GamePlayScreen extends Pane {
 	private static final Font MENU_FONT = new Font("Monospace", 17);
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
+	private Canvas bg = new Canvas(width, height);
+
 	private Canvas monsInfo;
 	private Canvas heroInfo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
-	private Image monsterImg, monsterHarmImg, heroImg, backgroundImg, playzoneImg, perfectTap, criTap, greatTap,
-			goodTap, missTap, tapZone;
-	private ImageView ivMon = new ImageView();
-	private ImageView ivHero = new ImageView();
-	private ImageView ivMonHarm = new ImageView();
-	private ImageView ivBackground = new ImageView();
+
+	private Image playzoneImg, perfectTap, criTap, greatTap, goodTap, missTap, tapZone;
+
 	private ImageView ivPlayzone = new ImageView();
 	public ImageView ivCriTap = new ImageView();
 	public ImageView ivPerfectTap = new ImageView();
@@ -42,18 +43,15 @@ public class GamePlayScreen extends Pane {
 	public ImageView ivGoodTap = new ImageView();
 	public ImageView ivMissTap = new ImageView();
 	private ImageView ivTapZone = new ImageView();
-	private Monster currentMon;
-	private Hero currentHero;
-	private Boss currentBoss;
+
 	private MusicControl musicControl;
 
 	public GamePlayScreen() {
 		// TODO Auto-generated constructor stub
 		super();
-
-		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, 0, 0);
-
-		heroInfo = drawButton("HeroInfo", width / 2, height / 10, width / 2, 0);
+		paint();
+		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
+		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
 
 		exitMenu = drawButton("Exit", width / 3 + 40, height / 6, width / 3 - 20, height / 3);
 		addCanvasEvents(exitMenu, "Exit");
@@ -74,19 +72,40 @@ public class GamePlayScreen extends Pane {
 		setImage();
 		setIv();
 
-		this.getChildren().addAll(ivBackground, gamePlay, ivPlayzone, ivCriTap, ivPerfectTap, ivGreatTap, ivGoodTap,
-				ivMissTap, ivTapZone, monsInfo, heroInfo, ivMon, ivHero, ivMonHarm, exitMenu, yesBtn, noBtn);
+		this.getChildren().addAll(bg, ivPlayzone, ivCriTap, ivPerfectTap, ivGreatTap, ivGoodTap, ivMissTap, ivTapZone,
+				monsInfo, heroInfo, gamePlay, exitMenu, yesBtn, noBtn);
 
 		musicControl = new MusicControl(this);
 
 	}
 
+	public void paint() {
+
+		bg = new Canvas(width, height);
+		GraphicsContext gc = bg.getGraphicsContext2D();
+
+		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
+
+			if (e.isVisible()) {
+
+				if (e instanceof Field) {
+
+					((Field) e).setBg();
+					e.draw(gc, 0, 0);
+
+				} else if (e instanceof Hero && GameManager.getCurrentMode() == "Farm") {
+
+					e.draw(gc, width / 7, height / 6);
+				} else if (e instanceof Monster && GameManager.getCurrentMode() == "Farm") {
+					e.draw(gc, width / 3 * 2 - 20, height / 3);
+				}
+			}
+		}
+	}
+
 	public void setImage() {
 		// ask current mon and hero
-		this.monsterImg = new Image("Monster1.2.png");
-		this.monsterHarmImg = new Image("Monster1.2.png");
-		this.heroImg = new Image("Clown1.png");
-		this.backgroundImg = new Image("Gameplay_bg1.png");
+
 		this.playzoneImg = new Image("Playzone.png");
 		this.criTap = new Image("Cri_Perfect.png");
 		this.perfectTap = new Image("Perfect.png");
@@ -98,10 +117,6 @@ public class GamePlayScreen extends Pane {
 
 	public void setIv() {
 
-		ivMon.setImage(monsterImg);
-		ivHero.setImage(heroImg);
-		ivMonHarm.setImage(monsterHarmImg);
-		ivBackground.setImage(backgroundImg);
 		ivPlayzone.setImage(playzoneImg);
 		ivCriTap.setImage(criTap);
 		ivPerfectTap.setImage(perfectTap);
@@ -110,31 +125,11 @@ public class GamePlayScreen extends Pane {
 		ivMissTap.setImage(missTap);
 		ivTapZone.setImage(tapZone);
 
-		ivMonHarm.setVisible(false);
 		ivCriTap.setVisible(false);
 		ivPerfectTap.setVisible(false);
 		ivGreatTap.setVisible(false);
 		ivGoodTap.setVisible(false);
 		ivMissTap.setVisible(false);
-
-		ivHero.setFitWidth(heroImg.getWidth() / 3);
-		ivHero.setFitHeight(heroImg.getHeight() / 3);
-		ivHero.setTranslateX(width / 7);
-		ivHero.setTranslateY(height / 6);
-
-		ivMon.setFitWidth(monsterImg.getWidth() / 3);
-		ivMon.setFitHeight(monsterImg.getHeight() / 3);
-
-		ivMon.setTranslateX(width / 3 * 2 - 20);
-		ivMon.setTranslateY(height / 3);
-
-		ivMonHarm.setFitWidth(monsterHarmImg.getWidth() / 3);
-		ivMonHarm.setFitHeight(monsterHarmImg.getHeight() / 3);
-		ivMonHarm.setTranslateX(width / 3 * 2);
-		ivMonHarm.setTranslateY(height / 6 - 10);
-
-		ivBackground.setFitWidth(width);
-		ivBackground.setFitHeight(height);
 
 		ivPlayzone.setTranslateY(height * 2 / 3 - 20);
 
@@ -166,22 +161,27 @@ public class GamePlayScreen extends Pane {
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 0, 0);
 			gc.setFill(Color.WHITE);
 			gc.setTextBaseline(VPos.CENTER);
+			gc.setTextAlign(TextAlignment.LEFT);
 			gc.setFont(MENU_FONT);
 			// get method for name,level,hp of mon
-			gc.fillText("Name : " + "Level : ", 20, height / 2 - 15);
-			gc.fillText("Hp : ", 20, height / 2 + 10);
+
+			gc.fillText("Name : " + GameManager.getCurrentMon().getName(), 20, height / 2 - 15);
+			gc.fillText("Level : " + GameManager.getCurrentMon().getLevel(), 200, height / 2 - 15);
+
+			gc.fillText("Hp : " + GameManager.getCurrentMon().getCurrentHp().intValue(), 20, height / 2 + 10);
 
 		} else if (name == "HeroInfo") {
 
 			gc.setFill(Color.BURLYWOOD);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 0, 0);
 			gc.setFill(Color.WHITE);
-			gc.setTextAlign(TextAlignment.RIGHT);
+			gc.setTextAlign(TextAlignment.LEFT);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(MENU_FONT);
 			// get method for name,level,hp of mon
-			gc.fillText("Name : " + "Level : ", width, height / 2 - 15);
-			gc.fillText("Hp : ", width, height / 2 + 10);
+			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 20, height / 2 - 15);
+			gc.fillText("Level : " + GameManager.getCurrentCha().getLevel(), 200, height / 2 - 15);
+			gc.fillText("Exp : " + GameManager.getCurrentCha().getCurrentExp(), 20, height / 2 + 10);
 
 		}
 

@@ -22,7 +22,7 @@ public class WelcomeScreen extends Canvas {
 			
 	private static final Font MENU_FONT = Font.font("Monospace",40) ;
 	
-	private Image bg = new Image("bg10.png");
+	private Image bg = new Image("bg10.png"); 
 
 
 	public WelcomeScreen() {

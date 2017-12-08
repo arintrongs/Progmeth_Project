@@ -1,5 +1,6 @@
 package scene;
 
+import gameLogic.GameManager;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,12 +11,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import model.Hero;
 import window.SceneManager;
 
 public class CharacterSelectScreen extends Pane {
-	private static final Font TITLE_FONT = new Font("Monospace", 55);
-	private static final Font BTN_FONT = new Font("Monospace", 30);
-	private static final Font MENU_FONT = new Font("Monospace", 20);
+	private static final Font TITLE_FONT = Font.loadFont("file:res/font/south park.ttf", 60);
+	private static final Font BTN_FONT = Font.loadFont("file:res/font/crayon kids.ttf", 35);
+	private static final Font MENU_FONT_BOLD = Font.loadFont("file:res/font/crayon kids.ttf", 30);
+	private static final Hero NULL = null;
 	private Canvas title;
 	private Canvas cha1, cha2, cha3, cha4;
 	private Canvas backBtn;
@@ -104,7 +107,7 @@ public class CharacterSelectScreen extends Pane {
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, width - 10, height - 10, 50, 50);
 			gc.setFill(Color.BLACK);
-			gc.setFont(MENU_FONT);
+			gc.setFont(MENU_FONT_BOLD);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText(name, width / 2, height / 5);
@@ -170,19 +173,13 @@ public class CharacterSelectScreen extends Pane {
 
 	private void addCanvasEvents(Canvas canvas, String name) {
 		canvas.setOnMouseClicked((MouseEvent event) -> {
-			Pane gamePlay = new GamePlayScreen();
-			Pane mainMenu = new MainMenuScreen();
 
-			if (name == "Start") {
+			ResultScreen r = new ResultScreen();
+			if (name != "Start" && name != "Back") {
+				GameManager.setCurrentCha(name);
 
-				SceneManager.gotoSceneOf(gamePlay);
-				gamePlay.setFocusTraversable(true);
-				((GamePlayScreen) gamePlay).start();
-			} else if (name == "Back") {
-				SceneManager.gotoSceneOf(mainMenu);
-			} else {
-				// set current character
 				this.name = name;
+
 				if (name != "Knight")
 					undrawHoverIndicator(boardCha1, name);
 				if (name != "SpellCaster")
@@ -192,7 +189,19 @@ public class CharacterSelectScreen extends Pane {
 				if (name != "Priest")
 					undrawHoverIndicator(boardCha4, name);
 				// drawHoverIndicator(canvas, name);
+			} else if (GameManager.getCurrentCha() != NULL) {
+				Pane gamePlay = new GamePlayScreen();
 
+				if (name == "Start") {
+
+					SceneManager.gotoSceneOf(r);
+					gamePlay.setFocusTraversable(true);
+					((GamePlayScreen) gamePlay).start();
+				}
+
+			} else if (name == "Back") {
+				Pane mainMenu = new MainMenuScreen();
+				SceneManager.gotoSceneOf(mainMenu);
 			}
 		});
 
