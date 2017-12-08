@@ -188,12 +188,18 @@ public class CharacterSelectScreen extends Pane {
 				// drawHoverIndicator(canvas, name);
 			} else if (GameManager.getCurrentCha() != NULL) {
 				Pane gamePlay = new GamePlayScreen();
-
 				if (name == "Start") {
-
 					SceneManager.gotoSceneOf(gamePlay);
 					gamePlay.setFocusTraversable(true);
-					((GamePlayScreen) gamePlay).start();
+					new Thread(() -> {
+						try {
+							SceneManager.getFadeIn().join();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						((GamePlayScreen) gamePlay).start();
+					}).start();
+
 				}
 
 			} else if (name == "Back") {

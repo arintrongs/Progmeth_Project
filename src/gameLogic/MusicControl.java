@@ -27,7 +27,7 @@ public class MusicControl extends AnimationTimer {
 	private ArrayList<Note> render, notes;
 	private ArrayList<Integer> judgeResult;
 	private Note current_note;
-	private int idx, toRenderIdx = 0, offsetCheck = 0, judges = 0, isSleep = 0;
+	private int idx, toRenderIdx = 0, offsetCheck = 0, judges = 0, isSleep = 0, combo = 0;
 	public static final double NANO = 1000000000.0;
 	private MediaPlayer mediaPlayer, knock;
 	private Thread updater;
