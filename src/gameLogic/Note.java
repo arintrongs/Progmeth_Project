@@ -1,10 +1,11 @@
 package gameLogic;
 
-import gameInterface.IRenderable;
+
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import sharedObject.IRenderable;
 
 public class Note implements IRenderable {
 	private Integer type;
@@ -29,7 +30,7 @@ public class Note implements IRenderable {
 		return 1;
 	}
 
-	public void draw(GraphicsContext gc, double x) {
+	public void draw(GraphicsContext gc, double x, double y) {
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setLineWidth(2);
 		gc.setFill(Color.BLACK);

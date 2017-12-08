@@ -1,15 +1,16 @@
-package character;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Hero extends Entity implements Skillable {
 	protected String skillName;
-	protected int currentExp;
+	protected int currentExp; 
 	protected int currentMaxExp;
 	final protected List<Integer> maxExp = new ArrayList<>();
 	protected double atk = 10;
 	final protected double growthRateAtk = 1.2;
+	private int z = -999;
 	
 	
 	public Hero(String name, int level, String skillName) {
@@ -96,6 +97,13 @@ public abstract class Hero extends Entity implements Skillable {
 			return true;
 		}
 		return false;
+	}
+	
+	public void update(double exp) {
+		this.increaseExp(exp);
+		if(this.isLevelUp()) {
+			this.levelUp();
+		}
 	}
 	
 	// set currentMaxExp and atk when level up

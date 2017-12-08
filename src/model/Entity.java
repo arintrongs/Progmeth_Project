@@ -1,8 +1,12 @@
-package character;
+package model;
 
-public abstract class Entity {
+import sharedObject.IRenderable;
+
+public abstract class Entity implements IRenderable {
 	private String name;
 	protected int level;
+	private int z;
+	boolean isVisible;
 	
 	public Entity(String name, int level) {
 		this.name = name;
@@ -23,5 +27,18 @@ public abstract class Entity {
 	}
 	
 	public abstract void levelUp();
+	
+	@Override
+	public boolean isVisible(){
+		return isVisible;
+	}
+	
+	@Override
+	public int getZ(){
+		return z;
+	}
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
 	
 }

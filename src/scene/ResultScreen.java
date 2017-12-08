@@ -1,8 +1,11 @@
 package scene;
 
+import gameLogic.GameManager;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,9 +14,9 @@ import javafx.scene.text.TextAlignment;
 import window.SceneManager;
 
 public class ResultScreen extends Pane{
-	private static final Font TITLE_FONT = new Font("Monospace", 55);
-	private static final Font BTN_FONT = new Font("Monospace", 30);
-	private static final Font MENU_FONT = new Font("Monospace", 20);
+	private static final Font TITLE_FONT = Font.font("Monospace",55) ;
+	private static final Font BTN_FONT = Font.font("Monospace",30) ;
+	private static final Font MENU_FONT = Font.font("Monospace",20) ;
 	private Canvas title;
 	private Canvas criticalPerfect;
 	private Canvas perfect;
@@ -23,10 +26,15 @@ public class ResultScreen extends Pane{
 	private Canvas nextBtn;
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
+	private Image bg = new Image("bg15.png");
+	private ImageView ivBg = new ImageView(bg);
 	
 	public ResultScreen() {
 		super();
-		
+		ivBg.setFitWidth(width);
+		ivBg.setFitHeight(height);
+		ivBg.setTranslateX(0);
+		ivBg.setTranslateY(0);
 		
 		title = drawButton("Result", width*4/7 , height/5 ,width/16 ,0);
 		addCanvasEvents(title,"Result");
@@ -44,7 +52,7 @@ public class ResultScreen extends Pane{
 		nextBtn = drawButton("Next",								width/6 ,	height/9, 	width/16+width*4/7+70, 		height/4-30+height/7*2);
 		addCanvasEvents(nextBtn,"Next");
 		
-		this.getChildren().addAll(title,criticalPerfect,perfect,great,good,miss,nextBtn);
+		this.getChildren().addAll(ivBg,title,criticalPerfect,perfect,great,good,miss,nextBtn);
 		
 		
 		
@@ -57,14 +65,15 @@ public class ResultScreen extends Pane{
 		canvas.setTranslateY(posY);
 		
 		if(name=="Result") {
-			gc.setFill(Color.BLACK);
+			
+			gc.setFill(Color.WHITE);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(TITLE_FONT);
 			gc.fillText(name, width/2 ,height/2);
 		}
 		else if(name!="Next") {
-			
+			canvas.setOpacity(0.9);
 			gc.setFill(Color.ALICEBLUE);
 			gc.fillRoundRect(2.5, 2.5, width-5, height-5, 50, 50);
 			gc.setStroke(Color.TAN);
@@ -72,12 +81,34 @@ public class ResultScreen extends Pane{
 			gc.strokeRoundRect(2.5, 2.5, width-5, height-5, 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setFont(MENU_FONT);
-		
 			gc.setTextBaseline(VPos.CENTER);
-			gc.fillText(name, 50, height/2);
+			
+			if(name=="Critical Perfect") {
+				gc.fillText(name, 50, height/2);
+				gc.fillText(GameManager.getGameResult().get(0).toString(), 280, height/2);
+			}
+			else if(name=="Perfect") {
+				gc.fillText(name, 50, height/2);
+				gc.fillText(GameManager.getGameResult().get(0).toString(), 280, height/2);
+			}
+			else if(name=="Great") {
+				gc.fillText(name, 50, height/2);
+				gc.fillText(GameManager.getGameResult().get(0).toString(), 280, height/2);
+			}
+			else if(name=="Good") {
+				gc.fillText(name, 50, height/2);
+				gc.fillText(GameManager.getGameResult().get(0).toString(), 280, height/2);
+			}
+			else {
+				gc.fillText(name, 50, height/2);
+				gc.fillText(GameManager.getGameResult().get(0).toString(), 280, height/2);
+			}
+			
+			
+			
 		}
 		else {
-			gc.setFill(Color.LIGHTGREY.darker());
+			gc.setFill(Color.TAN);
 			gc.fillRoundRect(0, 0, width, height, 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -92,7 +123,7 @@ public class ResultScreen extends Pane{
 	public void drawHoverIndicator(Canvas canvas, String name) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		if(name=="Next") {
-			gc.setFill(Color.LIGHTGREY);
+			gc.setFill(Color.TAN.brighter());
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
@@ -100,7 +131,7 @@ public class ResultScreen extends Pane{
 			gc.setFont(BTN_FONT);
 			gc.fillText(name, canvas.getWidth()/2 ,canvas.getHeight()/2);
 		}
-		
+		 
 		
 		
 		
@@ -109,7 +140,7 @@ public class ResultScreen extends Pane{
 	public void undrawHoverIndicator(Canvas canvas, String name) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		 if(name=="Next") {
-			gc.setFill(Color.LIGHTGREY.darker());
+			gc.setFill(Color.TAN);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);

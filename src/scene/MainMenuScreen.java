@@ -13,12 +13,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import window.SceneManager;
 
 public class MainMenuScreen extends Pane {
-	private static final Font TITLE_FONT = new Font("Monospace", 55);
-	private static final Font MENU_FONT = new Font("Monospace", 20);
+	private static final Font TITLE_FONT = Font.loadFont("file:res/font/south park.ttf", 80);
+	private static final Font MENU_FONT = Font.loadFont("file:res/font/Inconsolata-Regular.ttf", 18);
+	private static final Font MENU_FONT_BOLD = Font.loadFont("file:res/font/Inconsolata-Bold.ttf", 20);
 	private Canvas cha1, cha2, cha3, cha4, farm, boss;
 	private Canvas boardCha,boardFarm, boardBoss;
 
@@ -112,12 +114,13 @@ public class MainMenuScreen extends Pane {
 			if(name=="Priest") 
 				{ gc.strokeLine(width, 0, width, height); }
 			
-			gc.setFont(MENU_FONT); 
+			gc.setFont(MENU_FONT_BOLD); 
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
-			gc.fillText(name, width/2, height/8); 
+			gc.fillText(name, width/2, height/8+5); 
 			gc.setTextAlign(TextAlignment.LEFT);
+			gc.setFont(MENU_FONT);
 			if(name=="Knight") {
 				gc.fillText("Level: "+GameManager.getKnight().getLevel()+'\n'+"Atk: "+GameManager.getKnight().getAtk()+'\n'
 						+"Exp: "+GameManager.getKnight().getCurrentExp()+'\n',width*6/10-5, height*2/3);
@@ -171,9 +174,10 @@ public class MainMenuScreen extends Pane {
 				// Wait for fix Boss gameplay
 				Pane chaselect = new CharacterSelectScreen();
 
-				//Pane gamePlayScreen = new GamePlayScreen();
+				//Pane gamePlayScreen = new GamePlayScreen(); 
 				if (buttonName == "FARM") {
 					GameManager.setCurrentMode("Farm");
+					
 					SceneManager.gotoSceneOf(chaselect);
 				}
 				else if (buttonName == "BOSS") {

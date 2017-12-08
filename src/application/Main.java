@@ -2,8 +2,7 @@ package application;
 
 import java.util.ArrayList;
 
-import gameInterface.IRenderable;
-import gameInterface.TimingLine;
+
 import gameLogic.GameManager;
 import gameLogic.MusicControl;
 import gameLogic.Note;
@@ -35,7 +34,7 @@ public class Main extends Application {
 			SceneManager.initialize(primaryStage);
 			primaryStage.setTitle("GAME");
 			primaryStage.centerOnScreen();
-			GameManager game = new GameManager();
+			
 			
 			
 		} catch (Exception e) {
