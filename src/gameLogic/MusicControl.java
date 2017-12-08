@@ -65,14 +65,14 @@ public class MusicControl extends AnimationTimer {
 			updater.start();
 		}
 
-		while (current_time >= notes.get(toRenderIdx).getStartTime()) {
+		while (toRenderIdx < notes.size() && current_time >= notes.get(toRenderIdx).getStartTime()) {
 			gamePlayScreen.getChildren().add(notes.get(toRenderIdx++).getCanvas());
 		}
 		if (current_time >= musicChart.currentNoteIdx * musicChart.getDelayPerHit() + 0.15) {
 			musicChart.currentNoteIdx++;
 		}
 		current_note = (idx < notes.size()) ? notes.get(idx) : null;
-		if (current_note.getStartTime() <= current_time && current_note.getType() == 1 && current_note != null) {
+		if (current_note != null && current_note.getStartTime() <= current_time && current_note.getType() == 1) {
 			render.add(current_note);
 			idx++;
 
@@ -132,6 +132,7 @@ public class MusicControl extends AnimationTimer {
 				judges = 3;
 
 			}
+			musicChart.currentNoteIdx++;
 			render.remove(current_note);
 			gamePlayScreen.getChildren().remove(current_note.getCanvas());
 			new JudgeStyle(judges, gamePlayScreen).show();

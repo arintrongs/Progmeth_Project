@@ -37,7 +37,7 @@ public class SceneManager {
 	public static void gotoSceneOf(Pane pane) {
 		// TODO Fill Code
 		fadeout = new Thread(() -> {
-			FadeTransition ft = new FadeTransition(Duration.millis(1000), currentPane);
+			FadeTransition ft = new FadeTransition(Duration.millis(250), currentPane);
 			ft.setFromValue(1.0);
 			ft.setToValue(0.0);
 			ft.play();
@@ -56,7 +56,7 @@ public class SceneManager {
 				e.printStackTrace();
 			}
 			currentPane = pane;
-			FadeTransition ft = new FadeTransition(Duration.millis(1000), currentPane);
+			FadeTransition ft = new FadeTransition(Duration.millis(250), currentPane);
 			ft.setFromValue(0.0);
 			ft.setToValue(1.0);
 			ft.play();

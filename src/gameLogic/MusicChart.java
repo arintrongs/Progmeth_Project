@@ -94,12 +94,15 @@ public class MusicChart {
 		for (int i = 0; i < notesPerBar; i++) {
 			chart.add(new Note(0, KeyCode.LEFT));
 		}
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 50; i++) {
 			chart.add(new Note(1, KeyCode.LEFT));
-			chart.add(new Note(1, KeyCode.LEFT));
-			chart.add(new Note(1, KeyCode.LEFT));
-			chart.add(new Note(0, KeyCode.LEFT));
-
+			chart.add(new Note(0, null));
+			chart.add(new Note(1, KeyCode.RIGHT));
+			chart.add(new Note(0, null));
+			chart.add(new Note(1, KeyCode.DOWN));
+			chart.add(new Note(0, null));
+			chart.add(new Note(1, KeyCode.UP));
+			chart.add(new Note(0, null));
 		}
 
 	}
