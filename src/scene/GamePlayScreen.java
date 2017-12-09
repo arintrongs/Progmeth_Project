@@ -26,6 +26,7 @@ public class GamePlayScreen extends Pane {
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
+	private static final Font COMBO_FONT = Font.loadFont("file:res/font/Education-Pencil.ttf", 30);
 	private static int width = SceneManager.SCENE_WIDTH;
 	private static int height = SceneManager.SCENE_HEIGHT;
 	private Canvas bg = new Canvas(width, height);
@@ -34,6 +35,7 @@ public class GamePlayScreen extends Pane {
 
 	private static Canvas monsInfo;
 	private Canvas heroInfo;
+	private Canvas combo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
 
@@ -63,14 +65,13 @@ public class GamePlayScreen extends Pane {
 		addCanvasEvents(noBtn, "No");
 		noBtn.setVisible(false);
 
-		gamePlay = drawButton("GamePlay", width, height / 3 - 20, 0, height * 2 / 3 + 20);
+		gamePlay = drawButton("gamePlay", width, height * 1 / 3, 0, height * 2 / 3);
 		gamePlay.setFocusTraversable(true);
-		addCanvasEvents(gamePlay, "GamePlay");
-
+		addCanvasEvents(gamePlay, "gamePlay");
 		setImage();
 		setIv();
 
-		this.getChildren().addAll(bg, ivPlayzone, ivTapZone, monsInfo, heroInfo, gamePlay, exitMenu, yesBtn, noBtn);
+		this.getChildren().addAll(bg, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo, exitMenu, yesBtn, noBtn);
 
 		musicControl = new MusicControl(this);
 
@@ -152,7 +153,7 @@ public class GamePlayScreen extends Pane {
 
 		}
 
-		else if (name == "GamePlay") {
+		else if (name == "gamePlay" || name == "Combo") {
 
 		}
 
@@ -220,15 +221,31 @@ public class GamePlayScreen extends Pane {
 				this.noBtn.setVisible(false);
 			} else if (name == "Yes") {
 				SceneManager.gotoSceneOf(mainMenu);
-
 			}
 		});
-
 	}
 
 	public void setMonsInfo() {
 		this.getChildren().remove(monsInfo);
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		this.getChildren().add(monsInfo);
+	}
+
+	public Canvas getCombo() {
+		return combo;
+	}
+
+	public void updateCombo() {
+		this.getChildren().remove(combo);
+		combo = drawButton("Combo", 200, 200, 0, height * 2 / 3);
+		GraphicsContext gc = combo.getGraphicsContext2D();
+		if (MusicControl.getCurrentCombo() >= 5) {
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.setFont(COMBO_FONT);
+			gc.fillText(MusicControl.getCurrentCombo() + " Combo!", 110, 20);
+			this.getChildren().add(combo);
+		}
 	}
 }
