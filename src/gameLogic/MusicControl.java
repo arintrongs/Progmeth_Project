@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import application.Main;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -31,9 +32,12 @@ public class MusicControl extends AnimationTimer {
 	private MediaPlayer mediaPlayer, knock;
 	private DamageUpdater damageUpdater;
 	private boolean isComboBreak = false;
+	private SkillUpdater skillUpdater;
 	Random random = new Random();
 
 	public MusicControl(Pane pane) {
+
+		Main.musicControl = this;
 
 		musicChart = new MusicChart("test2", 146.0, 4);
 		filestring = new File("res/song/test2.wav");
@@ -46,6 +50,8 @@ public class MusicControl extends AnimationTimer {
 		this.render = new ArrayList<>();
 		this.notes = new ArrayList<>();
 		this.damageUpdater = new DamageUpdater(judgeResult, gamePlayScreen);
+		this.skillUpdater = new SkillUpdater();
+		this.currentCombo = 0;
 
 		for (int i = 0; i < musicChart.getChart().size(); i++) {
 			current_note = musicChart.getChart().get(i);
@@ -64,8 +70,11 @@ public class MusicControl extends AnimationTimer {
 			offsetCheck = 1;
 			mediaPlayer.play();
 			damageUpdater.start();
+			skillUpdater.start();
 		}
-
+		if (current_time >= file.getDuration().toSeconds() + 2) {
+			end();
+		}
 		while (toRenderIdx < notes.size() && current_time >= notes.get(toRenderIdx).getStartTime()) {
 			gamePlayScreen.getChildren().add(notes.get(toRenderIdx++).getCanvas());
 		}
@@ -81,7 +90,6 @@ public class MusicControl extends AnimationTimer {
 		for (int i = 0; i < render.size(); i++) {
 			Note current_render = render.get(i);
 			double pos_x = 665 * (current_time - current_render.getStartTime()) / 2.0;
-			// System.out.println(pos_x + " " + i);
 			if (pos_x >= 0 && pos_x <= 750) {
 				current_render.getCanvas().setTranslateX(pos_x);
 			}
@@ -113,7 +121,6 @@ public class MusicControl extends AnimationTimer {
 		double judge_time = idx * musicChart.getDelayPerHit();
 		double lower_bound = judge_time - 0.025;
 		double upper_bound = judge_time + 0.025;
-		System.out.println(idx + " " + judge_time + " " + current_tapped_time);
 		if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
 				&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
 			if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
@@ -152,12 +159,22 @@ public class MusicControl extends AnimationTimer {
 		mediaPlayer.stop();
 		this.stop();
 		damageUpdater.interrupt();
-		SceneManager.gotoSceneOf(new ResultScreen());
-		System.out.println(mediaPlayer.getStatus());
+		skillUpdater.interrupt();
+		new Thread(() -> {
+			try {
+				damageUpdater.join();
+				skillUpdater.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			SceneManager.gotoSceneOf(new ResultScreen());
+		}).start();
+
 	}
 
 	public static void setJudgeResult() {
 		judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
+
 	}
 
 	public MusicChart getMusicChart() {
@@ -166,7 +183,6 @@ public class MusicControl extends AnimationTimer {
 
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
-
 	}
 
 	public static int getCurrentCombo() {

@@ -153,9 +153,7 @@ public class GameManager {
 	}
 
 	public static void update(List<Integer> list, GamePlayScreen gamePlayScreen) {
-
 		for (int i = 0; i < list.size(); i++) {
-
 			if (i == 0) {
 				monster.update(1.1 * currentCha.getAtk());
 			} else if (i == 1) {
@@ -165,12 +163,9 @@ public class GameManager {
 			} else if (i == 3) {
 				monster.update(0.6 * currentCha.getAtk());
 			}
-
 			gameResult.set(i, gameResult.get(i) + list.get(i));
-
 		}
 		gamePlayScreen.setMonsInfo();
-
 	}
 
 	public static List<Integer> getGameResult() {

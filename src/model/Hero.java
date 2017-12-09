@@ -5,20 +5,21 @@ import java.util.List;
 
 public abstract class Hero extends Entity implements Skillable {
 	protected String skillName;
-	protected int currentExp; 
+	protected int currentExp;
 	protected int currentMaxExp;
 	final protected List<Integer> maxExp = new ArrayList<>();
-	protected double atk = 10;
+	protected double atk = 10, originalAtk;
 	final protected double growthRateAtk = 1.2;
 	private int z = -999;
-	
-	
+	protected boolean isSkillActivated = false;
+
 	public Hero(String name, int level, String skillName) {
 		super(name, level);
 		this.skillName = skillName;
 		this.currentExp = 0;
 		setMaxExp();
-		this.currentMaxExp = this.maxExp.get(0); 
+		this.currentMaxExp = this.maxExp.get(0);
+		this.originalAtk = atk;
 	}
 
 	public void setMaxExp() {
@@ -43,7 +44,7 @@ public abstract class Hero extends Entity implements Skillable {
 		maxExp.add(300000);
 		maxExp.add(700000);
 	}
-	
+
 	public String getSkillName() {
 		return skillName;
 	}
@@ -79,37 +80,36 @@ public abstract class Hero extends Entity implements Skillable {
 	public void setAtk(double atk) {
 		this.atk = atk;
 	}
-	
+
 	public void levelUp() {
 		this.atk *= this.growthRateAtk;
 		this.currentMaxExp = this.maxExp.get(this.getLevel());
 		this.currentExp = 0;
+		this.originalAtk = this.atk;
 	}
-	
-	public abstract void skill();
-	
+
+	public abstract void activate();
+
+	public abstract void deactivate();
+
 	public void increaseExp(double exp) {
 		this.currentExp += exp;
 	}
-	
+
 	public boolean isLevelUp() {
-		if(this.currentExp>=this.currentMaxExp) {
+		if (this.currentExp >= this.currentMaxExp) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void update(double exp) {
 		this.increaseExp(exp);
-		if(this.isLevelUp()) {
+		if (this.isLevelUp()) {
 			this.levelUp();
 		}
 	}
-	
+
 	// set currentMaxExp and atk when level up
-	
-	
-	
-	
-	
+
 }

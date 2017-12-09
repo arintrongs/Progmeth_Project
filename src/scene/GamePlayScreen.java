@@ -68,6 +68,7 @@ public class GamePlayScreen extends Pane {
 		gamePlay = drawButton("gamePlay", width, height * 1 / 3, 0, height * 2 / 3);
 		gamePlay.setFocusTraversable(true);
 		addCanvasEvents(gamePlay, "gamePlay");
+
 		setImage();
 		setIv();
 
@@ -220,6 +221,7 @@ public class GamePlayScreen extends Pane {
 				this.yesBtn.setVisible(false);
 				this.noBtn.setVisible(false);
 			} else if (name == "Yes") {
+				musicControl.end();
 				SceneManager.gotoSceneOf(mainMenu);
 			}
 		});

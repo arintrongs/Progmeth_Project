@@ -18,13 +18,17 @@ public class DamageUpdater extends Thread {
 	public void run() {
 		try {
 			while (true) {
-				this.sleep(5000);
+				this.sleep(1000);
 				Platform.runLater(() -> {
 					GameManager.update(judgeResult, gamePlayScreen);
 				});
 				MusicControl.setJudgeResult();
 			}
 		} catch (InterruptedException e) {
+			Platform.runLater(() -> {
+				GameManager.update(judgeResult, gamePlayScreen);
+			});
+			MusicControl.setJudgeResult();
 			this.interrupt();
 		}
 

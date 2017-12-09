@@ -106,9 +106,7 @@ public class Monster extends Entity {
 	}
 
 	public void update(double atk) {
-		System.out.println(this.currentHp);
 		this.decreaseHp(atk);
-		System.out.println(this.currentHp);
 		if (this.isDead()) {
 			GameManager.getCurrentCha().update(this.currentExp);
 			if (this.isUpgrade()) {

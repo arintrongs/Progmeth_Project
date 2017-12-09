@@ -2,5 +2,7 @@ package model;
 
 public interface Skillable {
 
-	public void skill();
+	public void activate();
+
+	public void deactivate();
 }
