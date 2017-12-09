@@ -81,9 +81,13 @@ public abstract class Hero extends Entity implements Skillable {
 	}
 	
 	public void levelUp() {
+		this.level++;
 		this.atk *= this.growthRateAtk;
+		int oldExp = this.currentExp-this.currentMaxExp;
 		this.currentMaxExp = this.maxExp.get(this.getLevel());
 		this.currentExp = 0;
+		this.update(oldExp);
+		
 	}
 	
 	public abstract void skill();

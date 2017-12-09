@@ -122,19 +122,19 @@ public class MainMenuScreen extends Pane {
 			gc.setTextAlign(TextAlignment.LEFT);
 			gc.setFont(MENU_FONT);
 			if(name=="Knight") {
-				gc.fillText("Level: "+GameManager.getKnight().getLevel()+'\n'+"Atk: "+GameManager.getKnight().getAtk()+'\n'
+				gc.fillText("Level: "+GameManager.getKnight().getLevel()+'\n'+"Atk: "+String.format("%.1f",GameManager.getKnight().getAtk())+'\n'
 						+"Exp: "+GameManager.getKnight().getCurrentExp()+'\n',width*6/10-5, height*2/3);
 			}
 			else if(name=="SpellCaster") {
-				gc.fillText("Level: "+GameManager.getSpellCaster().getLevel()+'\n'+"Atk: "+GameManager.getSpellCaster().getAtk()+'\n'
+				gc.fillText("Level: "+GameManager.getSpellCaster().getLevel()+'\n'+"Atk: "+String.format("%.1f",GameManager.getSpellCaster().getAtk())+'\n'
 						+"Exp: "+GameManager.getSpellCaster().getCurrentExp()+'\n',width*6/10-5, height*2/3);
 			}
 			else if(name=="Clown") {
-				gc.fillText("Level: "+GameManager.getClown().getLevel()+'\n'+"Atk: "+GameManager.getClown().getAtk()+'\n'
+				gc.fillText("Level: "+GameManager.getClown().getLevel()+'\n'+"Atk: "+String.format("%.1f",GameManager.getClown().getAtk())+'\n'
 						+"Exp: "+GameManager.getClown().getCurrentExp()+'\n',width*6/10-5, height*2/3);
 			}
 			else   {
-				gc.fillText("Level: "+GameManager.getPriest().getLevel()+'\n'+"Atk: "+GameManager.getPriest().getAtk()+'\n'
+				gc.fillText("Level: "+GameManager.getPriest().getLevel()+'\n'+"Atk: "+String.format("%.1f",GameManager.getPriest().getAtk())+'\n'
 						+"Exp: "+GameManager.getPriest().getCurrentExp()+'\n',width*6/10-5, height*2/3);
 			}
 		}

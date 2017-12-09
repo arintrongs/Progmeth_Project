@@ -149,7 +149,8 @@ public class GamePlayScreen extends Pane {
 			// get method for name,level,hp of mon
 			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 20, height / 2 - 15);
 			gc.fillText("Level : " + GameManager.getCurrentCha().getLevel(), 200, height / 2 - 15);
-			gc.fillText("Exp : " + GameManager.getCurrentCha().getCurrentExp(), 20, height / 2 + 10);
+			gc.fillText("Atk : " + String.format("%.2f",GameManager.getCurrentCha().getAtk()), 20, height / 2 + 10);
+			gc.fillText("Exp : " + GameManager.getCurrentCha().getCurrentExp(), 200, height / 2 + 10);
 
 		}
 
@@ -229,6 +230,12 @@ public class GamePlayScreen extends Pane {
 		this.getChildren().remove(monsInfo);
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		this.getChildren().add(monsInfo);
+	}
+	
+	public void setHeroInfo() {
+		this.getChildren().remove(heroInfo);
+		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
+		this.getChildren().add(heroInfo);
 	}
 
 	public Canvas getCombo() {

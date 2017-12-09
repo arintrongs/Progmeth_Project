@@ -58,7 +58,7 @@ public class GameManager {
 
 	}
 
-	public void UpdateScoreBefore() {
+	public static void UpdateScoreBefore() {
 		scoreBefore.set(0, currentCha.getLevel() * 1.0);
 		scoreBefore.set(1, currentCha.getAtk());
 		scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
@@ -170,6 +170,7 @@ public class GameManager {
 
 		}
 		gamePlayScreen.setMonsInfo();
+		gamePlayScreen.setHeroInfo();
 
 	}
 
