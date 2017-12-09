@@ -58,7 +58,7 @@ public class GameManager {
 
 	}
 
-	public void UpdateScoreBefore() {
+	public static void UpdateScoreBefore() {
 		scoreBefore.set(0, currentCha.getLevel() * 1.0);
 		scoreBefore.set(1, currentCha.getAtk());
 		scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
@@ -165,7 +165,10 @@ public class GameManager {
 			}
 			gameResult.set(i, gameResult.get(i) + list.get(i));
 		}
+		System.out.println("game = " + gameResult);
 		gamePlayScreen.setMonsInfo();
+		gamePlayScreen.setHeroInfo();
+
 	}
 
 	public static List<Integer> getGameResult() {

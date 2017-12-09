@@ -7,24 +7,25 @@ import scene.GamePlayScreen;
 
 public class DamageUpdater extends Thread {
 
-	private ArrayList<Integer> judgeResult;
 	private GamePlayScreen gamePlayScreen;
+	private ArrayList<Integer> judgeResult;
 
-	public DamageUpdater(ArrayList<Integer> judgeResult, GamePlayScreen gamePlayScreen) {
+	public DamageUpdater(GamePlayScreen gamePlayScreen) {
 		this.gamePlayScreen = gamePlayScreen;
-		this.judgeResult = judgeResult;
 	}
 
 	public void run() {
 		try {
 			while (true) {
 				this.sleep(1000);
+				this.judgeResult = MusicControl.getJudgeResult();
 				Platform.runLater(() -> {
-					GameManager.update(judgeResult, gamePlayScreen);
+					GameManager.update(this.judgeResult, gamePlayScreen);
 				});
 				MusicControl.setJudgeResult();
 			}
 		} catch (InterruptedException e) {
+			this.judgeResult = MusicControl.getJudgeResult();
 			Platform.runLater(() -> {
 				GameManager.update(judgeResult, gamePlayScreen);
 			});

@@ -19,7 +19,6 @@ public class Monster extends Entity {
 	final private double growthRateExp = 1.2;
 	final private int numMonster = 4;
 	private Image monImg1, monImg2, monImg3;
-	private int level = 1;
 
 	public Monster(String name, int level) {
 		super(name, level);
@@ -53,7 +52,7 @@ public class Monster extends Entity {
 	}
 
 	public void setExp() {
-		this.Exp.add(15000);
+		this.Exp.add(150);
 		this.Exp.add(300);
 		this.Exp.add(500);
 	}
@@ -98,55 +97,65 @@ public class Monster extends Entity {
 	}
 
 	public boolean isUpgrade() {
-		if (this.level == 5 || this.level == 9 || this.level == 12 || this.level == 15 || this.level == 17
-				|| this.level == 19) {
+		if (GameManager.getCurrentCha().getLevel() == 5 || GameManager.getCurrentCha().getLevel() == 9
+				|| GameManager.getCurrentCha().getLevel() == 12 || GameManager.getCurrentCha().getLevel() == 15
+				|| GameManager.getCurrentCha().getLevel() == 17 || GameManager.getCurrentCha().getLevel() == 19) {
 			return true;
 		}
 		return false;
 	}
 
 	public void update(double atk) {
+
 		this.decreaseHp(atk);
+
 		if (this.isDead()) {
 			GameManager.getCurrentCha().update(this.currentExp);
 			if (this.isUpgrade()) {
 				this.upgradeMonster();
 			} else {
+				if (GameManager.getcurrentNumMon() == 3) {
+					this.levelUp();
+				}
 				this.newMonster();
 			}
+			this.level++;
+			System.out.println('\n' + "now level" + this.level + "Hp" + this.currentMaxHp + '\n');
 		}
 	}
 
 	public void newMonster() {
-		this.level = (this.level + 1) % this.numMonster;
-		System.out.println(level);
-		this.currentMaxHp = this.maxHp.get(this.level - 1);
+		if (GameManager.getcurrentNumMon() == 3)
+			GameManager.setcurrentNumMon(0);
+		GameManager.setcurrentNumMon((GameManager.getcurrentNumMon() + 1) % 4);
+		this.currentMaxHp = this.maxHp.get(GameManager.getcurrentNumMon() - 1);
 		this.currentHp = this.currentMaxHp;
-		this.currentExp = this.Exp.get(this.level - 1);
+		this.currentExp = this.Exp.get(GameManager.getcurrentNumMon() - 1);
+
 	}
 
 	public void upgradeMonster() {
-		this.level = 1;
+
 		int index = 0;
-		if (this.level == 5) {
+		if (GameManager.getCurrentCha().getLevel() == 5) {
 			index = 0;
-		} else if (this.level == 9) {
+		} else if (GameManager.getCurrentCha().getLevel() == 9) {
 			index = 1;
-		} else if (this.level == 12) {
+		} else if (GameManager.getCurrentCha().getLevel() == 12) {
 			index = 2;
-		} else if (this.level == 15) {
+		} else if (GameManager.getCurrentCha().getLevel() == 15) {
 			index = 3;
-		} else if (this.level == 17) {
+		} else if (GameManager.getCurrentCha().getLevel() == 17) {
 			index = 4;
-		} else if (this.level == 19) {
+		} else if (GameManager.getCurrentCha().getLevel() == 19) {
 			index = 5;
 		}
 
 		for (int i = 0; i < this.maxHp.size(); i++) {
-			this.maxHp.add(i, this.maxHp.get(i) * this.multipleHp.get(index));
+			this.maxHp.set(i, this.maxHp.get(i) * this.multipleHp.get(index));
 		}
 		for (int i = 0; i < this.Exp.size(); i++) {
-			this.Exp.add(i, this.Exp.get(i) * this.multipleExp);
+			this.Exp.set(i, this.Exp.get(i) * this.multipleExp);
 		}
 		this.currentMaxHp = this.maxHp.get(0);
 		this.currentHp = this.currentMaxHp;
@@ -155,10 +164,14 @@ public class Monster extends Entity {
 	}
 
 	public void levelUp() {
-		this.level = 1;
-		this.currentMaxHp *= this.growthRateHp;
-		this.currentHp = this.currentMaxHp;
-		this.currentExp *= this.growthRateExp;
+
+		for (int i = 0; i < this.maxHp.size(); i++) {
+			this.maxHp.set(i, this.maxHp.get(i) * this.growthRateHp);
+		}
+		for (int i = 0; i < this.Exp.size(); i++) {
+			this.Exp.set(i, (int) (this.Exp.get(i) * this.growthRateExp));
+		}
+
 	}
 
 	public void decreaseHp(double atk) {

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Hero extends Entity implements Skillable {
 	protected String skillName;
@@ -11,7 +12,8 @@ public abstract class Hero extends Entity implements Skillable {
 	protected double atk = 10, originalAtk;
 	final protected double growthRateAtk = 1.2;
 	private int z = -999;
-	protected boolean isSkillActivated = false;
+	protected boolean isSkillActivated;
+	protected Random random = new Random();
 
 	public Hero(String name, int level, String skillName) {
 		super(name, level);
@@ -20,6 +22,7 @@ public abstract class Hero extends Entity implements Skillable {
 		setMaxExp();
 		this.currentMaxExp = this.maxExp.get(0);
 		this.originalAtk = atk;
+		this.isSkillActivated = false;
 	}
 
 	public void setMaxExp() {
@@ -82,10 +85,16 @@ public abstract class Hero extends Entity implements Skillable {
 	}
 
 	public void levelUp() {
+		this.level++;
 		this.atk *= this.growthRateAtk;
+		int oldExp = this.currentExp - this.currentMaxExp;
 		this.currentMaxExp = this.maxExp.get(this.getLevel());
 		this.currentExp = 0;
+
 		this.originalAtk = this.atk;
+
+		this.update(oldExp);
+
 	}
 
 	public abstract void activate();

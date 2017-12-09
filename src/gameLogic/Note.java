@@ -71,4 +71,20 @@ public class Note {
 		return type;
 	}
 
+	public void setDirection(KeyCode e) {
+		direction = e;
+		if (direction == KeyCode.UP)
+			this.image = new Image("up-arrow.png");
+		if (direction == KeyCode.DOWN)
+			this.image = new Image("down-arrow.png");
+		if (direction == KeyCode.RIGHT)
+			this.image = new Image("right-arrow.png");
+		if (direction == KeyCode.LEFT)
+			this.image = new Image("left-arrow.png");
+		this.canvas = new Canvas(70, 70);
+		this.canvas.getGraphicsContext2D().drawImage(this.image, 0, 0, 70, 70);
+		this.canvas.setTranslateY(472);
+		this.canvas.setTranslateX(-100);
+	}
+
 }

@@ -1,12 +1,10 @@
 package model;
 
-import java.util.Random;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Knight extends Hero {
-	Random random = new Random();
+
 	private Image heroImg;
 
 	public Knight(String name, int level, String skillName) {
@@ -20,8 +18,8 @@ public class Knight extends Hero {
 	}
 
 	public void activate() {
-		int rnd = random.nextInt(2);
-		if (rnd == 1) {
+		int rnd = this.random.nextInt(2);
+		if (rnd == 1 && isSkillActivated == false) {
 			this.isSkillActivated = true;
 			this.atk *= this.growthRateAtk;
 			System.out.println("Skill Activated!!" + this.atk);

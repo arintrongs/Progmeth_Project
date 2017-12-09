@@ -1,6 +1,7 @@
 package gameLogic;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.scene.input.KeyCode;
 
@@ -90,19 +91,21 @@ public class MusicChart {
 	}
 
 	public void addChart() {
-		System.out.println(notesPerBar);
+		ArrayList<KeyCode> direction = new ArrayList<>();
+		direction.add(KeyCode.UP);
+		direction.add(KeyCode.DOWN);
+		direction.add(KeyCode.LEFT);
+		direction.add(KeyCode.RIGHT);
+
+		Random random = new Random();
+
 		for (int i = 0; i < notesPerBar; i++) {
 			chart.add(new Note(0, KeyCode.LEFT));
 		}
-		for (int i = 0; i < 50; i++) {
-			chart.add(new Note(1, KeyCode.LEFT));
-			chart.add(new Note(0, null));
-			chart.add(new Note(1, KeyCode.RIGHT));
-			chart.add(new Note(0, null));
-			chart.add(new Note(1, KeyCode.DOWN));
-			chart.add(new Note(0, null));
-			chart.add(new Note(1, KeyCode.UP));
-			chart.add(new Note(0, null));
+		for (int i = 0; i < 800; i++) {
+			int d = random.nextInt(4);
+			int c = random.nextInt(2);
+			chart.add(new Note(c, direction.get(d)));
 		}
 
 	}

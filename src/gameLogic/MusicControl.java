@@ -22,14 +22,18 @@ public class MusicControl extends AnimationTimer {
 	private MusicChart musicChart;
 	private File filestring;
 	private Media file;
+	private MediaPlayer mediaPlayer;
+	private static MediaPlayer tapPlayer;
 	private GamePlayScreen gamePlayScreen;
-	private ArrayList<Note> render, notes;
+	private ArrayList<Note> render;
+	private static ArrayList<Note> notes;
 	private static ArrayList<Integer> judgeResult;
 	private Note current_note;
-	private int idx, toRenderIdx = 0, offsetCheck = 0, judges = 0, isSleep = 0, combo = 0;
-	private static int currentCombo = 0;
+	private int idx, offsetCheck = 0, judges = 0, isSleep = 0, combo = 0;
+	private static int currentCombo = 0, toRenderIdx = 0;
 	public static final double NANO = 1000000000.0;
-	private MediaPlayer mediaPlayer, knock;
+	private static boolean guaranteePerfect = false;
+
 	private DamageUpdater damageUpdater;
 	private boolean isComboBreak = false;
 	private SkillUpdater skillUpdater;
@@ -39,17 +43,16 @@ public class MusicControl extends AnimationTimer {
 
 		Main.musicControl = this;
 
-		musicChart = new MusicChart("test2", 146.0, 4);
+		musicChart = new MusicChart("test2", 146.0, 8);
 		filestring = new File("res/song/test2.wav");
 		file = new Media(filestring.toURI().toString());
 		mediaPlayer = new MediaPlayer(file);
-		knock = new MediaPlayer(new Media((new File("res/song/Knock.wav")).toURI().toString()));
 
 		this.gamePlayScreen = (GamePlayScreen) pane;
 		this.judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
 		this.render = new ArrayList<>();
 		this.notes = new ArrayList<>();
-		this.damageUpdater = new DamageUpdater(judgeResult, gamePlayScreen);
+		this.damageUpdater = new DamageUpdater(gamePlayScreen);
 		this.skillUpdater = new SkillUpdater();
 		this.currentCombo = 0;
 
@@ -119,8 +122,8 @@ public class MusicControl extends AnimationTimer {
 		double current_tapped_time = (System.nanoTime() - startTime) / NANO;
 		Note current_note = musicChart.getChart().get(idx);
 		double judge_time = idx * musicChart.getDelayPerHit();
-		double lower_bound = judge_time - 0.025;
-		double upper_bound = judge_time + 0.025;
+		double lower_bound = judge_time - 0.015;
+		double upper_bound = judge_time + 0.015;
 		if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
 				&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
 			if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
@@ -128,21 +131,32 @@ public class MusicControl extends AnimationTimer {
 				judgeResult.set(0, judgeResult.get(0) + 1);
 				judges = 0;
 
-			} else if (current_tapped_time >= lower_bound - 0.075 && current_tapped_time <= upper_bound + 0.075) {
+			} else if (current_tapped_time >= lower_bound - 0.03 && current_tapped_time <= upper_bound + 0.03) {
 				System.out.println("PerFect~~~");
 				judgeResult.set(1, judgeResult.get(1) + 1);
 				judges = 1;
 
-			} else if (current_tapped_time >= lower_bound - 0.125 && current_tapped_time <= upper_bound + 0.125) {
-				System.out.println("Great~~~");
-				judgeResult.set(2, judgeResult.get(2) + 1);
-				judges = 2;
+			} else if (current_tapped_time >= lower_bound - 0.10 && current_tapped_time <= upper_bound + 0.10) {
+				if (guaranteePerfect == true) {
+					System.out.println("PerFect~~~");
+					judgeResult.set(1, judgeResult.get(1) + 1);
+					judges = 1;
+				} else {
+					System.out.println("Great~~~");
+					judgeResult.set(2, judgeResult.get(2) + 1);
+					judges = 2;
+				}
 
-			} else if (current_tapped_time >= lower_bound - 0.2 && current_tapped_time <= upper_bound + 0.2) {
-				System.out.println("Good~~~");
-				judgeResult.set(3, judgeResult.get(3) + 1);
-				judges = 3;
-
+			} else if (current_tapped_time >= lower_bound - 0.15 && current_tapped_time <= upper_bound + 0.15) {
+				if (guaranteePerfect == true) {
+					System.out.println("PerFect~~~");
+					judgeResult.set(1, judgeResult.get(1) + 1);
+					judges = 1;
+				} else {
+					System.out.println("Good~~~");
+					judgeResult.set(3, judgeResult.get(3) + 1);
+					judges = 3;
+				}
 			}
 			currentCombo++;
 			musicChart.currentNoteIdx++;
@@ -177,6 +191,10 @@ public class MusicControl extends AnimationTimer {
 
 	}
 
+	public static ArrayList<Integer> getJudgeResult() {
+		return judgeResult;
+	}
+
 	public MusicChart getMusicChart() {
 		return musicChart;
 	}
@@ -189,4 +207,15 @@ public class MusicControl extends AnimationTimer {
 		return currentCombo;
 	}
 
+	public static ArrayList<Note> getNotes() {
+		return notes;
+	}
+
+	public static int gettoRenderIdx() {
+		return toRenderIdx;
+	}
+
+	public static void setIsGuarantee(boolean x) {
+		guaranteePerfect = x;
+	}
 }
