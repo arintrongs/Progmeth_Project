@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import scene.WelcomeScreen;
 
 public class SceneManager {
+
 	private static Stage primaryStage;
 	private static Canvas welcomeCanvas = new WelcomeScreen();
 	private static Pane currentPane = new Pane(welcomeCanvas);
@@ -24,18 +25,14 @@ public class SceneManager {
 		primaryStage = stage;
 		primaryStage.show();
 		gotoWelcomeScreen();
-		// Pane test = new GamePlayScreen();
-		// gotoSceneOf(test);
 	}
 
 	public static void gotoWelcomeScreen() {
-		// TODO Fill Code
 		primaryStage.setScene(welcomeSceen);
 		welcomeCanvas.requestFocus();
 	}
 
 	public static void gotoSceneOf(Pane pane) {
-		// TODO Fill Code
 		fadeout = new Thread(() -> {
 			FadeTransition ft = new FadeTransition(Duration.millis(250), currentPane);
 			ft.setFromValue(1.0);
@@ -63,9 +60,7 @@ public class SceneManager {
 			Platform.runLater(() -> {
 				Scene sceneToGo = new Scene(pane, SCENE_WIDTH, SCENE_HEIGHT);
 				primaryStage.setScene(sceneToGo);
-
 			});
-
 		});
 		fadeout.start();
 		fadein.start();

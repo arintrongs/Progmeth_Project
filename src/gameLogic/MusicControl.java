@@ -3,9 +3,9 @@ package gameLogic;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Platform;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -17,20 +17,21 @@ import window.SceneManager;
 
 public class MusicControl extends AnimationTimer {
 
-	private static double offset;
-	private double speed, temps;
-	private double startTime;
+	private double speed, temps, startTime;
 	private MusicChart musicChart;
 	private File filestring;
 	private Media file;
 	private GamePlayScreen gamePlayScreen;
 	private ArrayList<Note> render, notes;
-	private ArrayList<Integer> judgeResult;
+	private static ArrayList<Integer> judgeResult;
 	private Note current_note;
 	private int idx, toRenderIdx = 0, offsetCheck = 0, judges = 0, isSleep = 0, combo = 0;
+	private static int currentCombo = 0;
 	public static final double NANO = 1000000000.0;
 	private MediaPlayer mediaPlayer, knock;
-	private Thread updater;
+	private DamageUpdater damageUpdater;
+	private boolean isComboBreak = false;
+	Random random = new Random();
 
 	public MusicControl(Pane pane) {
 
@@ -44,6 +45,7 @@ public class MusicControl extends AnimationTimer {
 		this.judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
 		this.render = new ArrayList<>();
 		this.notes = new ArrayList<>();
+		this.damageUpdater = new DamageUpdater(judgeResult, gamePlayScreen);
 
 		for (int i = 0; i < musicChart.getChart().size(); i++) {
 			current_note = musicChart.getChart().get(i);
@@ -53,7 +55,6 @@ public class MusicControl extends AnimationTimer {
 			}
 		}
 
-		setUpdater();
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class MusicControl extends AnimationTimer {
 		if (current_time >= musicChart.getNotesPerBar() * musicChart.getDelayPerHit() && offsetCheck == 0) {
 			offsetCheck = 1;
 			mediaPlayer.play();
-			updater.start();
+			damageUpdater.start();
 		}
 
 		while (toRenderIdx < notes.size() && current_time >= notes.get(toRenderIdx).getStartTime()) {
@@ -87,8 +88,12 @@ public class MusicControl extends AnimationTimer {
 			if (pos_x >= 750) {
 				new JudgeStyle(4, gamePlayScreen).show();
 				judgeResult.set(4, judgeResult.get(4) + 1);
+				isComboBreak = true;
+				currentCombo = 0;
 				gamePlayScreen.getChildren().remove(current_render.getCanvas());
 				render.remove(current_render);
+				gamePlayScreen.getChildren().remove(gamePlayScreen.getCombo());
+				gamePlayScreen.updateCombo();
 
 			}
 		}
@@ -132,10 +137,12 @@ public class MusicControl extends AnimationTimer {
 				judges = 3;
 
 			}
+			currentCombo++;
 			musicChart.currentNoteIdx++;
 			render.remove(current_note);
 			gamePlayScreen.getChildren().remove(current_note.getCanvas());
 			new JudgeStyle(judges, gamePlayScreen).show();
+			gamePlayScreen.updateCombo();
 			System.out.println(judgeResult);
 		}
 
@@ -144,56 +151,26 @@ public class MusicControl extends AnimationTimer {
 	public void end() {
 		mediaPlayer.stop();
 		this.stop();
-		updater.interrupt();
+		damageUpdater.interrupt();
 		SceneManager.gotoSceneOf(new ResultScreen());
 		System.out.println(mediaPlayer.getStatus());
 	}
 
-	public void setUpdater() {
-		updater = new Thread(() -> {
-			try {
-				while (true) {
-					Thread.sleep(5000);
-					Platform.runLater(() -> {
-						GameManager.update(judgeResult, gamePlayScreen);
-					});
-
-					judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
-				}
-			} catch (InterruptedException e) {
-				updater.interrupt();
-			}
-
-		});
-	}
-
-	public double getOffset() {
-		return offset;
-	}
-
-	public static void setOffset(double offsett) {
-		offset = offsett;
-	}
-
-	public double getSpeed() {
-		return speed;
+	public static void setJudgeResult() {
+		judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
 	}
 
 	public MusicChart getMusicChart() {
 		return musicChart;
 	}
 
-	public File getFilestring() {
-		return filestring;
-	}
-
-	public Media getFile() {
-		return file;
-	}
-
 	public MediaPlayer getMediaPlayer() {
 		return mediaPlayer;
 
+	}
+
+	public static int getCurrentCombo() {
+		return currentCombo;
 	}
 
 }
