@@ -52,10 +52,10 @@ public class Boss extends Monster {
 	
 	@Override
 	public void draw(GraphicsContext gc, double x, double y) {
-		if(GameManager.getCurrentMon()==1) {
+		if(GameManager.getcurrentNumMon()==1) {
 			gc.drawImage(bossImg1, x, y, bossImg1.getWidth()/3, bossImg1.getHeight()/3);
 		}
-		else if(GameManager.getCurrentMon()==2) {
+		else if(GameManager.getcurrentNumMon()==2) {
 			gc.drawImage(bossImg2, x, y, bossImg2.getWidth()/3, bossImg2.getHeight()/3);
 		}
 		else  {
