@@ -3,11 +3,14 @@ package application;
 import gameLogic.MusicControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sharedObject.ThreadHolder;
 import window.SceneManager;
 
 public class Main extends Application {
 
-	public static MusicControl musicControl;
+	private static MusicControl musicControl;
+
+	public static ThreadHolder threadHolder = new ThreadHolder();
 
 	public void start(Stage primaryStage) {
 		try {
@@ -28,6 +31,8 @@ public class Main extends Application {
 	@Override
 	public void stop() throws Exception {
 		musicControl.end();
-
+		for (int i = 0; i < ThreadHolder.threads.size(); i++) {
+			threadHolder.threads.get(i).interrupt();
+		}
 	}
 }

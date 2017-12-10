@@ -6,6 +6,8 @@ import java.util.List;
 import gameLogic.GameManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import scene.GamePlayScreen;
+import window.SceneManager;
 
 public class Monster extends Entity {
 	protected double currentMaxHp;
@@ -29,15 +31,15 @@ public class Monster extends Entity {
 		this.currentHp = (double) this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
 
-		monImg1 = new Image("9.png");
-		monImg2 = new Image("9.png");
-		monImg3 = new Image("9.png");
+		monImg1 = new Image("monster1.png");
+		monImg2 = new Image("monster2.png");
+		monImg3 = new Image("monster3.png");
 		this.isVisible = true;
 	}
 
 	public void setmaxHp() {
-		this.maxHp.add(1000.0);
-		this.maxHp.add(2000.0);
+		this.maxHp.add(10.0);
+		this.maxHp.add(20.0);
 		this.maxHp.add(3000.0);
 	}
 
@@ -105,12 +107,13 @@ public class Monster extends Entity {
 		return false;
 	}
 
-	public void update(double atk) {
+	public void update(double atk, GamePlayScreen gamePlayScreen) {
 
 		this.decreaseHp(atk);
 
 		if (this.isDead()) {
 			GameManager.getCurrentCha().update(this.currentExp);
+			
 			if (this.isUpgrade()) {
 				this.upgradeMonster();
 			} else {
@@ -118,16 +121,21 @@ public class Monster extends Entity {
 					this.levelUp();
 				}
 				this.newMonster();
+				
 			}
+			
 			this.level++;
-			System.out.println('\n' + "now level" + this.level + "Hp" + this.currentMaxHp + '\n');
+			this.draw(gamePlayScreen.getGc(), SceneManager.SCENE_WIDTH / 3 * 2 - 20, SceneManager.SCENE_HEIGHT / 3);
+			
+			
 		}
 	}
 
 	public void newMonster() {
 		if (GameManager.getcurrentNumMon() == 3)
-			GameManager.setcurrentNumMon(0);
+			GameManager.setcurrentNumMon(1);
 		GameManager.setcurrentNumMon((GameManager.getcurrentNumMon() + 1) % 4);
+		
 		this.currentMaxHp = this.maxHp.get(GameManager.getcurrentNumMon() - 1);
 		this.currentHp = this.currentMaxHp;
 		this.currentExp = this.Exp.get(GameManager.getcurrentNumMon() - 1);
@@ -160,6 +168,7 @@ public class Monster extends Entity {
 		this.currentMaxHp = this.maxHp.get(0);
 		this.currentHp = this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
+		GameManager.setcurrentNumMon(1);
 
 	}
 
@@ -181,9 +190,12 @@ public class Monster extends Entity {
 	public void draw(GraphicsContext gc, double x, double y) {
 		if (GameManager.getcurrentNumMon() == 1) {
 			gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
+			
 		} else if (GameManager.getcurrentNumMon() == 2) {
-			gc.drawImage(monImg2, x, y, monImg2.getWidth() / 3, monImg2.getHeight() / 3);
+			gc.drawImage(monImg2, x, y, monImg2.getWidth()/3  , monImg2.getHeight()/3  );
+		
 		} else {
+			
 			gc.drawImage(monImg3, x, y, monImg3.getWidth() / 3, monImg3.getHeight() / 3);
 		}
 

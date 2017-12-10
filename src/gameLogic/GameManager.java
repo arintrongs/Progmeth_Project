@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.scene.image.Image;
 import model.Clown;
 import model.Field;
 import model.Hero;
@@ -33,6 +34,7 @@ public class GameManager {
 	private static String currentMode;
 	private static List<Integer> gameResult;
 	private static List<Double> scoreBefore;
+	private static ArrayList<Image> notesImage;
 
 	public static void newGame() {
 		knight = new Knight("Knight", 1, "skill1");
@@ -55,6 +57,12 @@ public class GameManager {
 		SceneManager.gotoSceneOf(new MainMenuScreen());
 		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
 		scoreBefore = new ArrayList<>(Collections.nCopies(5, 0.0));
+
+		notesImage = new ArrayList<>();
+		notesImage.add(new Image("up-arrow.png"));
+		notesImage.add(new Image("down-arrow.png"));
+		notesImage.add(new Image("left-arrow.png"));
+		notesImage.add(new Image("right-arrow.png"));
 
 	}
 
@@ -153,21 +161,23 @@ public class GameManager {
 	}
 
 	public static void update(List<Integer> list, GamePlayScreen gamePlayScreen) {
+	
 		for (int i = 0; i < list.size(); i++) {
 			if (i == 0) {
-				monster.update(1.1 * currentCha.getAtk());
+				monster.update(1.1 * currentCha.getAtk()*list.get(i),gamePlayScreen);
 			} else if (i == 1) {
-				monster.update(1 * currentCha.getAtk());
+				monster.update(1 * currentCha.getAtk()*list.get(i),gamePlayScreen);
 			} else if (i == 2) {
-				monster.update(0.8 * currentCha.getAtk());
+				monster.update(0.8 * currentCha.getAtk()*list.get(i),gamePlayScreen);
 			} else if (i == 3) {
-				monster.update(0.6 * currentCha.getAtk());
+				monster.update(0.6 * currentCha.getAtk()*list.get(i),gamePlayScreen);
 			}
 			gameResult.set(i, gameResult.get(i) + list.get(i));
 		}
 		System.out.println("game = " + gameResult);
 		gamePlayScreen.setMonsInfo();
 		gamePlayScreen.setHeroInfo();
+		
 
 	}
 
@@ -179,4 +189,7 @@ public class GameManager {
 		GameManager.gameResult = gameResult;
 	}
 
+	public static ArrayList<Image> getnotesImages() {
+		return notesImage;
+	}
 }

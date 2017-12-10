@@ -202,9 +202,10 @@ public class CharacterSelectScreen extends Pane {
 
 				}
 
-			} else if (name == "Back") {
-				Pane mainMenu = new MainMenuScreen();
-				SceneManager.gotoSceneOf(mainMenu);
+				 else if (name.compareTo("Back")==0) {
+					Pane mainMenu = new MainMenuScreen();
+					SceneManager.gotoSceneOf(mainMenu);
+				}
 			}
 		});
 

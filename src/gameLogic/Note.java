@@ -1,11 +1,8 @@
 package gameLogic;
 
-import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 
 public class Note {
 	private Integer type;
@@ -16,22 +13,17 @@ public class Note {
 
 	public Note(Integer type, KeyCode direction) {
 		// TODO Auto-generated constructor stub
-		if (direction == KeyCode.UP) 
-			
-			this.image = new Image("up-arrow.png");
-			
-		if (direction == KeyCode.DOWN) 
-			
-			this.image = new Image("down-arrow.png");
-			
-		if (direction == KeyCode.RIGHT) 
-			
-			this.image = new Image("right-arrow.png");
-			
-		if (direction == KeyCode.LEFT) 
-		
-			this.image = new Image("left-arrow.png");
-			
+
+		if (direction == KeyCode.UP)
+			this.image = GameManager.getnotesImages().get(0);
+		if (direction == KeyCode.DOWN)
+			this.image = GameManager.getnotesImages().get(1);
+		if (direction == KeyCode.LEFT)
+			this.image = GameManager.getnotesImages().get(2);
+		if (direction == KeyCode.RIGHT)
+			this.image = GameManager.getnotesImages().get(3);
+
+
 		this.type = type;
 		this.direction = direction;
 		this.canvas = new Canvas(70, 70);
@@ -57,16 +49,6 @@ public class Note {
 		return this.canvas;
 	}
 
-	public void draw(GraphicsContext gc, double x, double y) {
-
-		gc.setTextBaseline(VPos.CENTER);
-		gc.setLineWidth(2);
-		gc.setFill(Color.BLACK);
-		gc.strokeRoundRect(x, 200, 50, 50, 50, 50);
-		gc.fillText(direction.toString(), x + 10, 225);
-
-	}
-
 	public boolean isVisible() {
 		return false;
 	}
@@ -82,13 +64,13 @@ public class Note {
 	public void setDirection(KeyCode e) {
 		direction = e;
 		if (direction == KeyCode.UP)
-			this.image = new Image("up-arrow.png");
+			this.image = GameManager.getnotesImages().get(0);
 		if (direction == KeyCode.DOWN)
-			this.image = new Image("down-arrow.png");
-		if (direction == KeyCode.RIGHT)
-			this.image = new Image("right-arrow.png");
+			this.image = GameManager.getnotesImages().get(1);
 		if (direction == KeyCode.LEFT)
-			this.image = new Image("left-arrow.png");
+			this.image = GameManager.getnotesImages().get(2);
+		if (direction == KeyCode.RIGHT)
+			this.image = GameManager.getnotesImages().get(3);
 		this.canvas = new Canvas(70, 70);
 		this.canvas.getGraphicsContext2D().drawImage(this.image, 0, 0, 70, 70);
 		this.canvas.setTranslateY(472);

@@ -23,6 +23,7 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class GamePlayScreen extends Pane {
+	
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
@@ -45,10 +46,12 @@ public class GamePlayScreen extends Pane {
 	private ImageView ivTapZone = new ImageView();
 
 	private MusicControl musicControl;
+	private GraphicsContext gc;
 
 	public GamePlayScreen() {
 		// TODO Auto-generated constructor stub
 		super();
+	
 		paint();
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
@@ -78,13 +81,21 @@ public class GamePlayScreen extends Pane {
 
 	}
 
+	
+
+	public GraphicsContext getGc() {
+		return gc;
+	}
+
+
+
 	public void paint() {
 
 		bg = new Canvas(width, height);
 		GraphicsContext gc = bg.getGraphicsContext2D();
 
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
-
+			
 			if (e.isVisible()) {
 				if (e instanceof Field) {
 					((Field) e).setBg();
