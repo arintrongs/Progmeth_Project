@@ -28,8 +28,6 @@ public class CharacterSelectScreen extends Pane {
 	private int height = SceneManager.SCENE_HEIGHT;
 	private Canvas boardCha1, boardCha2, boardCha3, boardCha4;
 	private Image bg = new Image("bg24.jpg");
-	// private WritableImage cropBg = new WritableImage(bg.getPixelReader(), 0, 0,
-	// (int) bg.getHeight() / 3 * 4, (int) bg.getHeight());
 	private ImageView ivBg = new ImageView(bg);
 
 	public CharacterSelectScreen() {
@@ -185,10 +183,11 @@ public class CharacterSelectScreen extends Pane {
 					undrawHoverIndicator(boardCha3, name);
 				if (name != "Priest")
 					undrawHoverIndicator(boardCha4, name);
-				// drawHoverIndicator(canvas, name);
 			} else if (GameManager.getCurrentCha() != NULL) {
-				Pane gamePlay = new GamePlayScreen();
+
 				if (name == "Start") {
+					Pane gamePlay = new GamePlayScreen();
+
 					SceneManager.gotoSceneOf(gamePlay);
 					gamePlay.setFocusTraversable(true);
 					new Thread(() -> {
@@ -232,8 +231,6 @@ public class CharacterSelectScreen extends Pane {
 				undrawHoverIndicator(boardCha4, name);
 			else if (name == "Start" || name == "Back")
 				undrawHoverIndicator(canvas, name);
-			// if(this.name!=name) undrawHoverIndicator(canvas,name);
-
 		});
 
 	}

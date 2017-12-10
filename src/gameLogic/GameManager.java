@@ -71,6 +71,8 @@ public class GameManager {
 		scoreBefore.set(1, currentCha.getAtk());
 		scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
 		scoreBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
+		currentCha = null;
+		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
 	}
 
 	public static List<Double> getScoreBefore() {
@@ -163,13 +165,13 @@ public class GameManager {
 	public static void update(List<Integer> list, GamePlayScreen gamePlayScreen) {
 		for (int i = 0; i < list.size(); i++) {
 			if (i == 0) {
-				monster.update(1.1 * currentCha.getAtk());
+				monster.update(1.1 * currentCha.getAtk() * list.get(i));
 			} else if (i == 1) {
-				monster.update(1 * currentCha.getAtk());
+				monster.update(1 * currentCha.getAtk() * list.get(i));
 			} else if (i == 2) {
-				monster.update(0.8 * currentCha.getAtk());
+				monster.update(0.8 * currentCha.getAtk() * list.get(i));
 			} else if (i == 3) {
-				monster.update(0.6 * currentCha.getAtk());
+				monster.update(0.6 * currentCha.getAtk() * list.get(i));
 			}
 			gameResult.set(i, gameResult.get(i) + list.get(i));
 		}

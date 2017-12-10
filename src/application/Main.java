@@ -30,7 +30,9 @@ public class Main extends Application {
 
 	@Override
 	public void stop() throws Exception {
+
 		musicControl.end();
+		SceneManager.getBGM().stop();
 		for (int i = 0; i < ThreadHolder.threads.size(); i++) {
 			threadHolder.threads.get(i).interrupt();
 		}

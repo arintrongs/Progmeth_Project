@@ -1,6 +1,7 @@
 package gameLogic;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -23,7 +24,6 @@ public class MusicControl extends AnimationTimer {
 	private File filestring;
 	private Media file;
 	private MediaPlayer mediaPlayer;
-	private static MediaPlayer tapPlayer;
 	private GamePlayScreen gamePlayScreen;
 	private ArrayList<Note> render;
 	private static ArrayList<Note> notes;
@@ -37,13 +37,18 @@ public class MusicControl extends AnimationTimer {
 	private DamageUpdater damageUpdater;
 	private boolean isComboBreak = false;
 	private SkillUpdater skillUpdater;
-	Random random = new Random();
+	private Random random = new Random();
+	public int check = 0;
 
 	public MusicControl(Pane pane) {
 
 		musicChart = new MusicChart("test2", 146.0, 8);
-		filestring = new File("res/song/test2.wav");
-		file = new Media(filestring.toURI().toString());
+		musicChart = new MusicChart("test", 175.0, 4);
+		try {
+			file = new Media(ClassLoader.getSystemResource("test.wav").toURI().toString());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 		mediaPlayer = new MediaPlayer(file);
 
 		this.gamePlayScreen = (GamePlayScreen) pane;
@@ -53,6 +58,7 @@ public class MusicControl extends AnimationTimer {
 		this.damageUpdater = new DamageUpdater(gamePlayScreen);
 		this.skillUpdater = new SkillUpdater();
 		this.currentCombo = 0;
+		this.toRenderIdx = 0;
 
 		for (int i = 0; i < musicChart.getChart().size(); i++) {
 			current_note = musicChart.getChart().get(i);
@@ -90,13 +96,16 @@ public class MusicControl extends AnimationTimer {
 			idx++;
 
 		}
+
 		for (int i = 0; i < render.size(); i++) {
 			Note current_render = render.get(i);
 			double pos_x = 665 * (current_time - current_render.getStartTime()) / 2.0;
+
 			if (pos_x >= 0 && pos_x <= 750) {
 				current_render.getCanvas().setTranslateX(pos_x);
 			}
 			if (pos_x >= 750) {
+				System.out.println(check++);
 				new JudgeStyle(4, gamePlayScreen).show();
 				judgeResult.set(4, judgeResult.get(4) + 1);
 				isComboBreak = true;
@@ -113,6 +122,8 @@ public class MusicControl extends AnimationTimer {
 
 	public void run() {
 		startTime = System.nanoTime();
+
+		System.out.println(notes.size());
 		this.start();
 
 	}
@@ -177,6 +188,7 @@ public class MusicControl extends AnimationTimer {
 		this.stop();
 		damageUpdater.interrupt();
 		skillUpdater.interrupt();
+
 		Thread nextScene = new Thread(() -> {
 			try {
 				damageUpdater.join();
@@ -186,6 +198,7 @@ public class MusicControl extends AnimationTimer {
 			}
 			SceneManager.gotoSceneOf(new ResultScreen());
 		});
+		nextScene.start();
 		ThreadHolder.threads.add(nextScene);
 
 	}
