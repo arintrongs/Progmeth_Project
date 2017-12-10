@@ -16,14 +16,22 @@ public class Note {
 
 	public Note(Integer type, KeyCode direction) {
 		// TODO Auto-generated constructor stub
-		if (direction == KeyCode.UP)
+		if (direction == KeyCode.UP) 
+			
 			this.image = new Image("up-arrow.png");
-		if (direction == KeyCode.DOWN)
+			
+		if (direction == KeyCode.DOWN) 
+			
 			this.image = new Image("down-arrow.png");
-		if (direction == KeyCode.RIGHT)
+			
+		if (direction == KeyCode.RIGHT) 
+			
 			this.image = new Image("right-arrow.png");
-		if (direction == KeyCode.LEFT)
+			
+		if (direction == KeyCode.LEFT) 
+		
 			this.image = new Image("left-arrow.png");
+			
 		this.type = type;
 		this.direction = direction;
 		this.canvas = new Canvas(70, 70);
