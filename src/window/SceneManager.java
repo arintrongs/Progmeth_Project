@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import scene.WelcomeScreen;
+import sharedObject.ThreadHolder;
 
 public class SceneManager {
 
@@ -62,6 +63,8 @@ public class SceneManager {
 				primaryStage.setScene(sceneToGo);
 			});
 		});
+		ThreadHolder.threads.add(fadein);
+		ThreadHolder.threads.add(fadeout);
 		fadeout.start();
 		fadein.start();
 

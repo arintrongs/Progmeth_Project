@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.scene.image.Image;
 import model.Clown;
 import model.Field;
 import model.Hero;
@@ -33,6 +34,7 @@ public class GameManager {
 	private static String currentMode;
 	private static List<Integer> gameResult;
 	private static List<Double> scoreBefore;
+	private static ArrayList<Image> notesImage;
 
 	public static void newGame() {
 		knight = new Knight("Knight", 1, "skill1");
@@ -55,6 +57,12 @@ public class GameManager {
 		SceneManager.gotoSceneOf(new MainMenuScreen());
 		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
 		scoreBefore = new ArrayList<>(Collections.nCopies(5, 0.0));
+
+		notesImage = new ArrayList<>();
+		notesImage.add(new Image("up-arrow.png"));
+		notesImage.add(new Image("down-arrow.png"));
+		notesImage.add(new Image("left-arrow.png"));
+		notesImage.add(new Image("right-arrow.png"));
 
 	}
 
@@ -179,4 +187,7 @@ public class GameManager {
 		GameManager.gameResult = gameResult;
 	}
 
+	public static ArrayList<Image> getnotesImages() {
+		return notesImage;
+	}
 }

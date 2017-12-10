@@ -14,6 +14,7 @@ import javafx.scene.media.MediaPlayer;
 import model.JudgeStyle;
 import scene.GamePlayScreen;
 import scene.ResultScreen;
+import sharedObject.ThreadHolder;
 import window.SceneManager;
 
 public class MusicControl extends AnimationTimer {
@@ -74,6 +75,8 @@ public class MusicControl extends AnimationTimer {
 			mediaPlayer.play();
 			damageUpdater.start();
 			skillUpdater.start();
+			ThreadHolder.threads.add(damageUpdater);
+			ThreadHolder.threads.add(skillUpdater);
 		}
 		if (current_time >= file.getDuration().toSeconds() + 2) {
 			end();
@@ -114,57 +117,60 @@ public class MusicControl extends AnimationTimer {
 	public void run() {
 		startTime = System.nanoTime();
 		this.start();
+
 	}
 
 	public void judge(KeyEvent e) {
 
 		int idx = musicChart.getCurrentNoteIdx();
-		double current_tapped_time = (System.nanoTime() - startTime) / NANO;
-		Note current_note = musicChart.getChart().get(idx);
-		double judge_time = idx * musicChart.getDelayPerHit();
-		double lower_bound = judge_time - 0.015;
-		double upper_bound = judge_time + 0.015;
-		if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
-				&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
-			if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
-				System.out.println("CriTical - PerFect~~~");
-				judgeResult.set(0, judgeResult.get(0) + 1);
-				judges = 0;
+		if (idx < musicChart.getChart().size()) {
+			double current_tapped_time = (System.nanoTime() - startTime) / NANO;
+			Note current_note = musicChart.getChart().get(idx);
+			double judge_time = idx * musicChart.getDelayPerHit();
+			double lower_bound = judge_time - 0.015;
+			double upper_bound = judge_time + 0.015;
+			if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
+					&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
+				if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
+					System.out.println("CriTical - PerFect~~~");
+					judgeResult.set(0, judgeResult.get(0) + 1);
+					judges = 0;
 
-			} else if (current_tapped_time >= lower_bound - 0.03 && current_tapped_time <= upper_bound + 0.03) {
-				System.out.println("PerFect~~~");
-				judgeResult.set(1, judgeResult.get(1) + 1);
-				judges = 1;
-
-			} else if (current_tapped_time >= lower_bound - 0.10 && current_tapped_time <= upper_bound + 0.10) {
-				if (guaranteePerfect == true) {
+				} else if (current_tapped_time >= lower_bound - 0.03 && current_tapped_time <= upper_bound + 0.03) {
 					System.out.println("PerFect~~~");
 					judgeResult.set(1, judgeResult.get(1) + 1);
 					judges = 1;
-				} else {
-					System.out.println("Great~~~");
-					judgeResult.set(2, judgeResult.get(2) + 1);
-					judges = 2;
-				}
 
-			} else if (current_tapped_time >= lower_bound - 0.15 && current_tapped_time <= upper_bound + 0.15) {
-				if (guaranteePerfect == true) {
-					System.out.println("PerFect~~~");
-					judgeResult.set(1, judgeResult.get(1) + 1);
-					judges = 1;
-				} else {
-					System.out.println("Good~~~");
-					judgeResult.set(3, judgeResult.get(3) + 1);
-					judges = 3;
+				} else if (current_tapped_time >= lower_bound - 0.10 && current_tapped_time <= upper_bound + 0.10) {
+					if (guaranteePerfect == true) {
+						System.out.println("PerFect~~~");
+						judgeResult.set(1, judgeResult.get(1) + 1);
+						judges = 1;
+					} else {
+						System.out.println("Great~~~");
+						judgeResult.set(2, judgeResult.get(2) + 1);
+						judges = 2;
+					}
+
+				} else if (current_tapped_time >= lower_bound - 0.15 && current_tapped_time <= upper_bound + 0.15) {
+					if (guaranteePerfect == true) {
+						System.out.println("PerFect~~~");
+						judgeResult.set(1, judgeResult.get(1) + 1);
+						judges = 1;
+					} else {
+						System.out.println("Good~~~");
+						judgeResult.set(3, judgeResult.get(3) + 1);
+						judges = 3;
+					}
 				}
+				currentCombo++;
+				musicChart.currentNoteIdx++;
+				render.remove(current_note);
+				gamePlayScreen.getChildren().remove(current_note.getCanvas());
+				new JudgeStyle(judges, gamePlayScreen).show();
+				gamePlayScreen.updateCombo();
+				System.out.println(judgeResult);
 			}
-			currentCombo++;
-			musicChart.currentNoteIdx++;
-			render.remove(current_note);
-			gamePlayScreen.getChildren().remove(current_note.getCanvas());
-			new JudgeStyle(judges, gamePlayScreen).show();
-			gamePlayScreen.updateCombo();
-			System.out.println(judgeResult);
 		}
 
 	}
@@ -174,7 +180,7 @@ public class MusicControl extends AnimationTimer {
 		this.stop();
 		damageUpdater.interrupt();
 		skillUpdater.interrupt();
-		new Thread(() -> {
+		Thread nextScene = new Thread(() -> {
 			try {
 				damageUpdater.join();
 				skillUpdater.join();
@@ -182,7 +188,8 @@ public class MusicControl extends AnimationTimer {
 				e.printStackTrace();
 			}
 			SceneManager.gotoSceneOf(new ResultScreen());
-		}).start();
+		});
+		ThreadHolder.threads.add(nextScene);
 
 	}
 

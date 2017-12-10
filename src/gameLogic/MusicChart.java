@@ -102,7 +102,7 @@ public class MusicChart {
 		for (int i = 0; i < notesPerBar; i++) {
 			chart.add(new Note(0, KeyCode.LEFT));
 		}
-		for (int i = 0; i < 800; i++) {
+		for (int i = 0; i < 50; i++) {
 			int d = random.nextInt(4);
 			int c = random.nextInt(2);
 			chart.add(new Note(c, direction.get(d)));

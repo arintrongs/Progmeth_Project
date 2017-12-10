@@ -29,9 +29,9 @@ public class Monster extends Entity {
 		this.currentHp = (double) this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
 
-		monImg1 = new Image("9.png");
-		monImg2 = new Image("9.png");
-		monImg3 = new Image("9.png");
+		monImg1 = new Image("monster1.png");
+		monImg2 = new Image("monster2.png");
+		monImg3 = new Image("monster3.png");
 		this.isVisible = true;
 	}
 
