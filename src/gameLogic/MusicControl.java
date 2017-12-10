@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import application.Main;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -41,8 +40,6 @@ public class MusicControl extends AnimationTimer {
 	Random random = new Random();
 
 	public MusicControl(Pane pane) {
-
-		Main.musicControl = this;
 
 		musicChart = new MusicChart("test2", 146.0, 8);
 		filestring = new File("res/song/test2.wav");

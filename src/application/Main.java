@@ -8,7 +8,7 @@ import window.SceneManager;
 
 public class Main extends Application {
 
-	public static MusicControl musicControl;
+	private static MusicControl musicControl;
 
 	public static ThreadHolder threadHolder = new ThreadHolder();
 
