@@ -26,13 +26,13 @@ public class Field implements IRenderable {
 				
 			}
 			else if(GameManager.getCurrentCha().getName()=="SpellCaster") {
-				bg = new Image("Gameplay_bg1.png");
+				bg = new Image("bg16.png");
 			}
 			else if(GameManager.getCurrentCha().getName()=="Clown") {
-				bg = new Image("Gameplay_bg1.png");
+				bg = new Image("bg7.png");
 			}
 			else  {
-				bg = new Image("Gameplay_bg1.png");
+				bg = new Image("bg21.png");
 			}
 		}
 	}
