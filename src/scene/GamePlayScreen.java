@@ -24,7 +24,7 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class GamePlayScreen extends Pane {
-
+	public static GamePlayScreen instance;
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
@@ -36,8 +36,8 @@ public class GamePlayScreen extends Pane {
 
 	private boolean singlepulse = false;
 
-	private static Canvas monsInfo;
-	private Canvas heroInfo;
+	private static Canvas monsInfo, monCanvas;
+	private Canvas heroInfo, heroCanvas;
 	private Canvas combo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
@@ -54,7 +54,10 @@ public class GamePlayScreen extends Pane {
 		super();
 
 		bg = new Canvas(width, height);
-		gc = bg.getGraphicsContext2D();
+
+		heroCanvas = new Canvas(width, height);
+		monCanvas = new Canvas(width, height);
+
 		paint();
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
@@ -78,17 +81,30 @@ public class GamePlayScreen extends Pane {
 		setImage();
 		setIv();
 
-		this.getChildren().addAll(bg, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo, exitMenu, yesBtn, noBtn);
+		this.getChildren().addAll(bg, heroCanvas, monCanvas, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo,
+				exitMenu, yesBtn, noBtn);
 
 		musicControl = new MusicControl(this);
 
 	}
 
-	public GraphicsContext getGc() {
+	public GraphicsContext getGcBg() {
 		return bg.getGraphicsContext2D();
 	}
 
+	public GraphicsContext getGcHero() {
+		return heroCanvas.getGraphicsContext2D();
+	}
+
+	public GraphicsContext getGcMon() {
+		return monCanvas.getGraphicsContext2D();
+	}
+
 	public void paint() {
+
+		GraphicsContext gc = bg.getGraphicsContext2D();
+		GraphicsContext gcHero = heroCanvas.getGraphicsContext2D();
+		GraphicsContext gcMon = monCanvas.getGraphicsContext2D();
 
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
 
@@ -96,15 +112,25 @@ public class GamePlayScreen extends Pane {
 				if (e instanceof Field) {
 					((Field) e).setBg();
 					e.draw(gc, 0, 0);
+
 				} else if (e instanceof Hero) {
 					e.draw(gc, width / 7, height / 6);
 				} else if (e instanceof Boss) {
 					e.draw(gc, width / 3 * 2 - 50, height / 3 - 60);
 				} else if (e instanceof Monster) {
 					e.draw(gc, width / 3 * 2 - 20, height / 3);
+
 				}
 			}
 		}
+	}
+
+	public static Canvas getMonCanvas() {
+		return monCanvas;
+	}
+
+	public Canvas getHeroCanvas() {
+		return heroCanvas;
 	}
 
 	public void setImage() {

@@ -40,9 +40,9 @@ public class Monster extends Entity {
 	}
 
 	public void setmaxHp() {
-		this.maxHp.add(10.0);
-		this.maxHp.add(20.0);
-		this.maxHp.add(3000.0);
+		this.maxHp.add(25.0);
+		this.maxHp.add(50.0);
+		this.maxHp.add(60.0);
 	}
 
 	public void setMultipleHp() {
@@ -127,14 +127,17 @@ public class Monster extends Entity {
 			}
 
 			this.level++;
-			this.draw(gamePlayScreen.getGc(), SceneManager.SCENE_WIDTH / 3 * 2 - 20, SceneManager.SCENE_HEIGHT / 3);
+		
+			this.draw(gamePlayScreen.getGcMon(), SceneManager.SCENE_WIDTH / 3 * 2 - 20, SceneManager.SCENE_HEIGHT / 3);
 
 		}
 	}
 
 	public void newMonster() {
-		if (GameManager.getcurrentNumMon() == 3)
-			GameManager.setcurrentNumMon(1);
+		if (GameManager.getcurrentNumMon() == 3) {
+			GameManager.setcurrentNumMon(0);
+			System.out.println("666666666666666666666666");
+		}
 		GameManager.setcurrentNumMon((GameManager.getcurrentNumMon() + 1) % 4);
 
 		this.currentMaxHp = this.maxHp.get(GameManager.getcurrentNumMon() - 1);
@@ -189,12 +192,56 @@ public class Monster extends Entity {
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {
+		gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 		if (GameManager.getcurrentNumMon() == 1) {
-			gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
+			if(this.level==1)gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
+			else {
+				gc.drawImage(hurtedmonImg3, x, y,hurtedmonImg3.getWidth()/3,hurtedmonImg3.getHeight()/3);
+				Thread t1 = new Thread(()->{
+					try {
+						Thread.sleep(1000);
+						gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
+						gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
+						
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				});
+				t1.start();
+			}
+			
 		} else if (GameManager.getcurrentNumMon() == 2) {
-			gc.drawImage(monImg2, x, y, monImg2.getWidth() / 3, monImg2.getHeight() / 3);
+			gc.drawImage(hurtedmonImg1, x, y,hurtedmonImg1.getWidth()/3,hurtedmonImg1.getHeight()/3);
+			Thread t2 = new Thread(()->{
+				try {
+					Thread.sleep(1000);
+					gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
+					gc.drawImage(monImg2, x, y, monImg2.getWidth() / 3, monImg2.getHeight() / 3);
+					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			t2.start();
+		
 		} else {
-			gc.drawImage(monImg3, x, y, monImg3.getWidth() / 3, monImg3.getHeight() / 3);
+			gc.drawImage(hurtedmonImg2, x, y,hurtedmonImg2.getWidth()/3,hurtedmonImg1.getHeight()/3);
+			Thread t3 = new Thread(()->{
+				try {
+				
+					Thread.sleep(1000);
+					gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
+					gc.drawImage(monImg3, x, y, monImg3.getWidth() / 3, monImg3.getHeight() / 3);
+					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			t3.start();
+			
 		}
 
 	}
