@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import model.Boss;
 import model.Field;
 import model.Hero;
 import model.Monster;
@@ -31,6 +32,7 @@ public class GamePlayScreen extends Pane {
 	private static int width = SceneManager.SCENE_WIDTH;
 	private static int height = SceneManager.SCENE_HEIGHT;
 	private Canvas bg;
+	private GraphicsContext gc;
 
 	private boolean singlepulse = false;
 
@@ -50,7 +52,9 @@ public class GamePlayScreen extends Pane {
 	public GamePlayScreen() {
 		// TODO Auto-generated constructor stub
 		super();
+
 		bg = new Canvas(width, height);
+		gc = bg.getGraphicsContext2D();
 		paint();
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
@@ -86,18 +90,17 @@ public class GamePlayScreen extends Pane {
 
 	public void paint() {
 
-		GraphicsContext gc = bg.getGraphicsContext2D();
-
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
 
 			if (e.isVisible()) {
 				if (e instanceof Field) {
 					((Field) e).setBg();
 					e.draw(gc, 0, 0);
-
-				} else if (e instanceof Hero && GameManager.getCurrentMode() == "Farm") {
+				} else if (e instanceof Hero) {
 					e.draw(gc, width / 7, height / 6);
-				} else if (e instanceof Monster && GameManager.getCurrentMode() == "Farm") {
+				} else if (e instanceof Boss) {
+					e.draw(gc, width / 3 * 2 - 50, height / 3 - 60);
+				} else if (e instanceof Monster) {
 					e.draw(gc, width / 3 * 2 - 20, height / 3);
 				}
 			}
@@ -144,7 +147,7 @@ public class GamePlayScreen extends Pane {
 			gc.fillText("Level : " + GameManager.getCurrentMon().getLevel(), 200, height / 2 - 15);
 			gc.fillText("Hp : " + GameManager.getCurrentMon().getCurrentHp().intValue(), 20, height / 2 + 10);
 
-		} else if (name == "HeroInfo") {
+		} else if (name == "HeroInfo" && GameManager.getCurrentMode().compareTo("Farm") == 0) {
 
 			gc.setFill(Color.BURLYWOOD);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 0, 0);
@@ -262,4 +265,5 @@ public class GamePlayScreen extends Pane {
 			this.getChildren().add(combo);
 		}
 	}
+
 }

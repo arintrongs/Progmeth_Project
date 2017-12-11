@@ -153,16 +153,7 @@ public class CharacterSelectScreen extends Pane {
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(BTN_FONT);
 			gc.fillText(name, canvas.getWidth() / 2, canvas.getHeight() / 2);
-		}
-		/*
-		 * else if(name=="Knight" || name=="SpellCaster" ||name=="Clown"
-		 * ||name=="Priest" ){ gc.setStroke(Color.TAN.darker()); gc.setLineWidth(10);
-		 * gc.strokeRoundRect(5, 5, canvas.getWidth() - 10, canvas.getHeight() - 10, 50,
-		 * 50); gc.setFill(Color.BLACK); gc.setFont(MENU_FONT);
-		 * gc.setTextAlign(TextAlignment.CENTER); gc.setTextBaseline(VPos.CENTER);
-		 * gc.fillText(name, canvas.getWidth() / 2, canvas.getHeight() / 4); }
-		 */
-		else {
+		} else {
 			gc.setFill(Color.WHITE);
 			gc.fillRoundRect(5, 5, canvas.getWidth() - 10, canvas.getHeight() - 10, 50, 50);
 			canvas.setOpacity(0.8);
@@ -201,7 +192,7 @@ public class CharacterSelectScreen extends Pane {
 
 				}
 
-				 else if (name.compareTo("Back")==0) {
+				else if (name.compareTo("Back") == 0) {
 					Pane mainMenu = new MainMenuScreen();
 					SceneManager.gotoSceneOf(mainMenu);
 				}

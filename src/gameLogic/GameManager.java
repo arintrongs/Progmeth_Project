@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javafx.scene.image.Image;
+import model.Boss;
 import model.Clown;
 import model.Field;
 import model.Hero;
@@ -29,7 +30,7 @@ public class GameManager {
 	private static Hero clown;
 	private static Hero priest;
 	private static Monster monster;
-	// private static Monster boss;
+	private static Monster boss;
 	private static Field field;
 	private static String currentMode;
 	private static List<Integer> gameResult;
@@ -42,15 +43,14 @@ public class GameManager {
 		clown = new Clown("Clown", 1, "skill3");
 		priest = new Priest("Priest", 1, "skill4");
 		monster = new Monster("Monster", 1);
-		// boss = new Boss("Boss", 1, "skillBoss");
+		boss = new Boss("Boss", 1, "skillBoss");
 		field = new Field();
-		currentMon = monster;
+
 		RenderableHolder.getInstance().add(knight);
 		RenderableHolder.getInstance().add(spellCaster);
 		RenderableHolder.getInstance().add(clown);
 		RenderableHolder.getInstance().add(priest);
-		RenderableHolder.getInstance().add(monster);
-		// RenderableHolder.getInstance().add(boss);
+
 		RenderableHolder.getInstance().add(field);
 		currentBoss = 1;
 		currentNumMon = 1;
@@ -128,6 +128,14 @@ public class GameManager {
 
 	public static void setCurrentMode(String mode) {
 		currentMode = mode;
+		if (currentMode.compareTo("Farm") == 0) {
+			currentMon = monster;
+
+		} else {
+			currentMon = boss;
+
+		}
+		RenderableHolder.getInstance().add(currentMon);
 	}
 
 	public static Monster getCurrentMon() {
