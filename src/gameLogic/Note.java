@@ -13,6 +13,7 @@ public class Note {
 
 	public Note(Integer type, KeyCode direction) {
 		// TODO Auto-generated constructor stub
+
 		if (direction == KeyCode.UP)
 			this.image = GameManager.getnotesImages().get(0);
 		if (direction == KeyCode.DOWN)
@@ -21,6 +22,7 @@ public class Note {
 			this.image = GameManager.getnotesImages().get(2);
 		if (direction == KeyCode.RIGHT)
 			this.image = GameManager.getnotesImages().get(3);
+
 
 		this.type = type;
 		this.direction = direction;

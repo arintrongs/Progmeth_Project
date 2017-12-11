@@ -163,15 +163,16 @@ public class GameManager {
 	}
 
 	public static void update(List<Integer> list, GamePlayScreen gamePlayScreen) {
+
 		for (int i = 0; i < list.size(); i++) {
 			if (i == 0) {
-				monster.update(1.1 * currentCha.getAtk() * list.get(i));
+				monster.update(1.1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			} else if (i == 1) {
-				monster.update(1 * currentCha.getAtk() * list.get(i));
+				monster.update(1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			} else if (i == 2) {
-				monster.update(0.8 * currentCha.getAtk() * list.get(i));
+				monster.update(0.8 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			} else if (i == 3) {
-				monster.update(0.6 * currentCha.getAtk() * list.get(i));
+				monster.update(0.6 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			}
 			gameResult.set(i, gameResult.get(i) + list.get(i));
 		}

@@ -6,6 +6,8 @@ import java.util.List;
 import gameLogic.GameManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import scene.GamePlayScreen;
+import window.SceneManager;
 
 public class Monster extends Entity {
 	protected double currentMaxHp;
@@ -18,7 +20,12 @@ public class Monster extends Entity {
 	final private double growthRateHp = 1.2;
 	final private double growthRateExp = 1.2;
 	final private int numMonster = 4;
-	private Image monImg1, monImg2, monImg3;
+	private static Image monImg1 = new Image("monster1.png");
+	private static Image monImg2 = new Image("monster2.png");
+	private static Image monImg3 = new Image("monster3.png");
+	private static Image hurtedmonImg1 = new Image("hurted_mon1.png");
+	private static Image hurtedmonImg2 = new Image("hurted_mon2.png");
+	private static Image hurtedmonImg3 = new Image("hurted_mon3.png");
 
 	public Monster(String name, int level) {
 		super(name, level);
@@ -29,15 +36,12 @@ public class Monster extends Entity {
 		this.currentHp = (double) this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
 
-		monImg1 = new Image("monster1.png");
-		monImg2 = new Image("monster2.png");
-		monImg3 = new Image("monster3.png");
 		this.isVisible = true;
 	}
 
 	public void setmaxHp() {
-		this.maxHp.add(1000.0);
-		this.maxHp.add(2000.0);
+		this.maxHp.add(10.0);
+		this.maxHp.add(20.0);
 		this.maxHp.add(3000.0);
 	}
 
@@ -105,12 +109,13 @@ public class Monster extends Entity {
 		return false;
 	}
 
-	public void update(double atk) {
+	public void update(double atk, GamePlayScreen gamePlayScreen) {
 
 		this.decreaseHp(atk);
 
 		if (this.isDead()) {
 			GameManager.getCurrentCha().update(this.currentExp);
+
 			if (this.isUpgrade()) {
 				this.upgradeMonster();
 			} else {
@@ -118,16 +123,20 @@ public class Monster extends Entity {
 					this.levelUp();
 				}
 				this.newMonster();
+
 			}
+
 			this.level++;
-			System.out.println('\n' + "now level" + this.level + "Hp" + this.currentMaxHp + '\n');
+			this.draw(gamePlayScreen.getGc(), SceneManager.SCENE_WIDTH / 3 * 2 - 20, SceneManager.SCENE_HEIGHT / 3);
+
 		}
 	}
 
 	public void newMonster() {
 		if (GameManager.getcurrentNumMon() == 3)
-			GameManager.setcurrentNumMon(0);
+			GameManager.setcurrentNumMon(1);
 		GameManager.setcurrentNumMon((GameManager.getcurrentNumMon() + 1) % 4);
+
 		this.currentMaxHp = this.maxHp.get(GameManager.getcurrentNumMon() - 1);
 		this.currentHp = this.currentMaxHp;
 		this.currentExp = this.Exp.get(GameManager.getcurrentNumMon() - 1);
@@ -160,6 +169,7 @@ public class Monster extends Entity {
 		this.currentMaxHp = this.maxHp.get(0);
 		this.currentHp = this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
+		GameManager.setcurrentNumMon(1);
 
 	}
 

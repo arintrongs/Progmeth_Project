@@ -23,13 +23,14 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class GamePlayScreen extends Pane {
+
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
 	private static final Font COMBO_FONT = Font.loadFont("file:res/font/Education-Pencil.ttf", 30);
 	private static int width = SceneManager.SCENE_WIDTH;
 	private static int height = SceneManager.SCENE_HEIGHT;
-	private Canvas bg = new Canvas(width, height);
+	private Canvas bg;
 
 	private boolean singlepulse = false;
 
@@ -49,6 +50,7 @@ public class GamePlayScreen extends Pane {
 	public GamePlayScreen() {
 		// TODO Auto-generated constructor stub
 		super();
+		bg = new Canvas(width, height);
 		paint();
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
@@ -78,9 +80,12 @@ public class GamePlayScreen extends Pane {
 
 	}
 
+	public GraphicsContext getGc() {
+		return bg.getGraphicsContext2D();
+	}
+
 	public void paint() {
 
-		bg = new Canvas(width, height);
 		GraphicsContext gc = bg.getGraphicsContext2D();
 
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
