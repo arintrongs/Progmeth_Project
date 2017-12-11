@@ -190,6 +190,17 @@ public class GamePlayScreen extends Pane {
 			gc.fillText("Do you want to exit the game ?", width / 2, height / 4);
 		}
 
+		else {
+
+			gc.setFill(Color.DARKSALMON);
+			gc.fillRoundRect(0, 0, width, height, 30, 30);
+			gc.setFill(Color.WHITE);
+			gc.setTextAlign(TextAlignment.CENTER);
+			gc.setTextBaseline(VPos.CENTER);
+			gc.setFont(BTN_FONT);
+			gc.fillText(name, width / 2, height / 2);
+		}
+		
 		return canvas;
 
 	}

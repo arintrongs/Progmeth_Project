@@ -41,9 +41,9 @@ public class Monster extends Entity {
 	}
 
 	public void setmaxHp() {
-		this.maxHp.add(25.0);
-		this.maxHp.add(50.0);
-		this.maxHp.add(60.0);
+		this.maxHp.add(500.0);
+		this.maxHp.add(1000.0);
+		this.maxHp.add(1500.0);
 	}
 
 	public void setMultipleHp() {
