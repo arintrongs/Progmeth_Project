@@ -3,6 +3,9 @@ package scene;
 
 import gameLogic.GameManager;
 import gameLogic.MusicControl;
+import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 import model.Boss;
 import model.Field;
 import model.Hero;
@@ -43,13 +47,15 @@ public class GamePlayScreen extends Pane {
 	private ImageView ivPlayzone = new ImageView();
 	private ImageView ivTapZone = new ImageView();
 	private MusicControl musicControl;
+	private static GamePlayScreen instance;
 
 	public GamePlayScreen() {
 
 		super();
+		instance = this;
 		isCreate = true;
 		bg = new Canvas(width, height);
-		heroCanvas = new Canvas(width, height);
+		heroCanvas = new Canvas(width / 2, height * 2 / 3);
 		monCanvas = new Canvas(width, height);
 		paint();
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
@@ -107,7 +113,6 @@ public class GamePlayScreen extends Pane {
 					e.draw(gc, 0, 0);
 
 				} else if (e instanceof Hero) {
-					gcHero.clearRect(0, 0, heroCanvas.getWidth(), heroCanvas.getHeight());
 					e.draw(gcHero, width / 7, height / 6);
 				} else if (e instanceof Boss) {
 					e.draw(gcMon, width / 3 * 2 - 50, height / 3 - 60);
@@ -117,6 +122,41 @@ public class GamePlayScreen extends Pane {
 				}
 			}
 		}
+	}
+
+	public void changeHero(Hero front, Hero back) {
+
+		Canvas backCanvas = new Canvas(width / 2, height * 2 / 3);
+		GraphicsContext backGC = backCanvas.getGraphicsContext2D();
+		back.draw(backGC, width / 7, height / 6);
+
+		ScaleTransition stHideFront = new ScaleTransition(Duration.millis(300), heroCanvas);
+		stHideFront.setFromX(1);
+		stHideFront.setToX(0);
+
+		backCanvas.setScaleX(0);
+
+		ScaleTransition stShowBack = new ScaleTransition(Duration.millis(300), backCanvas);
+		stShowBack.setFromX(0);
+		stShowBack.setToX(1);
+
+		stHideFront.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				stShowBack.play();
+			}
+		});
+		stShowBack.setOnFinished((ActionEvent event) -> {
+
+			this.getChildren().remove(heroCanvas);
+			heroCanvas = backCanvas;
+			this.getChildren().remove(backCanvas);
+			this.getChildren().add(heroCanvas);
+
+		});
+		this.getChildren().add(backCanvas);
+		stHideFront.play();
+
 	}
 
 	public static Canvas getMonCanvas() {
@@ -200,7 +240,7 @@ public class GamePlayScreen extends Pane {
 			gc.setFont(BTN_FONT);
 			gc.fillText(name, width / 2, height / 2);
 		}
-		
+
 		return canvas;
 
 	}
@@ -216,6 +256,9 @@ public class GamePlayScreen extends Pane {
 				singlepulse = true;
 			}
 			if (e.getCode() == KeyCode.ESCAPE) {
+				exitMenu.toFront();
+				yesBtn.toFront();
+				noBtn.toFront();
 				this.exitMenu.setVisible(true);
 				this.yesBtn.setVisible(true);
 				this.noBtn.setVisible(true);
@@ -236,9 +279,11 @@ public class GamePlayScreen extends Pane {
 			Pane mainMenu = new MainMenuScreen();
 
 			if (name == "No") {
+
 				this.exitMenu.setVisible(false);
 				this.yesBtn.setVisible(false);
 				this.noBtn.setVisible(false);
+
 			} else if (name == "Yes") {
 				musicControl.end();
 				SceneManager.gotoSceneOf(mainMenu);
@@ -278,6 +323,10 @@ public class GamePlayScreen extends Pane {
 
 	public static boolean getIsCreated() {
 		return isCreate;
+	}
+
+	public static GamePlayScreen getInstance() {
+		return instance;
 	}
 
 }

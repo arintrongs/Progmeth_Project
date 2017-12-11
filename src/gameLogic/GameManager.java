@@ -91,7 +91,7 @@ public class GameManager {
 	}
 
 	public static void setCurrentCha(String hero) {
-
+		Hero lastHero = currentCha;
 		for (IRenderable i : RenderableHolder.getInstance().getiRenderable()) {
 			if (i instanceof Hero && ((Hero) i).getName().compareTo(hero) != 0) {
 				((Hero) i).setVisible(false);
@@ -110,7 +110,7 @@ public class GameManager {
 		}
 
 		if (GamePlayScreen.getIsCreated() == true)
-			GamePlayScreen.paint();
+			GamePlayScreen.getInstance().changeHero(lastHero, currentCha);
 		field.setBg();
 		scoreBefore.set(0, currentCha.getLevel() * 1.0);
 		scoreBefore.set(1, currentCha.getAtk());

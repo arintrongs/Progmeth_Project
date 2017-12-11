@@ -6,10 +6,6 @@ import model.Hero;
 
 public class SkillUpdater extends Thread {
 
-	public SkillUpdater() {
-
-	}
-
 	public void run() {
 
 		try {

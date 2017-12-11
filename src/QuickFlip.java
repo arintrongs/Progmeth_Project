@@ -39,7 +39,7 @@ public class QuickFlip extends Application {
 		});
 
 		StackPane root = new StackPane();
-		root.getChildren().addAll(front, back);
+		root.getChildren().addAll(back);
 		Scene scene = new Scene(root, 800, 800);
 		primaryStage.setScene(scene);
 

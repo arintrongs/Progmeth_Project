@@ -28,6 +28,7 @@ public class Clown extends Hero {
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {
+
 		gc.drawImage(heroImg, x, y, heroImg.getWidth() / 3, heroImg.getHeight() / 3);
 	}
 
