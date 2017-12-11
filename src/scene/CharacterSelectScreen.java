@@ -187,6 +187,7 @@ public class CharacterSelectScreen extends Pane {
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
+
 						((GamePlayScreen) gamePlay).start();
 					}).start();
 

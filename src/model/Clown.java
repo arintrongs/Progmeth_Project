@@ -40,7 +40,10 @@ public class Clown extends Hero {
 			for (int i = 0; i < count; i++) {
 				final int idx = i + currentidx;
 				Platform.runLater(() -> {
-					notes.get(idx).setDirection(direction.get(d));
+					try {
+						notes.get(idx).setDirection(direction.get(d));
+					} catch (Exception e) {
+					}
 				});
 			}
 			System.out.println("Skill Activated!!");

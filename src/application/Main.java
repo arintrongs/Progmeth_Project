@@ -10,8 +10,6 @@ public class Main extends Application {
 
 	private static MusicControl musicControl;
 
-	public static ThreadHolder threadHolder = new ThreadHolder();
-
 	public void start(Stage primaryStage) {
 		try {
 			SceneManager.initialize(primaryStage);
@@ -34,7 +32,7 @@ public class Main extends Application {
 		musicControl.end();
 		SceneManager.getBGM().stop();
 		for (int i = 0; i < ThreadHolder.threads.size(); i++) {
-			threadHolder.threads.get(i).interrupt();
+			ThreadHolder.threads.get(i).interrupt();
 		}
 	}
 }

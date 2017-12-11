@@ -176,6 +176,15 @@ public class MainMenuScreen extends Pane {
 				} else if (buttonName == "BOSS") {
 					GameManager.setCurrentMode("Boss");
 					GamePlayScreen gamePlayScreen = new GamePlayScreen();
+					new Thread(() -> {
+						try {
+							SceneManager.getFadeIn().join();
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						System.out.println(GameManager.getCurrentMon().getCurrentHp());
+						(gamePlayScreen).start();
+					}).start();
 					SceneManager.gotoSceneOf(gamePlayScreen);
 				}
 

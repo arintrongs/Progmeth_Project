@@ -22,14 +22,13 @@ import window.SceneManager;
 public class GameManager {
 
 	private static Hero currentCha;
-	private static Monster currentMon;
+	private static Monster currentMon, monster;
 	private static int currentNumMon;
 	private static int currentBoss;
 	private static Hero knight;
 	private static Hero spellCaster;
 	private static Hero clown;
 	private static Hero priest;
-	private static Monster monster;
 	private static Monster boss;
 	private static Field field;
 	private static String currentMode;
@@ -45,19 +44,17 @@ public class GameManager {
 		monster = new Monster("Monster", 1);
 		boss = new Boss("Boss", 1, "skillBoss");
 		field = new Field();
-
+		currentCha = knight;
 		RenderableHolder.getInstance().add(knight);
 		RenderableHolder.getInstance().add(spellCaster);
 		RenderableHolder.getInstance().add(clown);
 		RenderableHolder.getInstance().add(priest);
-
 		RenderableHolder.getInstance().add(field);
 		currentBoss = 1;
 		currentNumMon = 1;
 		SceneManager.gotoSceneOf(new MainMenuScreen());
 		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
 		scoreBefore = new ArrayList<>(Collections.nCopies(5, 0.0));
-
 		notesImage = new ArrayList<>();
 		notesImage.add(new Image("up-arrow.png"));
 		notesImage.add(new Image("down-arrow.png"));
@@ -71,7 +68,7 @@ public class GameManager {
 		scoreBefore.set(1, currentCha.getAtk());
 		scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
 		scoreBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
-		currentCha = null;
+		currentCha = knight;
 		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
 	}
 
@@ -127,13 +124,14 @@ public class GameManager {
 	}
 
 	public static void setCurrentMode(String mode) {
+		RenderableHolder.getInstance().getiRenderable().remove(currentMon);
 		currentMode = mode;
 		if (currentMode.compareTo("Farm") == 0) {
 			currentMon = monster;
 
 		} else {
 			currentMon = boss;
-
+			GameManager.setCurrentCha("Priest");
 		}
 		RenderableHolder.getInstance().add(currentMon);
 	}
@@ -174,13 +172,13 @@ public class GameManager {
 
 		for (int i = 0; i < list.size(); i++) {
 			if (i == 0) {
-				monster.update(1.1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(1.1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			} else if (i == 1) {
-				monster.update(1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			} else if (i == 2) {
-				monster.update(0.8 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(0.8 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			} else if (i == 3) {
-				monster.update(0.6 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(0.6 * currentCha.getAtk() * list.get(i), gamePlayScreen);
 			}
 			gameResult.set(i, gameResult.get(i) + list.get(i));
 		}

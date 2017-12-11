@@ -19,17 +19,14 @@ public class Field implements IRenderable {
 	public void setBg() {
 
 		if (GameManager.getCurrentMode() == "Farm") {
-
 			if (GameManager.getCurrentCha().getName() == "Knight") {
 				bg = new Image("Gameplay_bg1.png");
-
 			} else if (GameManager.getCurrentCha().getName() == "SpellCaster") {
 				bg = new Image("bg16.png");
 			} else if (GameManager.getCurrentCha().getName() == "Clown") {
 				bg = new Image("bg7.png");
 			} else {
 				bg = new Image("bg21.png");
-
 			}
 		} else {
 			bg = new Image("bg18.png");

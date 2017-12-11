@@ -24,7 +24,7 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class GamePlayScreen extends Pane {
-	public static GamePlayScreen instance;
+
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
@@ -33,35 +33,26 @@ public class GamePlayScreen extends Pane {
 	private static int height = SceneManager.SCENE_HEIGHT;
 	private Canvas bg;
 	private GraphicsContext gc;
-
 	private boolean singlepulse = false;
-
 	private static Canvas monsInfo, monCanvas;
 	private Canvas heroInfo, heroCanvas;
 	private Canvas combo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
-
 	private Image playzoneImg, tapZone;
-
 	private ImageView ivPlayzone = new ImageView();
 	private ImageView ivTapZone = new ImageView();
-
 	private MusicControl musicControl;
 
 	public GamePlayScreen() {
-		// TODO Auto-generated constructor stub
+
 		super();
-
 		bg = new Canvas(width, height);
-
 		heroCanvas = new Canvas(width, height);
 		monCanvas = new Canvas(width, height);
-
 		paint();
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
-
 		exitMenu = drawButton("Exit", width / 3 + 40, height / 6, width / 3 - 20, height / 3);
 		addCanvasEvents(exitMenu, "Exit");
 		exitMenu.setVisible(false);
@@ -110,15 +101,17 @@ public class GamePlayScreen extends Pane {
 
 			if (e.isVisible()) {
 				if (e instanceof Field) {
+
 					((Field) e).setBg();
 					e.draw(gc, 0, 0);
 
 				} else if (e instanceof Hero) {
-					e.draw(gc, width / 7, height / 6);
+					System.out.println(1111);
+					e.draw(gcHero, width / 7, height / 6);
 				} else if (e instanceof Boss) {
-					e.draw(gc, width / 3 * 2 - 50, height / 3 - 60);
+					e.draw(gcMon, width / 3 * 2 - 50, height / 3 - 60);
 				} else if (e instanceof Monster) {
-					e.draw(gc, width / 3 * 2 - 20, height / 3);
+					e.draw(gcMon, width / 3 * 2 - 20, height / 3);
 
 				}
 			}
@@ -134,8 +127,6 @@ public class GamePlayScreen extends Pane {
 	}
 
 	public void setImage() {
-		// ask current mon and hero
-
 		this.playzoneImg = new Image("Playzone.png");
 		this.tapZone = new Image("Tapzone.png");
 	}
@@ -144,10 +135,7 @@ public class GamePlayScreen extends Pane {
 
 		ivPlayzone.setImage(playzoneImg);
 		ivTapZone.setImage(tapZone);
-
 		ivPlayzone.setTranslateY(height * 2 / 3 - 20);
-
-		// Set Tap Judge Effect Position
 		ivTapZone.setTranslateX(700 - 59);
 		ivTapZone.setTranslateY(600 - 170);
 
@@ -156,10 +144,8 @@ public class GamePlayScreen extends Pane {
 	public static Canvas drawButton(String name, double width, double height, double posX, double posY) {
 		Canvas canvas = new Canvas(width, height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-
 		canvas.setTranslateX(posX);
 		canvas.setTranslateY(posY);
-
 		if (name == "MonsterInfo") {
 			gc.setFill(Color.PALEVIOLETRED);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 0, 0);
@@ -167,13 +153,11 @@ public class GamePlayScreen extends Pane {
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setTextAlign(TextAlignment.LEFT);
 			gc.setFont(MENU_FONT);
-			// get method for name,level,hp of mon
-
 			gc.fillText("Name : " + GameManager.getCurrentMon().getName(), 20, height / 2 - 15);
 			gc.fillText("Level : " + GameManager.getCurrentMon().getLevel(), 200, height / 2 - 15);
 			gc.fillText("Hp : " + GameManager.getCurrentMon().getCurrentHp().intValue(), 20, height / 2 + 10);
 
-		} else if (name == "HeroInfo" && GameManager.getCurrentMode().compareTo("Farm") == 0) {
+		} else if (name == "HeroInfo") {
 
 			gc.setFill(Color.BURLYWOOD);
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 0, 0);
@@ -181,7 +165,6 @@ public class GamePlayScreen extends Pane {
 			gc.setTextAlign(TextAlignment.LEFT);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(MENU_FONT);
-			// get method for name,level,hp of mon
 			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 20, height / 2 - 15);
 			gc.fillText("Level : " + GameManager.getCurrentCha().getLevel(), 200, height / 2 - 15);
 			gc.fillText("Atk : " + String.format("%.2f", GameManager.getCurrentCha().getAtk()), 20, height / 2 + 10);
@@ -204,17 +187,6 @@ public class GamePlayScreen extends Pane {
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(MENU_FONT);
 			gc.fillText("Do you want to exit the game ?", width / 2, height / 4);
-		}
-
-		else {
-
-			gc.setFill(Color.DARKSALMON);
-			gc.fillRoundRect(0, 0, width, height, 30, 30);
-			gc.setFill(Color.WHITE);
-			gc.setTextAlign(TextAlignment.CENTER);
-			gc.setTextBaseline(VPos.CENTER);
-			gc.setFont(BTN_FONT);
-			gc.fillText(name, width / 2, height / 2);
 		}
 
 		return canvas;

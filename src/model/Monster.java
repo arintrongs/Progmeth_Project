@@ -23,9 +23,11 @@ public class Monster extends Entity {
 	private static Image monImg1 = new Image("monster1.png");
 	private static Image monImg2 = new Image("monster2.png");
 	private static Image monImg3 = new Image("monster3.png");
+	protected static Image bossImg = new Image("boss.png");
 	private static Image hurtedmonImg1 = new Image("hurted_mon1.png");
 	private static Image hurtedmonImg2 = new Image("hurted_mon2.png");
 	private static Image hurtedmonImg3 = new Image("hurted_mon3.png");
+	protected static Image hurtedbossImg = new Image("hurted_boss.png");
 
 	public Monster(String name, int level) {
 		super(name, level);
@@ -35,7 +37,6 @@ public class Monster extends Entity {
 		this.currentMaxHp = this.maxHp.get(0);
 		this.currentHp = (double) this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
-
 		this.isVisible = true;
 	}
 
@@ -127,7 +128,7 @@ public class Monster extends Entity {
 			}
 
 			this.level++;
-		
+
 			this.draw(gamePlayScreen.getGcMon(), SceneManager.SCENE_WIDTH / 3 * 2 - 20, SceneManager.SCENE_HEIGHT / 3);
 
 		}
@@ -194,15 +195,16 @@ public class Monster extends Entity {
 	public void draw(GraphicsContext gc, double x, double y) {
 		gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 		if (GameManager.getcurrentNumMon() == 1) {
-			if(this.level==1)gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
+			if (this.level == 1)
+				gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
 			else {
-				gc.drawImage(hurtedmonImg3, x, y,hurtedmonImg3.getWidth()/3,hurtedmonImg3.getHeight()/3);
-				Thread t1 = new Thread(()->{
+				gc.drawImage(hurtedmonImg3, x, y, hurtedmonImg3.getWidth() / 3, hurtedmonImg3.getHeight() / 3);
+				Thread t1 = new Thread(() -> {
 					try {
 						Thread.sleep(1000);
 						gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 						gc.drawImage(monImg1, x, y, monImg1.getWidth() / 3, monImg1.getHeight() / 3);
-						
+
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -210,38 +212,38 @@ public class Monster extends Entity {
 				});
 				t1.start();
 			}
-			
+
 		} else if (GameManager.getcurrentNumMon() == 2) {
-			gc.drawImage(hurtedmonImg1, x, y,hurtedmonImg1.getWidth()/3,hurtedmonImg1.getHeight()/3);
-			Thread t2 = new Thread(()->{
+			gc.drawImage(hurtedmonImg1, x, y, hurtedmonImg1.getWidth() / 3, hurtedmonImg1.getHeight() / 3);
+			Thread t2 = new Thread(() -> {
 				try {
 					Thread.sleep(1000);
 					gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 					gc.drawImage(monImg2, x, y, monImg2.getWidth() / 3, monImg2.getHeight() / 3);
-					
+
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			});
 			t2.start();
-		
+
 		} else {
-			gc.drawImage(hurtedmonImg2, x, y,hurtedmonImg2.getWidth()/3,hurtedmonImg1.getHeight()/3);
-			Thread t3 = new Thread(()->{
+			gc.drawImage(hurtedmonImg2, x, y, hurtedmonImg2.getWidth() / 3, hurtedmonImg1.getHeight() / 3);
+			Thread t3 = new Thread(() -> {
 				try {
-				
+
 					Thread.sleep(1000);
 					gc.clearRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 					gc.drawImage(monImg3, x, y, monImg3.getWidth() / 3, monImg3.getHeight() / 3);
-					
+
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			});
 			t3.start();
-			
+
 		}
 
 	}
