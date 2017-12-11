@@ -6,6 +6,7 @@ import java.util.Random;
 
 import gameLogic.GameManager;
 import javafx.scene.canvas.GraphicsContext;
+import sharedObject.ThreadHolder;
 
 public class Boss extends Monster implements Skillable {
 	private String skillName;
@@ -60,9 +61,7 @@ public class Boss extends Monster implements Skillable {
 
 	@Override
 	public void draw(GraphicsContext gc, double x, double y) {
-
 		gc.drawImage(bossImg, x, y, bossImg.getWidth() / 3, bossImg.getHeight() / 3);
-
 	}
 
 	@Override
@@ -73,28 +72,52 @@ public class Boss extends Monster implements Skillable {
 	public void activate() {
 		int rnd = random.nextInt(2);
 
-		if (isSkillActivated == false && isSilence == false) {
+		if (rnd == 1 && isSkillActivated == false && isSilence == false) {
 			System.out.println("Boss Skill Activated!!!");
 			isSkillActivated = true;
 			lastHero = GameManager.getCurrentCha();
 			lastAtk = lastHero.getAtk();
 			GameManager.getCurrentCha().setAtk(0);
-			new Thread(() -> {
+			Thread skill = new Thread(() -> {
 				try {
 					Thread.sleep(5000);
 					deactivate();
+				} catch (InterruptedException e) {
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
+
+		} else {
+			System.out.println("Boss Fail!!");
+			Thread skill = new Thread(() -> {
+				try {
+					this.isSkillActivated = true;
+					Thread.sleep(15000);
+					this.isSkillActivated = false;
 				} catch (Exception e) {
 				}
-			}).start();
-
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
 		}
 	}
 
 	public void deactivate() {
 		if (this.isSkillActivated == true && isSilence == false) {
-			this.isSkillActivated = false;
+
 			lastHero.setAtk(lastAtk);
 			System.out.println("Boss Skill Deactivated!!");
+			Thread skill = new Thread(() -> {
+				try {
+					Thread.sleep(15000);
+					this.isSkillActivated = false;
+				} catch (InterruptedException e) {
+					System.out.println();
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
 		}
 	}
 

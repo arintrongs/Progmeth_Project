@@ -2,12 +2,14 @@ package model;
 
 import java.util.ArrayList;
 
+import gameLogic.GameManager;
 import gameLogic.MusicControl;
 import gameLogic.Note;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import sharedObject.ThreadHolder;
 
 public class Clown extends Hero {
 	private Image heroImg, bg;
@@ -35,6 +37,7 @@ public class Clown extends Hero {
 		int count = 5 + this.random.nextInt(11);
 		ArrayList<Note> notes = MusicControl.getNotes();
 		if (rnd == 1 && isSkillActivated == false) {
+			GameManager.setCurrentCha(name);
 			this.isSkillActivated = true;
 			final int currentidx = MusicControl.gettoRenderIdx();
 			for (int i = 0; i < count; i++) {
@@ -46,20 +49,37 @@ public class Clown extends Hero {
 					}
 				});
 			}
-			System.out.println("Skill Activated!!");
+			deactivate();
+			System.out.println("Clown Skill Activated!!");
+		} else {
+			System.out.println("Clown Fail!!");
+			Thread skill = new Thread(() -> {
+				try {
+					this.isSkillActivated = true;
+					Thread.sleep(13000);
+					this.isSkillActivated = false;
+				} catch (Exception e) {
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
 		}
 	}
 
 	public void deactivate() {
 		if (this.isSkillActivated == true) {
-			new Thread(() -> {
+
+			System.out.println("Clown Skill Deactivated!!");
+			Thread skill = new Thread(() -> {
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(13000);
+					this.isSkillActivated = false;
 				} catch (Exception e) {
 				}
-				this.isSkillActivated = false;
-				System.out.println("Skill Deactivated!!");
-			}).start();
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
+
 		}
 	}
 }

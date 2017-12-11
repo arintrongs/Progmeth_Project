@@ -57,7 +57,7 @@ public class Monster extends Entity {
 	}
 
 	public void setExp() {
-		this.Exp.add(150);
+		this.Exp.add(3000);
 		this.Exp.add(300);
 		this.Exp.add(500);
 	}
@@ -137,7 +137,6 @@ public class Monster extends Entity {
 	public void newMonster() {
 		if (GameManager.getcurrentNumMon() == 3) {
 			GameManager.setcurrentNumMon(0);
-			System.out.println("666666666666666666666666");
 		}
 		GameManager.setcurrentNumMon((GameManager.getcurrentNumMon() + 1) % 4);
 

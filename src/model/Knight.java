@@ -1,7 +1,9 @@
 package model;
 
+import gameLogic.GameManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import sharedObject.ThreadHolder;
 
 public class Knight extends Hero {
 
@@ -20,23 +22,49 @@ public class Knight extends Hero {
 	public void activate() {
 		int rnd = this.random.nextInt(2);
 		if (rnd == 1 && isSkillActivated == false) {
+			GameManager.setCurrentCha(name);
 			this.isSkillActivated = true;
 			this.atk *= this.growthRateAtk;
-			System.out.println("Skill Activated!!" + this.atk);
+			System.out.println("Knight Skill Activated!!");
+			Thread skill = new Thread(() -> {
+				try {
+					Thread.sleep(5000);
+					deactivate();
+				} catch (Exception e) {
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
+		} else {
+			System.out.println("Knight Fail!!");
+			Thread skill = new Thread(() -> {
+				try {
+					this.isSkillActivated = true;
+					Thread.sleep(10000);
+					this.isSkillActivated = false;
+				} catch (Exception e) {
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
 		}
 	}
 
 	public void deactivate() {
 		if (this.isSkillActivated == true) {
-			new Thread(() -> {
+
+			this.atk = this.originalAtk;
+			System.out.println("Knight Skill Deactivated!!");
+			Thread skill = new Thread(() -> {
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(10000);
+					this.isSkillActivated = false;
 				} catch (Exception e) {
 				}
-				this.isSkillActivated = false;
-				this.atk = this.originalAtk;
-				System.out.println("Skill Deactivated!!" + this.atk);
-			}).start();
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
+
 		}
 
 	}

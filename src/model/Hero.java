@@ -119,6 +119,8 @@ public abstract class Hero extends Entity implements Skillable {
 		}
 	}
 
-	// set currentMaxExp and atk when level up
+	public boolean getIsSkillActivated() {
+		return isSkillActivated;
+	}
 
 }

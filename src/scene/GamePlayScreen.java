@@ -31,11 +31,11 @@ public class GamePlayScreen extends Pane {
 	private static final Font COMBO_FONT = Font.loadFont("file:res/font/Education-Pencil.ttf", 30);
 	private static int width = SceneManager.SCENE_WIDTH;
 	private static int height = SceneManager.SCENE_HEIGHT;
-	private Canvas bg;
-	private GraphicsContext gc;
 	private boolean singlepulse = false;
+	private static boolean isCreate = false;
+	private static Canvas bg;
 	private static Canvas monsInfo, monCanvas;
-	private Canvas heroInfo, heroCanvas;
+	private static Canvas heroInfo, heroCanvas;
 	private Canvas combo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
@@ -47,6 +47,7 @@ public class GamePlayScreen extends Pane {
 	public GamePlayScreen() {
 
 		super();
+		isCreate = true;
 		bg = new Canvas(width, height);
 		heroCanvas = new Canvas(width, height);
 		monCanvas = new Canvas(width, height);
@@ -91,7 +92,7 @@ public class GamePlayScreen extends Pane {
 		return monCanvas.getGraphicsContext2D();
 	}
 
-	public void paint() {
+	public static void paint() {
 
 		GraphicsContext gc = bg.getGraphicsContext2D();
 		GraphicsContext gcHero = heroCanvas.getGraphicsContext2D();
@@ -106,7 +107,7 @@ public class GamePlayScreen extends Pane {
 					e.draw(gc, 0, 0);
 
 				} else if (e instanceof Hero) {
-					System.out.println(1111);
+					gcHero.clearRect(0, 0, heroCanvas.getWidth(), heroCanvas.getHeight());
 					e.draw(gcHero, width / 7, height / 6);
 				} else if (e instanceof Boss) {
 					e.draw(gcMon, width / 3 * 2 - 50, height / 3 - 60);
@@ -262,6 +263,10 @@ public class GamePlayScreen extends Pane {
 			gc.fillText(MusicControl.getCurrentCombo() + " Combo!", 110, 20);
 			this.getChildren().add(combo);
 		}
+	}
+
+	public static boolean getIsCreated() {
+		return isCreate;
 	}
 
 }

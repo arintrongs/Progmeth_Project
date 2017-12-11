@@ -1,8 +1,10 @@
 package model;
 
+import gameLogic.GameManager;
 import gameLogic.MusicControl;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import sharedObject.ThreadHolder;
 
 public class SpellCaster extends Hero {
 
@@ -22,23 +24,49 @@ public class SpellCaster extends Hero {
 	public void activate() {
 		int rnd = this.random.nextInt(4);
 		if (rnd == 1 && isSkillActivated == false) {
+			GameManager.setCurrentCha(name);
 			this.isSkillActivated = true;
 			MusicControl.setIsGuarantee(true);
-			System.out.println("Skill Activated!!");
+			System.out.println("SpellCaster Skill Activated!!");
+			Thread skill = new Thread(() -> {
+				try {
+					Thread.sleep(5000);
+					deactivate();
+				} catch (Exception e) {
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
+		} else {
+			System.out.println("SpellCaster Fail!!");
+			Thread skill = new Thread(() -> {
+				try {
+					this.isSkillActivated = true;
+					Thread.sleep(15000);
+					this.isSkillActivated = false;
+				} catch (Exception e) {
+				}
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
 		}
 	}
 
 	public void deactivate() {
 		if (this.isSkillActivated == true) {
-			new Thread(() -> {
+
+			MusicControl.setIsGuarantee(false);
+			System.out.println("SpellCaster Skill Deactivated!!");
+			Thread skill = new Thread(() -> {
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(15000);
+					this.isSkillActivated = false;
 				} catch (Exception e) {
 				}
-				this.isSkillActivated = false;
-				MusicControl.setIsGuarantee(false);
-				System.out.println("Skill Deactivated!!");
-			}).start();
+			});
+			ThreadHolder.threads.add(skill);
+			skill.start();
+
 		}
 	}
 

@@ -2,6 +2,7 @@ package gameLogic;
 
 import javafx.application.Platform;
 import model.Boss;
+import model.Hero;
 
 public class SkillUpdater extends Thread {
 
@@ -13,14 +14,21 @@ public class SkillUpdater extends Thread {
 
 		try {
 			while (true) {
-				this.sleep(5000);
+				Thread.sleep(150);
 				Platform.runLater(() -> {
 					if (GameManager.getCurrentMode().compareTo("Boss") == 0) {
-						((Boss) GameManager.getCurrentMon()).activate();
+						for (Hero i : GameManager.getHeroes()) {
+							if (i.getIsSkillActivated() == false)
+								i.activate();
+						}
+						if (((Boss) GameManager.getCurrentMon()).getisActivated() == false)
+							((Boss) GameManager.getCurrentMon()).activate();
 
+					} else {
+						if (GameManager.getCurrentCha().getIsSkillActivated() == false)
+							GameManager.getCurrentCha().activate();
 					}
-					GameManager.getCurrentCha().activate();
-					GameManager.getCurrentCha().deactivate();
+
 				});
 			}
 		} catch (InterruptedException e) {

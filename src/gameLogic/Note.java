@@ -23,7 +23,6 @@ public class Note {
 		if (direction == KeyCode.RIGHT)
 			this.image = GameManager.getnotesImages().get(3);
 
-
 		this.type = type;
 		this.direction = direction;
 		this.canvas = new Canvas(70, 70);
@@ -71,6 +70,7 @@ public class Note {
 			this.image = GameManager.getnotesImages().get(2);
 		if (direction == KeyCode.RIGHT)
 			this.image = GameManager.getnotesImages().get(3);
+		this.canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		this.canvas = new Canvas(70, 70);
 		this.canvas.getGraphicsContext2D().drawImage(this.image, 0, 0, 70, 70);
 		this.canvas.setTranslateY(472);

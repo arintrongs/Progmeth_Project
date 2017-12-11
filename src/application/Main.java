@@ -1,14 +1,11 @@
 package application;
 
-import gameLogic.MusicControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sharedObject.ThreadHolder;
 import window.SceneManager;
 
 public class Main extends Application {
-
-	private static MusicControl musicControl;
 
 	public void start(Stage primaryStage) {
 		try {
@@ -27,12 +24,16 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void stop() throws Exception {
+	public void stop() {
 
-		musicControl.end();
 		SceneManager.getBGM().stop();
 		for (int i = 0; i < ThreadHolder.threads.size(); i++) {
-			ThreadHolder.threads.get(i).interrupt();
+			try {
+				ThreadHolder.threads.get(i).interrupt();
+			} catch (Exception e) {
+				System.out.println(1);
+			}
 		}
+
 	}
 }

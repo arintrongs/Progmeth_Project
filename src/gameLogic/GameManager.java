@@ -3,6 +3,7 @@ package gameLogic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import javafx.scene.image.Image;
 import model.Boss;
@@ -35,15 +36,20 @@ public class GameManager {
 	private static List<Integer> gameResult;
 	private static List<Double> scoreBefore;
 	private static ArrayList<Image> notesImage;
+	private static ArrayList<Hero> heroes;
+	private static Random random = new Random();
 
 	public static void newGame() {
+
 		knight = new Knight("Knight", 1, "skill1");
 		spellCaster = new SpellCaster("SpellCaster", 1, "skill2");
 		clown = new Clown("Clown", 1, "skill3");
 		priest = new Priest("Priest", 1, "skill4");
+		heroes = new ArrayList<>();
 		monster = new Monster("Monster", 1);
 		boss = new Boss("Boss", 1, "skillBoss");
 		field = new Field();
+
 		currentCha = knight;
 		RenderableHolder.getInstance().add(knight);
 		RenderableHolder.getInstance().add(spellCaster);
@@ -103,6 +109,8 @@ public class GameManager {
 			currentCha = priest;
 		}
 
+		if (GamePlayScreen.getIsCreated() == true)
+			GamePlayScreen.paint();
 		field.setBg();
 		scoreBefore.set(0, currentCha.getLevel() * 1.0);
 		scoreBefore.set(1, currentCha.getAtk());
@@ -131,7 +139,12 @@ public class GameManager {
 
 		} else {
 			currentMon = boss;
-			GameManager.setCurrentCha("Priest");
+			heroes.add(knight);
+			heroes.add(spellCaster);
+			heroes.add(clown);
+			heroes.add(priest);
+			setCurrentCha(heroes.get(random.nextInt(4)).getName());
+
 		}
 		RenderableHolder.getInstance().add(currentMon);
 	}
@@ -169,20 +182,27 @@ public class GameManager {
 	}
 
 	public static void update(List<Integer> list, GamePlayScreen gamePlayScreen) {
-
+		double atk = 0;
+		if (currentMode.compareTo("Boss") == 0) {
+			for (int i = 0; i < heroes.size(); i++) {
+				atk += heroes.get(i).getAtk();
+			}
+		} else {
+			atk = currentCha.getAtk();
+		}
 		for (int i = 0; i < list.size(); i++) {
 			if (i == 0) {
-				currentMon.update(1.1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(1.1 * atk * list.get(i), gamePlayScreen);
 			} else if (i == 1) {
-				currentMon.update(1 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(1 * atk * list.get(i), gamePlayScreen);
 			} else if (i == 2) {
-				currentMon.update(0.8 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(0.8 * atk * list.get(i), gamePlayScreen);
 			} else if (i == 3) {
-				currentMon.update(0.6 * currentCha.getAtk() * list.get(i), gamePlayScreen);
+				currentMon.update(0.6 * atk * list.get(i), gamePlayScreen);
 			}
 			gameResult.set(i, gameResult.get(i) + list.get(i));
 		}
-		System.out.println("game = " + gameResult);
+
 		gamePlayScreen.setMonsInfo();
 		gamePlayScreen.setHeroInfo();
 
@@ -198,5 +218,9 @@ public class GameManager {
 
 	public static ArrayList<Image> getnotesImages() {
 		return notesImage;
+	}
+
+	public static ArrayList<Hero> getHeroes() {
+		return heroes;
 	}
 }

@@ -105,7 +105,6 @@ public class MusicControl extends AnimationTimer {
 				current_render.getCanvas().setTranslateX(pos_x);
 			}
 			if (pos_x >= 750) {
-				System.out.println(check++);
 				new JudgeStyle(4, gamePlayScreen).show();
 				judgeResult.set(4, judgeResult.get(4) + 1);
 				isComboBreak = true;
@@ -122,8 +121,6 @@ public class MusicControl extends AnimationTimer {
 
 	public void run() {
 		startTime = System.nanoTime();
-
-		System.out.println(notes.size());
 		this.start();
 
 	}
@@ -140,33 +137,27 @@ public class MusicControl extends AnimationTimer {
 			if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
 					&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
 				if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
-					System.out.println("CriTical - PerFect~~~");
 					judgeResult.set(0, judgeResult.get(0) + 1);
 					judges = 0;
 
 				} else if (current_tapped_time >= lower_bound - 0.03 && current_tapped_time <= upper_bound + 0.03) {
-					System.out.println("PerFect~~~");
 					judgeResult.set(1, judgeResult.get(1) + 1);
 					judges = 1;
 
 				} else if (current_tapped_time >= lower_bound - 0.10 && current_tapped_time <= upper_bound + 0.10) {
 					if (guaranteePerfect == true) {
-						System.out.println("PerFect~~~");
 						judgeResult.set(1, judgeResult.get(1) + 1);
 						judges = 1;
 					} else {
-						System.out.println("Great~~~");
 						judgeResult.set(2, judgeResult.get(2) + 1);
 						judges = 2;
 					}
 
 				} else if (current_tapped_time >= lower_bound - 0.15 && current_tapped_time <= upper_bound + 0.15) {
 					if (guaranteePerfect == true) {
-						System.out.println("PerFect~~~");
 						judgeResult.set(1, judgeResult.get(1) + 1);
 						judges = 1;
 					} else {
-						System.out.println("Good~~~");
 						judgeResult.set(3, judgeResult.get(3) + 1);
 						judges = 3;
 					}
@@ -177,7 +168,6 @@ public class MusicControl extends AnimationTimer {
 				gamePlayScreen.getChildren().remove(current_note.getCanvas());
 				new JudgeStyle(judges, gamePlayScreen).show();
 				gamePlayScreen.updateCombo();
-				System.out.println(judgeResult);
 			}
 		}
 
