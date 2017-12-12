@@ -33,6 +33,8 @@ public class GamePlayScreen extends Pane {
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
 	private static final Font COMBO_FONT = Font.loadFont("file:res/font/Education-Pencil.ttf", 30);
+	private static final Image skillAcivated = new Image("skill.png");
+	private static final Image levelUP = new Image("level.png");
 	private static int width = SceneManager.SCENE_WIDTH;
 	private static int height = SceneManager.SCENE_HEIGHT;
 	private boolean singlepulse = false;
@@ -40,6 +42,7 @@ public class GamePlayScreen extends Pane {
 	private static Canvas bg;
 	private static Canvas monsInfo, monCanvas;
 	private static Canvas heroInfo, heroCanvas;
+	private static Canvas event;
 	private Canvas combo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
@@ -55,6 +58,9 @@ public class GamePlayScreen extends Pane {
 		instance = this;
 		isCreate = true;
 		bg = new Canvas(width, height);
+		event = new Canvas(200, 150);
+		event.setTranslateY(40);
+		event.setTranslateX(90);
 		heroCanvas = new Canvas(width / 2, height * 2 / 3);
 		monCanvas = new Canvas(width, height);
 		paint();
@@ -80,7 +86,7 @@ public class GamePlayScreen extends Pane {
 		setIv();
 
 		this.getChildren().addAll(bg, heroCanvas, monCanvas, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo,
-				exitMenu, yesBtn, noBtn);
+				exitMenu, yesBtn, noBtn, event);
 
 		musicControl = new MusicControl(this);
 
@@ -124,7 +130,7 @@ public class GamePlayScreen extends Pane {
 		}
 	}
 
-	public void changeHero(Hero front, Hero back) {
+	public synchronized void changeHero(Hero front, Hero back) {
 
 		Canvas backCanvas = new Canvas(width / 2, height * 2 / 3);
 		GraphicsContext backGC = backCanvas.getGraphicsContext2D();
@@ -327,6 +333,37 @@ public class GamePlayScreen extends Pane {
 
 	public static GamePlayScreen getInstance() {
 		return instance;
+	}
+
+	public static void showSkillActivated() {
+		GraphicsContext gc = event.getGraphicsContext2D();
+		event.toFront();
+		new Thread(() -> {
+			gc.drawImage(skillAcivated, 0, 0, 200, 100);
+			try {
+				Thread.sleep(600);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gc.clearRect(0, 0, 200, 100);
+		}).start();
+
+	}
+
+	public static void showLevelUP() {
+		GraphicsContext gc = event.getGraphicsContext2D();
+		event.toFront();
+		new Thread(() -> {
+			gc.drawImage(levelUP, 0, 0, 200, 100);
+			try {
+				Thread.sleep(600);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gc.clearRect(0, 0, 200, 100);
+		}).start();
 	}
 
 }

@@ -57,7 +57,7 @@ public class Monster extends Entity {
 	}
 
 	public void setExp() {
-		this.Exp.add(3000);
+		this.Exp.add(100);
 		this.Exp.add(300);
 		this.Exp.add(500);
 	}

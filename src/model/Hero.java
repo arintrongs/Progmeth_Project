@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.application.Platform;
+import scene.GamePlayScreen;
+
 public abstract class Hero extends Entity implements Skillable {
 	protected String skillName;
 	protected int currentExp;
@@ -116,6 +119,10 @@ public abstract class Hero extends Entity implements Skillable {
 		this.increaseExp(exp);
 		if (this.isLevelUp()) {
 			this.levelUp();
+			Platform.runLater(() -> {
+				GamePlayScreen.showLevelUP();
+			});
+
 		}
 	}
 

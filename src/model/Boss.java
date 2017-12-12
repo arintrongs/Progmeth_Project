@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import gameLogic.GameManager;
+import gameLogic.SkillUpdater;
 import javafx.scene.canvas.GraphicsContext;
 import sharedObject.ThreadHolder;
 
@@ -73,20 +74,24 @@ public class Boss extends Monster implements Skillable {
 		int rnd = random.nextInt(2);
 
 		if (rnd == 1 && isSkillActivated == false && isSilence == false) {
-			System.out.println("Boss Skill Activated!!!");
+
 			isSkillActivated = true;
-			lastHero = GameManager.getCurrentCha();
-			lastAtk = lastHero.getAtk();
-			GameManager.getCurrentCha().setAtk(0);
+
 			Thread skill = new Thread(() -> {
-				try {
-					Thread.sleep(5000);
-					deactivate();
-				} catch (InterruptedException e) {
+				if (isSilence == false) {
+					System.out.println("Boss Skill Activated!!!");
+					lastHero = GameManager.getCurrentCha();
+					lastAtk = lastHero.getAtk();
+					GameManager.getCurrentCha().setAtk(0);
+					try {
+						Thread.sleep(5000);
+						deactivate();
+					} catch (InterruptedException e) {
+					}
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
 
 		} else {
 			System.out.println("Boss Fail!!");
@@ -104,7 +109,7 @@ public class Boss extends Monster implements Skillable {
 	}
 
 	public void deactivate() {
-		if (this.isSkillActivated == true && isSilence == false) {
+		if (this.isSkillActivated == true && isSilence == true) {
 
 			lastHero.setAtk(lastAtk);
 			System.out.println("Boss Skill Deactivated!!");

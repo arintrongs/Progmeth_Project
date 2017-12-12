@@ -47,7 +47,7 @@ public class MusicControl extends AnimationTimer {
 		try {
 			file = new Media(ClassLoader.getSystemResource("test.wav").toURI().toString());
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+
 		}
 		mediaPlayer = new MediaPlayer(file);
 

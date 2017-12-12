@@ -90,7 +90,7 @@ public class GameManager {
 		return currentCha;
 	}
 
-	public static void setCurrentCha(String hero) {
+	public static synchronized void setCurrentCha(String hero) {
 		Hero lastHero = currentCha;
 		for (IRenderable i : RenderableHolder.getInstance().getiRenderable()) {
 			if (i instanceof Hero && ((Hero) i).getName().compareTo(hero) != 0) {
