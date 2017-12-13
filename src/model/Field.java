@@ -3,8 +3,8 @@ package model;
 import gameLogic.GameManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import scene.SceneManager;
 import sharedObject.IRenderable;
-import window.SceneManager;
 
 public class Field implements IRenderable {
 	private int z = -999;

@@ -1,4 +1,4 @@
-package window;
+package scene;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -9,11 +9,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import scene.CharacterSelectScreen;
-import scene.GamePlayScreen;
-import scene.MainMenuScreen;
-import scene.ResultScreen;
-import scene.WelcomeScreen;
 import sharedObject.ThreadHolder;
 
 public class SceneManager {

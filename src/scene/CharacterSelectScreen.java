@@ -12,74 +12,78 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import model.Hero;
-import window.SceneManager;
 
 public class CharacterSelectScreen extends Pane {
 	private static final Font TITLE_FONT = Font.loadFont("file:res/font/south park.ttf", 60);
 	private static final Font BTN_FONT = Font.loadFont("file:res/font/crayon kids.ttf", 35);
-	private static final Font MENU_FONT_BOLD = Font.loadFont("file:res/font/crayon kids.ttf", 30);
+	private static final Font CHA_NAME_FONT = Font.loadFont("file:res/font/crayon kids.ttf", 30);
 	private static final Hero NULL = null;
 	private Canvas title;
-	private Canvas cha1, cha2, cha3, cha4;
+	private Canvas knightCanvas, spellCasterCanvas, clownCanvas, priestCanvas;
 	private Canvas backBtn;
 	private Canvas startBtn;
-	private String name = "";
+	private String currentCharName = "";
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
-	private Canvas boardCha1, boardCha2, boardCha3, boardCha4;
-	private Image bg = new Image("bg24.jpg");
-	private ImageView ivBg = new ImageView(bg);
+	private Canvas hoverKnightCanvas, hoverSpellCasterCanvas, hoverClownCanvas, hoverPriestCanvas;
+	private Image bg;
+	private ImageView ivBg;
 
 	public CharacterSelectScreen() {
 		super();
+
+		bg = new Image("bg24.jpg");
+		ivBg = new ImageView(bg);
+
 		ivBg.setFitWidth(width);
 		ivBg.setFitHeight(height);
 		ivBg.setTranslateX(0);
 		ivBg.setTranslateY(0);
 
-		title = drawButton("Select Character", width, height / 5, 0, 0);
+		title = draw("Select Character", width, height / 5, 0, 0);
 
-		boardCha1 = drawButton("BoardKnight", width / 3, height * 2 / 7, width / 8, height / 4 - 30);
-		boardCha2 = drawButton("BoardSpellCaster", width / 3, height * 2 / 7, width - width / 8 - width / 3,
+		hoverKnightCanvas = draw("BoardKnight", width / 3, height * 2 / 7, width / 8, height / 4 - 30);
+		hoverSpellCasterCanvas = draw("BoardSpellCaster", width / 3, height * 2 / 7, width - width / 8 - width / 3,
 				height / 4 - 30);
-		boardCha3 = drawButton("BoardClown", width / 3, height * 2 / 7, width / 8, height / 2 + 10);
-		boardCha4 = drawButton("BoardPriest", width / 3, height * 2 / 7, width - width / 8 - width / 3,
+		hoverClownCanvas = draw("BoardClown", width / 3, height * 2 / 7, width / 8, height / 2 + 10);
+		hoverPriestCanvas = draw("BoardPriest", width / 3, height * 2 / 7, width - width / 8 - width / 3,
 				height / 2 + 10);
 
-		cha1 = drawButton("Knight", width / 3, height * 2 / 7, width / 8, height / 4 - 30);
-		addCanvasEvents(cha1, "Knight");
-		cha2 = drawButton("SpellCaster", width / 3, height * 2 / 7, width - width / 8 - width / 3, height / 4 - 30);
-		addCanvasEvents(cha2, "SpellCaster");
-		cha3 = drawButton("Clown", width / 3, height * 2 / 7, width / 8, height / 2 + 10);
-		addCanvasEvents(cha3, "Clown");
-		cha4 = drawButton("Priest", width / 3, height * 2 / 7, width - width / 8 - width / 3, height / 2 + 10);
-		addCanvasEvents(cha4, "Priest");
-		startBtn = drawButton("Start", width / 6, height / 9, width - width / 4 - width / 6, height * 5 / 6 + 10);
+		knightCanvas = draw("Knight", width / 3, height * 2 / 7, width / 8, height / 4 - 30);
+		addCanvasEvents(knightCanvas, "Knight");
+		spellCasterCanvas = draw("SpellCaster", width / 3, height * 2 / 7, width - width / 8 - width / 3,
+				height / 4 - 30);
+		addCanvasEvents(spellCasterCanvas, "SpellCaster");
+		clownCanvas = draw("Clown", width / 3, height * 2 / 7, width / 8, height / 2 + 10);
+		addCanvasEvents(clownCanvas, "Clown");
+		priestCanvas = draw("Priest", width / 3, height * 2 / 7, width - width / 8 - width / 3, height / 2 + 10);
+		addCanvasEvents(priestCanvas, "Priest");
+		startBtn = draw("Start", width / 6, height / 9, width - width / 4 - width / 6, height * 5 / 6 + 10);
 		addCanvasEvents(startBtn, "Start");
-		backBtn = drawButton("Back", width / 6, height / 9, width / 4, height * 5 / 6 + 10);
+		backBtn = draw("Back", width / 6, height / 9, width / 4, height * 5 / 6 + 10);
 		addCanvasEvents(backBtn, "Back");
 
-		this.getChildren().addAll(ivBg, title, boardCha1, boardCha2, boardCha3, boardCha4, cha1, cha2, cha3, cha4,
-				startBtn, backBtn);
+		this.getChildren().addAll(ivBg, title, hoverKnightCanvas, hoverSpellCasterCanvas, hoverClownCanvas,
+				hoverPriestCanvas, knightCanvas, spellCasterCanvas, clownCanvas, priestCanvas, startBtn, backBtn);
 
 	}
 
-	public Canvas drawButton(String name, double width, double height, double posX, double posY) {
+	public Canvas draw(String currentCharName, double width, double height, double posX, double posY) {
 		Canvas canvas = new Canvas(width, height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		canvas.setTranslateX(posX);
 		canvas.setTranslateY(posY);
 
-		if (name == "Select Character") {
+		if (currentCharName == "Select Character") {
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(TITLE_FONT);
 
-			gc.fillText(name, width / 2, height / 2);
+			gc.fillText(currentCharName, width / 2, height / 2);
 		}
 
-		else if (name == "Start" || name == "Back") {
+		else if (currentCharName == "Start" || currentCharName == "Back") {
 			gc.setFill(Color.LIGHTBLUE);
 
 			gc.fillRoundRect(0, 0, width, height, 50, 50);
@@ -88,14 +92,15 @@ public class CharacterSelectScreen extends Pane {
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(BTN_FONT);
 
-			gc.fillText(name, width / 2, height / 2);
-		} else if (name == "Knight" || name == "SpellCaster" || name == "Clown" || name == "Priest") {
+			gc.fillText(currentCharName, width / 2, height / 2);
+		} else if (currentCharName == "Knight" || currentCharName == "SpellCaster" || currentCharName == "Clown"
+				|| currentCharName == "Priest") {
 			Image img;
-			if (name == "Knight")
+			if (currentCharName == "Knight")
 				img = new Image("Knight1_head.png");
-			else if (name == "SpellCaster")
+			else if (currentCharName == "SpellCaster")
 				img = new Image("Spellcaster1_head.png");
-			else if (name == "Clown")
+			else if (currentCharName == "Clown")
 				img = new Image("Clown1_head.png");
 			else
 				img = new Image("Priest1_head.png");
@@ -105,10 +110,10 @@ public class CharacterSelectScreen extends Pane {
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, width - 10, height - 10, 50, 50);
 			gc.setFill(Color.BLACK);
-			gc.setFont(MENU_FONT_BOLD);
+			gc.setFont(CHA_NAME_FONT);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
-			gc.fillText(name, width / 2, height / 5);
+			gc.fillText(currentCharName, width / 2, height / 5);
 
 		} else {
 			gc.setFill(Color.WHITE);
@@ -119,10 +124,10 @@ public class CharacterSelectScreen extends Pane {
 
 	}
 
-	public void drawHoverIndicator(Canvas canvas, String name) {
+	public void drawHoverIndicator(Canvas canvas, String currentCharName) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
-		if (name == "Start" || name == "Back") {
+		if (currentCharName == "Start" || currentCharName == "Back") {
 			gc.setFill(Color.LIGHTBLUE.desaturate());
 
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
@@ -130,7 +135,7 @@ public class CharacterSelectScreen extends Pane {
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(BTN_FONT);
-			gc.fillText(name, canvas.getWidth() / 2, canvas.getHeight() / 2);
+			gc.fillText(currentCharName, canvas.getWidth() / 2, canvas.getHeight() / 2);
 		}
 
 		else {
@@ -141,10 +146,10 @@ public class CharacterSelectScreen extends Pane {
 
 	}
 
-	public void undrawHoverIndicator(Canvas canvas, String name) {
+	public void undrawHoverIndicator(Canvas canvas, String currentCharName) {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
-		if (name == "Start" || name == "Back") {
+		if (currentCharName == "Start" || currentCharName == "Back") {
 			gc.setFill(Color.LIGHTBLUE);
 
 			gc.fillRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 50, 50);
@@ -152,7 +157,7 @@ public class CharacterSelectScreen extends Pane {
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(BTN_FONT);
-			gc.fillText(name, canvas.getWidth() / 2, canvas.getHeight() / 2);
+			gc.fillText(currentCharName, canvas.getWidth() / 2, canvas.getHeight() / 2);
 		} else {
 			gc.setFill(Color.WHITE);
 			gc.fillRoundRect(5, 5, canvas.getWidth() - 10, canvas.getHeight() - 10, 50, 50);
@@ -160,26 +165,25 @@ public class CharacterSelectScreen extends Pane {
 		}
 	}
 
-	private void addCanvasEvents(Canvas canvas, String name) {
+	private void addCanvasEvents(Canvas canvas, String canvasName) {
 		canvas.setOnMouseClicked((MouseEvent event) -> {
 
-			if (name != "Start" && name != "Back") {
-				GameManager.setCurrentCha(name, 0);
-				this.name = name;
-				if (name != "Knight")
-					undrawHoverIndicator(boardCha1, name);
-				if (name != "SpellCaster")
-					undrawHoverIndicator(boardCha2, name);
-				if (name != "Clown")
-					undrawHoverIndicator(boardCha3, name);
-				if (name != "Priest")
-					undrawHoverIndicator(boardCha4, name);
+			if (currentCharName != "Start" && canvasName != "Back") {
+				GameManager.setCurrentCha(currentCharName, 0);
+				this.currentCharName = canvasName;
+				if (currentCharName != "Knight")
+					undrawHoverIndicator(hoverKnightCanvas, canvasName);
+				if (currentCharName != "SpellCaster")
+					undrawHoverIndicator(hoverSpellCasterCanvas, canvasName);
+				if (currentCharName != "Clown")
+					undrawHoverIndicator(hoverClownCanvas, canvasName);
+				if (currentCharName != "Priest")
+					undrawHoverIndicator(hoverPriestCanvas, canvasName);
 			} else if (GameManager.getCurrentCha() != NULL) {
 
-				if (name == "Start") {
+				if (currentCharName == "Start") {
 					GameManager.setCurrentMon();
 					Pane gamePlay = new GamePlayScreen();
-
 					SceneManager.gotoSceneOf(gamePlay);
 					gamePlay.setFocusTraversable(true);
 					new Thread(() -> {
@@ -194,7 +198,7 @@ public class CharacterSelectScreen extends Pane {
 
 				}
 
-				else if (name.compareTo("Back") == 0) {
+				else if (currentCharName.compareTo("Back") == 0) {
 					Pane mainMenu = new MainMenuScreen();
 					SceneManager.gotoSceneOf(mainMenu);
 				}
@@ -202,29 +206,29 @@ public class CharacterSelectScreen extends Pane {
 		});
 
 		canvas.setOnMouseEntered((MouseEvent e) -> {
-			if (name == "Knight")
-				drawHoverIndicator(boardCha1, name);
-			else if (name == "SpellCaster")
-				drawHoverIndicator(boardCha2, name);
-			else if (name == "Clown")
-				drawHoverIndicator(boardCha3, name);
-			else if (name == "Priest")
-				drawHoverIndicator(boardCha4, name);
+			if (currentCharName == "Knight")
+				drawHoverIndicator(hoverKnightCanvas, canvasName);
+			else if (currentCharName == "SpellCaster")
+				drawHoverIndicator(hoverSpellCasterCanvas, canvasName);
+			else if (currentCharName == "Clown")
+				drawHoverIndicator(hoverClownCanvas, canvasName);
+			else if (currentCharName == "Priest")
+				drawHoverIndicator(hoverPriestCanvas, canvasName);
 			else
-				drawHoverIndicator(canvas, name);
+				drawHoverIndicator(canvas, canvasName);
 		});
 
 		canvas.setOnMouseExited((MouseEvent event) -> {
-			if (name == "Knight" && this.name != name)
-				undrawHoverIndicator(boardCha1, name);
-			else if (name == "SpellCaster" && this.name != name)
-				undrawHoverIndicator(boardCha2, name);
-			else if (name == "Clown" && this.name != name)
-				undrawHoverIndicator(boardCha3, name);
-			else if (name == "Priest" && this.name != name)
-				undrawHoverIndicator(boardCha4, name);
-			else if (name == "Start" || name == "Back")
-				undrawHoverIndicator(canvas, name);
+			if (currentCharName == "Knight" && this.currentCharName != canvasName)
+				undrawHoverIndicator(hoverKnightCanvas, canvasName);
+			else if (currentCharName == "SpellCaster" && this.currentCharName != canvasName)
+				undrawHoverIndicator(hoverSpellCasterCanvas, canvasName);
+			else if (currentCharName == "Clown" && this.currentCharName != canvasName)
+				undrawHoverIndicator(hoverClownCanvas, canvasName);
+			else if (currentCharName == "Priest" && this.currentCharName != canvasName)
+				undrawHoverIndicator(hoverPriestCanvas, canvasName);
+			else if (currentCharName == "Start" || canvasName == "Back")
+				undrawHoverIndicator(canvas, canvasName);
 		});
 
 	}

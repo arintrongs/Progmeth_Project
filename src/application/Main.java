@@ -2,14 +2,15 @@ package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import scene.SceneManager;
 import sharedObject.ThreadHolder;
-import window.SceneManager;
 
 public class Main extends Application {
 
 	public void start(Stage primaryStage) {
 		try {
 			SceneManager.initialize(primaryStage);
+			primaryStage.setResizable(false);
 			primaryStage.setTitle("GAME");
 			primaryStage.centerOnScreen();
 

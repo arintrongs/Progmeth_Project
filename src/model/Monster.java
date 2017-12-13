@@ -7,7 +7,7 @@ import gameLogic.GameManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import scene.GamePlayScreen;
-import window.SceneManager;
+import scene.SceneManager;
 
 public class Monster extends Entity {
 	protected double currentMaxHp;

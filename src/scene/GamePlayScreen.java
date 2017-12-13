@@ -25,7 +25,6 @@ import model.Hero;
 import model.Monster;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
-import window.SceneManager;
 
 public class GamePlayScreen extends Pane {
 
@@ -45,7 +44,7 @@ public class GamePlayScreen extends Pane {
 	private static Canvas monsInfo, monCanvas;
 	private static Canvas heroInfo, heroCanvas;
 	private static Canvas eventCanvas, skillCanvas, bossSkillCanvas;
-	private Canvas combo;
+	private Canvas comboCanvas;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
 	private Image playzoneImg, tapZone;
@@ -53,6 +52,7 @@ public class GamePlayScreen extends Pane {
 	private ImageView ivTapZone = new ImageView();
 	private static MusicControl musicControl;
 	public static GamePlayScreen instance;
+	private static GraphicsContext gcBg, gcMon, gcHero;
 
 	public GamePlayScreen() {
 
@@ -77,21 +77,21 @@ public class GamePlayScreen extends Pane {
 		monCanvas = new Canvas(width, height);
 		paint();
 
-		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
-		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
-		exitMenu = drawButton("Exit", width / 3 + 40, height / 6, width / 3 - 20, height / 3);
+		monsInfo = draw("MonsterInfo", width / 2, height / 10, width / 2, 0);
+		heroInfo = draw("HeroInfo", width / 2, height / 10, 0, 0);
+		exitMenu = draw("Exit", width / 3 + 40, height / 6, width / 3 - 20, height / 3);
 		addCanvasEvents(exitMenu, "Exit");
 		exitMenu.setVisible(false);
 
-		yesBtn = drawButton("Yes", width / 12, height / 18, width / 3 + 60, height / 3 + 50);
+		yesBtn = draw("Yes", width / 12, height / 18, width / 3 + 60, height / 3 + 50);
 		addCanvasEvents(yesBtn, "Yes");
 		yesBtn.setVisible(false);
 
-		noBtn = drawButton("No", width / 12, height / 18, width / 3 + width / 3 - width / 12 - 60, height / 3 + 50);
+		noBtn = draw("No", width / 12, height / 18, width / 3 + width / 3 - width / 12 - 60, height / 3 + 50);
 		addCanvasEvents(noBtn, "No");
 		noBtn.setVisible(false);
 
-		gamePlay = drawButton("gamePlay", width, height * 1 / 3, 0, height * 2 / 3);
+		gamePlay = draw("gamePlay", width, height * 1 / 3, 0, height * 2 / 3);
 		gamePlay.setFocusTraversable(true);
 		addCanvasEvents(gamePlay, "gamePlay");
 
@@ -117,9 +117,9 @@ public class GamePlayScreen extends Pane {
 
 	public static void paint() {
 
-		GraphicsContext gc = bg.getGraphicsContext2D();
-		GraphicsContext gcHero = heroCanvas.getGraphicsContext2D();
-		GraphicsContext gcMon = monCanvas.getGraphicsContext2D();
+		gcBg = bg.getGraphicsContext2D();
+		gcHero = heroCanvas.getGraphicsContext2D();
+		gcMon = monCanvas.getGraphicsContext2D();
 		gcHero.clearRect(0, 0, 800, 800);
 
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
@@ -128,7 +128,7 @@ public class GamePlayScreen extends Pane {
 
 				if (e instanceof Field) {
 					((Field) e).setBg();
-					e.draw(gc, 0, 0);
+					e.draw(gcBg, 0, 0);
 
 				} else if (e instanceof Hero) {
 
@@ -144,7 +144,7 @@ public class GamePlayScreen extends Pane {
 		}
 	}
 
-	public synchronized void changeHero(Hero front, Hero back) {
+	public synchronized void changeHero(Hero back) {
 
 		Canvas backCanvas = new Canvas(width / 2, height * 2 / 3);
 		GraphicsContext backGC = backCanvas.getGraphicsContext2D();
@@ -201,7 +201,7 @@ public class GamePlayScreen extends Pane {
 
 	}
 
-	public static Canvas drawButton(String name, double width, double height, double posX, double posY) {
+	public static Canvas draw(String name, double width, double height, double posX, double posY) {
 		Canvas canvas = new Canvas(width, height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		canvas.setTranslateX(posX);
@@ -318,31 +318,31 @@ public class GamePlayScreen extends Pane {
 
 	public void setMonsInfo() {
 		this.getChildren().remove(monsInfo);
-		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
+		monsInfo = draw("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		this.getChildren().add(monsInfo);
 	}
 
 	public void setHeroInfo() {
 		this.getChildren().remove(heroInfo);
-		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
+		heroInfo = draw("HeroInfo", width / 2, height / 10, 0, 0);
 		this.getChildren().add(heroInfo);
 	}
 
 	public Canvas getCombo() {
-		return combo;
+		return comboCanvas;
 	}
 
 	public void updateCombo() {
-		this.getChildren().remove(combo);
-		combo = drawButton("Combo", 200, 200, 0, height * 2 / 3);
-		GraphicsContext gc = combo.getGraphicsContext2D();
+		this.getChildren().remove(comboCanvas);
+		comboCanvas = draw("Combo", 200, 200, 0, height * 2 / 3);
+		GraphicsContext gc = comboCanvas.getGraphicsContext2D();
 		if (MusicControl.getCurrentCombo() >= 5) {
 			gc.setFill(Color.WHITE);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(COMBO_FONT);
 			gc.fillText(MusicControl.getCurrentCombo() + " Combo!", 110, 20);
-			this.getChildren().add(combo);
+			this.getChildren().add(comboCanvas);
 		}
 	}
 
@@ -412,7 +412,7 @@ public class GamePlayScreen extends Pane {
 		}).start();
 	}
 
-	public static void setIsCreated(boolean x) {
+	public static void isCreated(boolean x) {
 		isCreate = x;
 	}
 

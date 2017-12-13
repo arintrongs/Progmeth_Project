@@ -11,7 +11,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import window.SceneManager;
 
 public class WelcomeScreen extends Canvas {
 	private static final Font TITLE_FONT = Font.font("Monospace", 80);

@@ -11,48 +11,51 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import window.SceneManager;
 
 public class MainMenuScreen extends Pane {
 	private static final Font MODE_FONT = Font.loadFont("file:res/font/south park.ttf", 80);
 	private static final Font CHA_INFO_FONT = Font.loadFont("file:res/font/Inconsolata-Regular.ttf", 18);
 	private static final Font CHA_NAME_FONT = Font.loadFont("file:res/font/Inconsolata-Bold.ttf", 20);
-	private Canvas cha1, cha2, cha3, cha4, farm, boss;
-	private Canvas boardCha, boardFarm, boardBoss;
+	private Canvas knightCanvas, spellCasterCanvas, clownCanvas, priestCanvas, farm, boss;
+	private Canvas hoverChaCanvas, hoverFarmCanvas, hoverBossCanvas;
 
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
-	private Image bg = new Image("bg22.png");
-	private ImageView ivBg = new ImageView(bg);
+	private Image bg;
+	private ImageView ivBg;
 
 	public MainMenuScreen() {
 		super();
+
+		bg = new Image("bg22.png");
+		ivBg = new ImageView(bg);
 		ivBg.setFitWidth(width);
 		ivBg.setFitHeight(height);
 		ivBg.setTranslateX(0);
 		ivBg.setTranslateY(0);
 
-		boardCha = drawButton("BoardCha", width, 150, 0, 0);
+		hoverChaCanvas = draw("BoardCha", width, 150, 0, 0);
 
-		boardFarm = drawButton("BoardFarm", width / 3, width * 2 / 5, width / 8, width / 4);
-		boardBoss = drawButton("BoardFarm", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
+		hoverFarmCanvas = draw("BoardFarm", width / 3, width * 2 / 5, width / 8, width / 4);
+		hoverBossCanvas = draw("BoardFarm", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
 
-		cha1 = drawButton("Knight", width / 4, 150, 0, 0);
-		cha2 = drawButton("SpellCaster", width / 4, 150, width / 4, 0);
-		cha3 = drawButton("Clown", width / 4, 150, width / 2, 0);
-		cha4 = drawButton("Priest", width / 4, 150, width * 3 / 4, 0);
+		knightCanvas = draw("Knight", width / 4, 150, 0, 0);
+		spellCasterCanvas = draw("SpellCaster", width / 4, 150, width / 4, 0);
+		clownCanvas = draw("Clown", width / 4, 150, width / 2, 0);
+		priestCanvas = draw("Priest", width / 4, 150, width * 3 / 4, 0);
 
-		farm = drawButton("FARM", width / 3, width * 2 / 5, width / 8, width / 4);
+		farm = draw("FARM", width / 3, width * 2 / 5, width / 8, width / 4);
 		addCanvasEvents(farm, "FARM");
 
-		boss = drawButton("BOSS", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
+		boss = draw("BOSS", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
 		addCanvasEvents(boss, "BOSS");
 
-		getChildren().addAll(ivBg, boardCha, boardFarm, boardBoss, cha1, cha2, cha3, cha4, farm, boss);
+		getChildren().addAll(ivBg, hoverChaCanvas, hoverFarmCanvas, hoverBossCanvas, knightCanvas, spellCasterCanvas,
+				clownCanvas, priestCanvas, farm, boss);
 
 	}
 
-	private Canvas drawButton(String name, double width, double height, int posX, int posY) {
+	private Canvas draw(String name, double width, double height, int posX, int posY) {
 
 		Canvas btn = new Canvas(width, height);
 		GraphicsContext gc = btn.getGraphicsContext2D();
@@ -154,23 +157,18 @@ public class MainMenuScreen extends Pane {
 
 	}
 
-	private void addCanvasEvents(Canvas canvas, String buttonName) {
-		// TODO Fill Code
+	private void addCanvasEvents(Canvas canvas, String canvasName) {
 		canvas.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				// Wait for fix Boss gameplay
-
-				// Pane gamePlayScreen = new GamePlayScreen();
-				if (buttonName == "FARM") {
+				if (canvasName == "FARM") {
 					GameManager.setCurrentMode("Farm");
 					GameManager.setIsGameFinished(false);
 					Pane chaselect = new CharacterSelectScreen();
 					SceneManager.gotoSceneOf(chaselect);
-				} else if (buttonName == "BOSS") {
-					GamePlayScreen.setIsCreated(false);
+				} else if (canvasName == "BOSS") {
+					GamePlayScreen.isCreated(false);
 					GameManager.setCurrentMode("Boss");
 					GameManager.setIsGameFinished(false);
 					GameManager.getCurrentMon().setAlreadyDead(false);
@@ -194,12 +192,10 @@ public class MainMenuScreen extends Pane {
 
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-
-				if (buttonName == "FARM")
-					drawHoverIndicator(boardFarm, buttonName);
+				if (canvasName == "FARM")
+					drawHoverIndicator(hoverFarmCanvas, canvasName);
 				else {
-					drawHoverIndicator(boardBoss, buttonName);
+					drawHoverIndicator(hoverBossCanvas, canvasName);
 				}
 
 			}
@@ -211,10 +207,10 @@ public class MainMenuScreen extends Pane {
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 
-				if (buttonName == "FARM")
-					undrawHoverIndicator(boardFarm, buttonName);
+				if (canvasName == "FARM")
+					undrawHoverIndicator(hoverFarmCanvas, canvasName);
 				else {
-					undrawHoverIndicator(boardBoss, buttonName);
+					undrawHoverIndicator(hoverBossCanvas, canvasName);
 				}
 
 			}

@@ -15,8 +15,8 @@ import model.Hero;
 import model.JudgeStyle;
 import scene.GamePlayScreen;
 import scene.ResultScreen;
+import scene.SceneManager;
 import sharedObject.ThreadHolder;
-import window.SceneManager;
 
 public class MusicControl extends AnimationTimer {
 

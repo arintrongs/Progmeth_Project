@@ -16,9 +16,9 @@ import model.Priest;
 import model.SpellCaster;
 import scene.GamePlayScreen;
 import scene.MainMenuScreen;
+import scene.SceneManager;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
-import window.SceneManager;
 
 public class GameManager {
 
@@ -123,7 +123,7 @@ public class GameManager {
 		}
 
 		if (GamePlayScreen.getIsCreated() == true)
-			GamePlayScreen.instance.changeHero(lastHero, currentCha);
+			GamePlayScreen.instance.changeHero(currentCha);
 		if (f == 0) {
 			field.setBg();
 			scoreBefore.set(0, currentCha.getLevel() * 1.0);

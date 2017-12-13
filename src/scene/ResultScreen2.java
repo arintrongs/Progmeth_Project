@@ -11,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import window.SceneManager;
 
 public class ResultScreen2 extends Pane {
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
