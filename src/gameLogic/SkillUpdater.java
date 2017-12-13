@@ -25,7 +25,6 @@ public class SkillUpdater extends Thread {
 		activateskills();
 		try {
 			while (true) {
-
 				Thread.sleep(150);
 
 				if (GameManager.getCurrentMode().compareTo("Boss") == 0) {

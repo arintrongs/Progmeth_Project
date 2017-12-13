@@ -145,8 +145,10 @@ public class ResultScreen extends Pane {
 			Pane result2 = new ResultScreen2();
 
 			if (name == "Next") {
-
-				SceneManager.gotoSceneOf(result2);
+				if (GameManager.getCurrentMode().compareTo("Boss") == 0)
+					SceneManager.gotoSceneOf(new MainMenuScreen());
+				else
+					SceneManager.gotoSceneOf(result2);
 			}
 
 		});

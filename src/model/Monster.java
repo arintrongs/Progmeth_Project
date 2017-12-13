@@ -62,7 +62,7 @@ public class Monster extends Entity {
 	}
 
 	public void setExp() {
-		this.Exp.add(1000);
+		this.Exp.add(100);
 		for (int i = 1; i < 20; i++) {
 			this.Exp.add((int) Math.pow(this.Exp.get(i - 1), 1.04));
 		}

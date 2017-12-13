@@ -33,8 +33,10 @@ public class GamePlayScreen extends Pane {
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
 	private static final Font COMBO_FONT = Font.loadFont("file:res/font/Education-Pencil.ttf", 30);
-	private static final Image skillAcivated = new Image("skill.png");
-	private static final Image levelUP = new Image("level.png");
+	private static final Image SKILL_ACTIVATED = new Image("skill.png");
+	private static final Image BOSS_SKILL_ACTIVATED = new Image("boss_skill.png");
+	private static final Image FAIL = new Image("fail.png");
+	private static final Image LEVEL_UP = new Image("level.png");
 	private static int width = SceneManager.SCENE_WIDTH;
 	private static int height = SceneManager.SCENE_HEIGHT;
 	private boolean singlepulse = false;
@@ -42,7 +44,7 @@ public class GamePlayScreen extends Pane {
 	private static Canvas bg;
 	private static Canvas monsInfo, monCanvas;
 	private static Canvas heroInfo, heroCanvas;
-	private static Canvas event;
+	private static Canvas eventCanvas, skillCanvas, bossSkillCanvas;
 	private Canvas combo;
 	private Canvas gamePlay;
 	private Canvas exitMenu, yesBtn, noBtn;
@@ -50,7 +52,7 @@ public class GamePlayScreen extends Pane {
 	private ImageView ivPlayzone = new ImageView();
 	private ImageView ivTapZone = new ImageView();
 	private static MusicControl musicControl;
-	private static GamePlayScreen instance;
+	public static GamePlayScreen instance;
 
 	public GamePlayScreen() {
 
@@ -58,9 +60,18 @@ public class GamePlayScreen extends Pane {
 		instance = this;
 		isCreate = true;
 		bg = new Canvas(width, height);
-		event = new Canvas(200, 150);
-		event.setTranslateY(40);
-		event.setTranslateX(90);
+		skillCanvas = new Canvas(400, 200);
+		bossSkillCanvas = new Canvas(400, 200);
+		eventCanvas = new Canvas(600, 300);
+		eventCanvas.setTranslateY(height / 3 - 80);
+		eventCanvas.setTranslateX(width / 2 - 300);
+
+		skillCanvas.setTranslateX(90);
+		skillCanvas.setTranslateY(40);
+
+		bossSkillCanvas.setTranslateX(500);
+		bossSkillCanvas.setTranslateY(60);
+
 		heroCanvas = new Canvas(width / 2, height * 2 / 3);
 
 		monCanvas = new Canvas(width, height);
@@ -88,7 +99,7 @@ public class GamePlayScreen extends Pane {
 		setIv();
 		this.getChildren().clear();
 		this.getChildren().addAll(bg, heroCanvas, monCanvas, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo,
-				exitMenu, yesBtn, noBtn, event);
+				exitMenu, yesBtn, noBtn, eventCanvas, skillCanvas, bossSkillCanvas);
 
 	}
 
@@ -255,7 +266,12 @@ public class GamePlayScreen extends Pane {
 
 	public void start() {
 		musicControl = new MusicControl(this);
-		musicControl.run();
+		musicControl.getMediaPlayer().setOnReady(() -> {
+			musicControl.setDuration(musicControl.getMediaPlayer().getTotalDuration().toSeconds());
+			musicControl.setMusicChart();
+			musicControl.run();
+		});
+
 	}
 
 	private void addCanvasEvents(Canvas canvas, String name) {
@@ -334,15 +350,27 @@ public class GamePlayScreen extends Pane {
 		return isCreate;
 	}
 
-	public static GamePlayScreen getInstance() {
-		return instance;
+	public static void showSkillActivated() {
+		GraphicsContext gc = skillCanvas.getGraphicsContext2D();
+		skillCanvas.toFront();
+		new Thread(() -> {
+			gc.drawImage(SKILL_ACTIVATED, 0, 0, 200, 100);
+			try {
+				Thread.sleep(600);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gc.clearRect(0, 0, 200, 100);
+		}).start();
+
 	}
 
-	public static void showSkillActivated() {
-		GraphicsContext gc = event.getGraphicsContext2D();
-		event.toFront();
+	public static void showBossSkillActivated() {
+		GraphicsContext gc = bossSkillCanvas.getGraphicsContext2D();
+		bossSkillCanvas.toFront();
 		new Thread(() -> {
-			gc.drawImage(skillAcivated, 0, 0, 200, 100);
+			gc.drawImage(BOSS_SKILL_ACTIVATED, 0, 0, 200, 100);
 			try {
 				Thread.sleep(600);
 			} catch (InterruptedException e) {
@@ -355,22 +383,37 @@ public class GamePlayScreen extends Pane {
 	}
 
 	public static void showLevelUP() {
-		GraphicsContext gc = event.getGraphicsContext2D();
-		event.toFront();
+		GraphicsContext gc = eventCanvas.getGraphicsContext2D();
+		eventCanvas.toFront();
 		new Thread(() -> {
-			gc.drawImage(levelUP, 0, 0, 200, 100);
+			gc.drawImage(LEVEL_UP, 0, 0, 600, 300);
 			try {
-				Thread.sleep(600);
+				Thread.sleep(800);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			gc.clearRect(0, 0, 200, 100);
+			gc.clearRect(0, 0, 600, 300);
+		}).start();
+	}
+
+	public static void showFail() {
+		GraphicsContext gc = eventCanvas.getGraphicsContext2D();
+		eventCanvas.toFront();
+		new Thread(() -> {
+			gc.drawImage(FAIL, 0, 0, 600, 300);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gc.clearRect(0, 0, 600, 300);
 		}).start();
 	}
 
 	public static void setIsCreated(boolean x) {
-		isCreate = false;
+		isCreate = x;
 	}
 
 	public static MusicControl getMusicControl() {

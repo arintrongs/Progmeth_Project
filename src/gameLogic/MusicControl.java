@@ -1,7 +1,6 @@
 package gameLogic;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -11,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import model.Boss;
 import model.Hero;
 import model.JudgeStyle;
 import scene.GamePlayScreen;
@@ -29,29 +29,23 @@ public class MusicControl extends AnimationTimer {
 	private ArrayList<Note> render;
 	private static ArrayList<Note> notes;
 	private static ArrayList<Integer> judgeResult;
+	private static final ArrayList<Double> BPM_LIST = new ArrayList<>();
 	private Note current_note;
 	private int idx, offsetCheck = 0, judges = 0, isSleep = 0, combo = 0;
 	private static int currentCombo = 0, toRenderIdx = 0;
 	public static final double NANO = 1000000000.0;
 	private static boolean guaranteePerfect = false;
-
 	private DamageUpdater damageUpdater;
 	private boolean isComboBreak = false;
 	private SkillUpdater skillUpdater;
 	private Random random = new Random();
-	public int check = 0;
+	public int check = 0, musicNumber;
+	private double duration;
 
 	public MusicControl(Pane pane) {
-
-		musicChart = new MusicChart("test2", 146.0, 8);
-		musicChart = new MusicChart("test", 175.0, 4);
-		try {
-			file = new Media(ClassLoader.getSystemResource("test.wav").toURI().toString());
-		} catch (URISyntaxException e) {
-
-		}
+		generateBPMList();
+		randomMusic();
 		mediaPlayer = new MediaPlayer(file);
-
 		this.gamePlayScreen = (GamePlayScreen) pane;
 		this.judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
 		this.render = new ArrayList<>();
@@ -61,19 +55,12 @@ public class MusicControl extends AnimationTimer {
 		this.currentCombo = 0;
 		this.toRenderIdx = 0;
 
-		for (int i = 0; i < musicChart.getChart().size(); i++) {
-			current_note = musicChart.getChart().get(i);
-			if (current_note.getType() == 1) {
-				current_note.setStartTime(i * this.musicChart.getDelayPerHit() - 2.0);
-				this.notes.add(current_note);
-			}
-		}
-
 	}
 
 	@Override
 	public void handle(long now) {
 		double current_time = (now - startTime) / NANO;
+
 		if (current_time >= musicChart.getNotesPerBar() * musicChart.getDelayPerHit() && offsetCheck == 0) {
 			offsetCheck = 1;
 			mediaPlayer.play();
@@ -81,8 +68,14 @@ public class MusicControl extends AnimationTimer {
 			skillUpdater.start();
 			ThreadHolder.threads.add(damageUpdater);
 			ThreadHolder.threads.add(skillUpdater);
+
 		}
-		if (current_time >= file.getDuration().toSeconds() + 2) {
+		if (current_time >= duration + 2 && GameManager.isGameFinished() == false
+				&& GameManager.getCurrentMon().getCurrentHp() > 0 && GameManager.getCurrentMon() instanceof Boss) {
+			GameManager.setIsGameFinished(true);
+			GamePlayScreen.showFail();
+		}
+		if (current_time >= duration + 4) {
 			end();
 		}
 		while (toRenderIdx < notes.size() && current_time >= notes.get(toRenderIdx).getStartTime()) {
@@ -175,6 +168,7 @@ public class MusicControl extends AnimationTimer {
 	}
 
 	public void end() {
+
 		mediaPlayer.stop();
 		this.stop();
 		damageUpdater.interrupt();
@@ -186,7 +180,6 @@ public class MusicControl extends AnimationTimer {
 		for (Hero i : GameManager.getHeroes())
 			i.setIsSkillActive(false);
 		Thread nextScene = new Thread(() -> {
-
 			SceneManager.gotoSceneOf(new ResultScreen());
 		});
 		nextScene.start();
@@ -225,5 +218,43 @@ public class MusicControl extends AnimationTimer {
 
 	public static void setIsGuarantee(boolean x) {
 		guaranteePerfect = x;
+	}
+
+	public void setDuration(double x) {
+		this.duration = x;
+	}
+
+	public void setMusicChart() {
+		if (GameManager.getCurrentMode().compareTo("Boss") == 0)
+			musicChart = new MusicChart("Good Night Bad Luck", 285.0, 4, duration);
+		else
+			musicChart = new MusicChart(Integer.toString(musicNumber), BPM_LIST.get(musicNumber), 4, duration);
+		for (int i = 0; i < musicChart.getChart().size(); i++) {
+			current_note = musicChart.getChart().get(i);
+			if (current_note.getType() == 1) {
+				current_note.setStartTime(i * this.musicChart.getDelayPerHit() - 2.0);
+				this.notes.add(current_note);
+			}
+		}
+	}
+
+	public void randomMusic() {
+		try {
+			if (GameManager.getCurrentMode().compareTo("Boss") == 0) {
+				file = new Media(ClassLoader.getSystemResource("boss.wav").toURI().toString());
+			} else {
+				musicNumber = random.nextInt(4);
+				file = new Media(ClassLoader.getSystemResource(musicNumber + ".wav").toURI().toString());
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
+	public void generateBPMList() {
+		BPM_LIST.add(175.0);
+		BPM_LIST.add(146.0);
+		BPM_LIST.add(185.0);
+		BPM_LIST.add(200.0);
 	}
 }

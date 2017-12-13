@@ -6,6 +6,7 @@ import java.util.Random;
 
 import gameLogic.GameManager;
 import gameLogic.SkillUpdater;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import scene.GamePlayScreen;
 import sharedObject.ThreadHolder;
@@ -31,11 +32,12 @@ public class Boss extends Monster implements Skillable {
 		this.isVisible = true;
 		this.isSkillActivated = false;
 		this.isSilence = false;
+		this.alreadyDead = false;
 
 	}
 
 	public void setmaxBossHp() {
-		this.maxBossHp.add(70);
+		this.maxBossHp.add(70000);
 		this.maxBossHp.add(200000);
 		this.maxBossHp.add(300000);
 		this.maxBossHp.add(500000);
@@ -77,11 +79,13 @@ public class Boss extends Monster implements Skillable {
 		if (rnd == 1 && isSkillActivated == false && isSilence == false) {
 
 			isSkillActivated = true;
-
 			Thread skill = new Thread(() -> {
 				if (isSilence == false) {
 					System.out.println("Boss Skill Activated!!!");
 					lastHero = GameManager.getCurrentCha();
+					Platform.runLater(() -> {
+						GamePlayScreen.showBossSkillActivated();
+					});
 					lastAtk = lastHero.getAtk();
 					GameManager.getCurrentCha().setAtk(0);
 					try {
@@ -128,12 +132,16 @@ public class Boss extends Monster implements Skillable {
 		}
 	}
 
-	public void update(Double atk, GamePlayScreen gamePlayScreen) {
-		if (this instanceof Boss && this.isDead() && this.alreadyDead == false) {
+	@Override
+	public void update(double atk, GamePlayScreen gamePlayScreen) {
+		this.decreaseHp(atk);
+		if (this.isDead() && this.alreadyDead == false) {
 			GameManager.getCurrentCha().update(this.currentExp);
 			this.alreadyDead = true;
-			this.newMonster();
 			this.level++;
+			this.currentHp = this.maxBossHp.get(this.level - 1);
+			this.currentMaxHp = this.currentHp;
+			this.currentExp = this.BossExp.get(this.level - 1);
 			GamePlayScreen.getMusicControl().end();
 		}
 	}

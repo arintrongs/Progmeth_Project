@@ -13,12 +13,13 @@ public class MusicChart {
 	private Double hitPerSecond;
 	private Double delayPerHit;
 	private double mediaStartTime;
+	private double duration;
 	public static int currentNoteIdx;
 	public static final double NANO = 1000000000.0;
 	private Note current_note;
 	private double offset;
 
-	public MusicChart(String name, Double bpm, int notesperbar) {
+	public MusicChart(String name, Double bpm, int notesperbar, double duration) {
 		this.currentNoteIdx = 0;
 		this.songname = name;
 		this.notesPerBar = notesperbar;
@@ -26,6 +27,7 @@ public class MusicChart {
 		hitPerSecond = this.bpm / 60;
 		delayPerHit = 1 / hitPerSecond;
 		chart = new ArrayList<>();
+		this.duration = duration;
 		addChart();
 	}
 
@@ -96,12 +98,14 @@ public class MusicChart {
 		direction.add(KeyCode.LEFT);
 		direction.add(KeyCode.RIGHT);
 
+		int noteCount = (int) (duration / delayPerHit);
+		System.out.println("Note count : " + noteCount + " " + duration + " " + delayPerHit);
 		Random random = new Random();
 
 		for (int i = 0; i < notesPerBar; i++) {
 			chart.add(new Note(0, KeyCode.LEFT));
 		}
-		for (int i = 0; i < 800; i++) {
+		for (int i = 0; i < noteCount; i++) {
 			int d = random.nextInt(4);
 			int c = random.nextInt(2);
 			chart.add(new Note(c, direction.get(d)));

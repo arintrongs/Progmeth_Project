@@ -96,7 +96,7 @@ public class MainMenuScreen extends Pane {
 			else
 				img = new Image("Priest1_head.png");
 
-			gc.drawImage(img, 15, 45, 90, 90);
+			gc.drawImage(img, 10, 45, 90, 90);
 
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(7);
@@ -117,21 +117,21 @@ public class MainMenuScreen extends Pane {
 			if (name == "Knight") {
 				gc.fillText("Level: " + GameManager.getKnight().getLevel() + '\n' + "Atk: "
 						+ String.format("%.1f", GameManager.getKnight().getAtk()) + '\n' + "Exp: "
-						+ GameManager.getKnight().getCurrentExp() + '\n', width * 6 / 10 - 5, height * 2 / 3);
+						+ GameManager.getKnight().getCurrentExp() + '\n', width * 6 / 10 - 20, height * 2 / 3);
 			} else if (name == "SpellCaster") {
 				gc.fillText(
 						"Level: " + GameManager.getSpellCaster().getLevel() + '\n' + "Atk: "
 								+ String.format("%.1f", GameManager.getSpellCaster().getAtk()) + '\n' + "Exp: "
 								+ GameManager.getSpellCaster().getCurrentExp() + '\n',
-						width * 6 / 10 - 5, height * 2 / 3);
+						width * 6 / 10 - 20, height * 2 / 3);
 			} else if (name == "Clown") {
 				gc.fillText("Level: " + GameManager.getClown().getLevel() + '\n' + "Atk: "
 						+ String.format("%.1f", GameManager.getClown().getAtk()) + '\n' + "Exp: "
-						+ GameManager.getClown().getCurrentExp() + '\n', width * 6 / 10 - 5, height * 2 / 3);
+						+ GameManager.getClown().getCurrentExp() + '\n', width * 6 / 10 - 20, height * 2 / 3);
 			} else {
 				gc.fillText("Level: " + GameManager.getPriest().getLevel() + '\n' + "Atk: "
 						+ String.format("%.1f", GameManager.getPriest().getAtk()) + '\n' + "Exp: "
-						+ GameManager.getPriest().getCurrentExp() + '\n', width * 6 / 10 - 5, height * 2 / 3);
+						+ GameManager.getPriest().getCurrentExp() + '\n', width * 6 / 10 - 20, height * 2 / 3);
 			}
 		}
 
@@ -166,11 +166,13 @@ public class MainMenuScreen extends Pane {
 				// Pane gamePlayScreen = new GamePlayScreen();
 				if (buttonName == "FARM") {
 					GameManager.setCurrentMode("Farm");
+					GameManager.setIsGameFinished(false);
 					Pane chaselect = new CharacterSelectScreen();
 					SceneManager.gotoSceneOf(chaselect);
 				} else if (buttonName == "BOSS") {
 					GamePlayScreen.setIsCreated(false);
 					GameManager.setCurrentMode("Boss");
+					GameManager.setIsGameFinished(false);
 					GameManager.getCurrentMon().setAlreadyDead(false);
 					GamePlayScreen gamePlayScreen = new GamePlayScreen();
 					new Thread(() -> {

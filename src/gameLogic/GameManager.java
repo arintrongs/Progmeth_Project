@@ -38,6 +38,7 @@ public class GameManager {
 	private static ArrayList<Image> notesImage;
 	private static ArrayList<Hero> heroes;
 	private static Random random = new Random();
+	private static boolean isGameFinished;
 
 	public static void newGame() {
 
@@ -60,6 +61,7 @@ public class GameManager {
 		currentMonPriest = new Monster("Monster", 1);
 		currentMon = new Monster("Monster", 1);
 
+		isGameFinished = false;
 		currentCha = knight;
 		RenderableHolder.getInstance().add(knight);
 		RenderableHolder.getInstance().add(spellCaster);
@@ -121,7 +123,7 @@ public class GameManager {
 		}
 
 		if (GamePlayScreen.getIsCreated() == true)
-			GamePlayScreen.getInstance().changeHero(lastHero, currentCha);
+			GamePlayScreen.instance.changeHero(lastHero, currentCha);
 		if (f == 0) {
 			field.setBg();
 			scoreBefore.set(0, currentCha.getLevel() * 1.0);
@@ -242,5 +244,13 @@ public class GameManager {
 
 	public static ArrayList<Hero> getHeroes() {
 		return heroes;
+	}
+
+	public static void setIsGameFinished(boolean x) {
+		isGameFinished = x;
+	}
+
+	public static boolean isGameFinished() {
+		return isGameFinished;
 	}
 }
