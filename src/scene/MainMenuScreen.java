@@ -6,7 +6,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,18 +14,15 @@ import javafx.scene.text.TextAlignment;
 import window.SceneManager;
 
 public class MainMenuScreen extends Pane {
-	private static final Font TITLE_FONT = Font.loadFont("file:res/font/south park.ttf", 80);
-	private static final Font MENU_FONT = Font.loadFont("file:res/font/Inconsolata-Regular.ttf", 18);
-	private static final Font MENU_FONT_BOLD = Font.loadFont("file:res/font/Inconsolata-Bold.ttf", 20);
+	private static final Font MODE_FONT = Font.loadFont("file:res/font/south park.ttf", 80);
+	private static final Font CHA_INFO_FONT = Font.loadFont("file:res/font/Inconsolata-Regular.ttf", 18);
+	private static final Font CHA_NAME_FONT = Font.loadFont("file:res/font/Inconsolata-Bold.ttf", 20);
 	private Canvas cha1, cha2, cha3, cha4, farm, boss;
 	private Canvas boardCha, boardFarm, boardBoss;
 
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
-
 	private Image bg = new Image("bg22.png");
-	private WritableImage cropBg = new WritableImage(bg.getPixelReader(), (int) bg.getHeight() / 3 * 4 / 3, 0,
-			(int) bg.getHeight() / 3 * 4, (int) bg.getHeight());
 	private ImageView ivBg = new ImageView(bg);
 
 	public MainMenuScreen() {
@@ -36,28 +32,27 @@ public class MainMenuScreen extends Pane {
 		ivBg.setTranslateX(0);
 		ivBg.setTranslateY(0);
 
-		boardCha = drawButton(boardCha, "BoardCha", width, 150, 0, 0);
+		boardCha = drawButton("BoardCha", width, 150, 0, 0);
 
-		boardFarm = drawButton(boardFarm, "BoardFarm", width / 3, width * 2 / 5, width / 8, width / 4);
-		boardBoss = drawButton(boardBoss, "BoardFarm", width / 3, width * 2 / 5, width - width / 8 - width / 3,
-				width / 4);
+		boardFarm = drawButton("BoardFarm", width / 3, width * 2 / 5, width / 8, width / 4);
+		boardBoss = drawButton("BoardFarm", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
 
-		cha1 = drawButton(cha1, "Knight", width / 4, 150, 0, 0);
-		cha2 = drawButton(cha2, "SpellCaster", width / 4, 150, width / 4, 0);
-		cha3 = drawButton(cha3, "Clown", width / 4, 150, width / 2, 0);
-		cha4 = drawButton(cha4, "Priest", width / 4, 150, width * 3 / 4, 0);
+		cha1 = drawButton("Knight", width / 4, 150, 0, 0);
+		cha2 = drawButton("SpellCaster", width / 4, 150, width / 4, 0);
+		cha3 = drawButton("Clown", width / 4, 150, width / 2, 0);
+		cha4 = drawButton("Priest", width / 4, 150, width * 3 / 4, 0);
 
-		farm = drawButton(farm, "FARM", width / 3, width * 2 / 5, width / 8, width / 4);
+		farm = drawButton("FARM", width / 3, width * 2 / 5, width / 8, width / 4);
 		addCanvasEvents(farm, "FARM");
 
-		boss = drawButton(boss, "BOSS", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
+		boss = drawButton("BOSS", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
 		addCanvasEvents(boss, "BOSS");
 
 		getChildren().addAll(ivBg, boardCha, boardFarm, boardBoss, cha1, cha2, cha3, cha4, farm, boss);
 
 	}
 
-	private Canvas drawButton(Canvas canvas, String name, double width, double height, int posX, int posY) {
+	private Canvas drawButton(String name, double width, double height, int posX, int posY) {
 
 		Canvas btn = new Canvas(width, height);
 		GraphicsContext gc = btn.getGraphicsContext2D();
@@ -76,7 +71,7 @@ public class MainMenuScreen extends Pane {
 			gc.setStroke(Color.BLACK);
 			gc.setLineWidth(5);
 			gc.strokeRoundRect(5, 5, width - 10, height - 10, 50, 50);
-			gc.setFont(TITLE_FONT);
+			gc.setFont(MODE_FONT);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
@@ -112,13 +107,13 @@ public class MainMenuScreen extends Pane {
 				gc.strokeLine(width, 0, width, height);
 			}
 
-			gc.setFont(MENU_FONT_BOLD);
+			gc.setFont(CHA_NAME_FONT);
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText(name, width / 2, height / 8 + 5);
 			gc.setTextAlign(TextAlignment.LEFT);
-			gc.setFont(MENU_FONT);
+			gc.setFont(CHA_INFO_FONT);
 			if (name == "Knight") {
 				gc.fillText("Level: " + GameManager.getKnight().getLevel() + '\n' + "Atk: "
 						+ String.format("%.1f", GameManager.getKnight().getAtk()) + '\n' + "Exp: "
@@ -174,7 +169,9 @@ public class MainMenuScreen extends Pane {
 					Pane chaselect = new CharacterSelectScreen();
 					SceneManager.gotoSceneOf(chaselect);
 				} else if (buttonName == "BOSS") {
+					GamePlayScreen.setIsCreated(false);
 					GameManager.setCurrentMode("Boss");
+					GameManager.getCurrentMon().setAlreadyDead(false);
 					GamePlayScreen gamePlayScreen = new GamePlayScreen();
 					new Thread(() -> {
 						try {
@@ -182,7 +179,7 @@ public class MainMenuScreen extends Pane {
 						} catch (InterruptedException e1) {
 							e1.printStackTrace();
 						}
-						System.out.println(GameManager.getCurrentMon().getCurrentHp());
+
 						(gamePlayScreen).start();
 					}).start();
 					SceneManager.gotoSceneOf(gamePlayScreen);

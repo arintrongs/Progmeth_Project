@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import model.Hero;
 import model.JudgeStyle;
 import scene.GamePlayScreen;
 import scene.ResultScreen;
@@ -178,14 +179,14 @@ public class MusicControl extends AnimationTimer {
 		this.stop();
 		damageUpdater.interrupt();
 		skillUpdater.interrupt();
-
+		for (Thread i : ThreadHolder.threads) {
+			i.interrupt();
+		}
+		ThreadHolder.threads.clear();
+		for (Hero i : GameManager.getHeroes())
+			i.setIsSkillActive(false);
 		Thread nextScene = new Thread(() -> {
-			try {
-				damageUpdater.join();
-				skillUpdater.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+
 			SceneManager.gotoSceneOf(new ResultScreen());
 		});
 		nextScene.start();

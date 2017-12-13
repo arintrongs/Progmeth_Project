@@ -21,6 +21,7 @@ public class Priest extends Hero {
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {
+		gc.clearRect(0, 0, 800, 800);
 		gc.drawImage(heroImg, x, y, heroImg.getWidth() / 3, heroImg.getHeight() / 3);
 	}
 
@@ -31,11 +32,11 @@ public class Priest extends Hero {
 				isSkillActivated = true;
 				skill = new Thread(() -> {
 					Platform.runLater(() -> {
-						GameManager.setCurrentCha(name);
+						GameManager.setCurrentCha(name, 1);
 						GamePlayScreen.showSkillActivated();
 					});
 					Boss boss = ((Boss) GameManager.getCurrentMon());
-					if (boss.getisActivated() == true)
+					if (boss.getisActivated() == true && boss.getIsSilence() == false)
 						boss.deactivate();
 					boss.setSilence(true);
 					System.out.println("Silence!!!!");
@@ -49,16 +50,17 @@ public class Priest extends Hero {
 				SkillUpdater.getSkills().add(skill);
 			} else {
 				System.out.println("Priest Fail!!");
+				this.isSkillActivated = true;
 				skill = new Thread(() -> {
 					try {
-						this.isSkillActivated = true;
+
 						Thread.sleep(15000);
 						this.isSkillActivated = false;
 					} catch (Exception e) {
 					}
 				});
 				ThreadHolder.threads.add(skill);
-				skill.start();
+				SkillUpdater.getSkills().add(skill);
 			}
 		}
 	}
@@ -75,6 +77,6 @@ public class Priest extends Hero {
 			}
 		});
 		ThreadHolder.threads.add(skill);
-		skill.start();
+		SkillUpdater.getSkills().add(skill);
 	}
 }

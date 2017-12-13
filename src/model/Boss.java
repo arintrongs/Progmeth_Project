@@ -7,6 +7,7 @@ import java.util.Random;
 import gameLogic.GameManager;
 import gameLogic.SkillUpdater;
 import javafx.scene.canvas.GraphicsContext;
+import scene.GamePlayScreen;
 import sharedObject.ThreadHolder;
 
 public class Boss extends Monster implements Skillable {
@@ -34,7 +35,7 @@ public class Boss extends Monster implements Skillable {
 	}
 
 	public void setmaxBossHp() {
-		this.maxBossHp.add(70000);
+		this.maxBossHp.add(70);
 		this.maxBossHp.add(200000);
 		this.maxBossHp.add(300000);
 		this.maxBossHp.add(500000);
@@ -94,40 +95,55 @@ public class Boss extends Monster implements Skillable {
 			SkillUpdater.getSkills().add(skill);
 
 		} else {
-			System.out.println("Boss Fail!!");
+
+			isSkillActivated = true;
+			isSilence = false;
 			Thread skill = new Thread(() -> {
 				try {
-					this.isSkillActivated = true;
+
 					Thread.sleep(15000);
-					this.isSkillActivated = false;
+					isSkillActivated = false;
 				} catch (Exception e) {
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
 		}
 	}
 
 	public void deactivate() {
-		if (this.isSkillActivated == true && isSilence == true) {
-
+		if (this.isSkillActivated == true && isSilence == false) {
+			lastHero = GameManager.getCurrentCha();
 			lastHero.setAtk(lastAtk);
-			System.out.println("Boss Skill Deactivated!!");
 			Thread skill = new Thread(() -> {
 				try {
 					Thread.sleep(15000);
 					this.isSkillActivated = false;
 				} catch (InterruptedException e) {
-					System.out.println();
+
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
+		}
+	}
+
+	public void update(Double atk, GamePlayScreen gamePlayScreen) {
+		if (this instanceof Boss && this.isDead() && this.alreadyDead == false) {
+			GameManager.getCurrentCha().update(this.currentExp);
+			this.alreadyDead = true;
+			this.newMonster();
+			this.level++;
+			GamePlayScreen.getMusicControl().end();
 		}
 	}
 
 	public void setSilence(boolean x) {
 		isSilence = x;
+	}
+
+	public boolean getIsSilence() {
+		return isSilence;
 	}
 
 	public boolean getisActivated() {

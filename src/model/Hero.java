@@ -14,7 +14,7 @@ public abstract class Hero extends Entity implements Skillable {
 	final protected List<Integer> maxExp = new ArrayList<>();
 	protected double atk = 10, originalAtk;
 	final protected double growthRateAtk = 1.2;
-	private int z = -999;
+
 	protected boolean isSkillActivated;
 	protected Random random = new Random();
 
@@ -128,6 +128,10 @@ public abstract class Hero extends Entity implements Skillable {
 
 	public boolean getIsSkillActivated() {
 		return isSkillActivated;
+	}
+
+	public void setIsSkillActive(boolean x) {
+		isSkillActivated = x;
 	}
 
 }

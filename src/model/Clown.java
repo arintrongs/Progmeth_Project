@@ -31,7 +31,7 @@ public class Clown extends Hero {
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {
-
+		gc.clearRect(0, 0, 300, 300);
 		gc.drawImage(heroImg, x, y, heroImg.getWidth() / 3, heroImg.getHeight() / 3);
 	}
 
@@ -56,7 +56,7 @@ public class Clown extends Hero {
 					});
 				}
 				Platform.runLater(() -> {
-					GameManager.setCurrentCha(name);
+					GameManager.setCurrentCha(name, 1);
 					GamePlayScreen.showSkillActivated();
 				});
 				deactivate();
@@ -65,16 +65,17 @@ public class Clown extends Hero {
 			SkillUpdater.getSkills().add(skill);
 		} else {
 			System.out.println("Clown Fail!!");
+			this.isSkillActivated = true;
 			skill = new Thread(() -> {
 				try {
-					this.isSkillActivated = true;
+
 					Thread.sleep(13000);
 					this.isSkillActivated = false;
 				} catch (Exception e) {
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
 		}
 	}
 
@@ -90,7 +91,7 @@ public class Clown extends Hero {
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
 
 		}
 	}

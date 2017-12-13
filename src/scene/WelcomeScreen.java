@@ -15,17 +15,14 @@ import window.SceneManager;
 
 public class WelcomeScreen extends Canvas {
 	private static final Font TITLE_FONT = Font.font("Monospace", 80);
-
 	private static final Font MENU_FONT = Font.font("Monospace", 40);
-
 	private Image bg = new Image("bg10.png");
+	private GraphicsContext gc;
 
 	public WelcomeScreen() {
 		super(SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
-
-		GraphicsContext gc = this.getGraphicsContext2D();
+		gc = this.getGraphicsContext2D();
 		gc.drawImage(bg, 0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
-
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setFill(Color.WHITE);
 		gc.setFont(TITLE_FONT);
@@ -37,8 +34,7 @@ public class WelcomeScreen extends Canvas {
 	}
 
 	private void addKeyEventHandler() {
-		// TODO Fill Code
-		GraphicsContext gc = this.getGraphicsContext2D();
+		gc = this.getGraphicsContext2D();
 		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ENTER) {

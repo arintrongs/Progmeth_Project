@@ -49,7 +49,7 @@ public class GamePlayScreen extends Pane {
 	private Image playzoneImg, tapZone;
 	private ImageView ivPlayzone = new ImageView();
 	private ImageView ivTapZone = new ImageView();
-	private MusicControl musicControl;
+	private static MusicControl musicControl;
 	private static GamePlayScreen instance;
 
 	public GamePlayScreen() {
@@ -62,8 +62,10 @@ public class GamePlayScreen extends Pane {
 		event.setTranslateY(40);
 		event.setTranslateX(90);
 		heroCanvas = new Canvas(width / 2, height * 2 / 3);
+
 		monCanvas = new Canvas(width, height);
 		paint();
+
 		monsInfo = drawButton("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = drawButton("HeroInfo", width / 2, height / 10, 0, 0);
 		exitMenu = drawButton("Exit", width / 3 + 40, height / 6, width / 3 - 20, height / 3);
@@ -84,11 +86,9 @@ public class GamePlayScreen extends Pane {
 
 		setImage();
 		setIv();
-
+		this.getChildren().clear();
 		this.getChildren().addAll(bg, heroCanvas, monCanvas, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo,
 				exitMenu, yesBtn, noBtn, event);
-
-		musicControl = new MusicControl(this);
 
 	}
 
@@ -109,20 +109,23 @@ public class GamePlayScreen extends Pane {
 		GraphicsContext gc = bg.getGraphicsContext2D();
 		GraphicsContext gcHero = heroCanvas.getGraphicsContext2D();
 		GraphicsContext gcMon = monCanvas.getGraphicsContext2D();
+		gcHero.clearRect(0, 0, 800, 800);
 
 		for (IRenderable e : RenderableHolder.getInstance().getiRenderable()) {
 
 			if (e.isVisible()) {
-				if (e instanceof Field) {
 
+				if (e instanceof Field) {
 					((Field) e).setBg();
 					e.draw(gc, 0, 0);
 
 				} else if (e instanceof Hero) {
+
 					e.draw(gcHero, width / 7, height / 6);
 				} else if (e instanceof Boss) {
 					e.draw(gcMon, width / 3 * 2 - 50, height / 3 - 60);
 				} else if (e instanceof Monster) {
+
 					e.draw(gcMon, width / 3 * 2 - 20, height / 3);
 
 				}
@@ -139,7 +142,6 @@ public class GamePlayScreen extends Pane {
 		ScaleTransition stHideFront = new ScaleTransition(Duration.millis(300), heroCanvas);
 		stHideFront.setFromX(1);
 		stHideFront.setToX(0);
-
 		backCanvas.setScaleX(0);
 
 		ScaleTransition stShowBack = new ScaleTransition(Duration.millis(300), backCanvas);
@@ -252,6 +254,7 @@ public class GamePlayScreen extends Pane {
 	}
 
 	public void start() {
+		musicControl = new MusicControl(this);
 		musicControl.run();
 	}
 
@@ -364,6 +367,14 @@ public class GamePlayScreen extends Pane {
 			}
 			gc.clearRect(0, 0, 200, 100);
 		}).start();
+	}
+
+	public static void setIsCreated(boolean x) {
+		isCreate = false;
+	}
+
+	public static MusicControl getMusicControl() {
+		return musicControl;
 	}
 
 }

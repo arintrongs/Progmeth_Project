@@ -23,7 +23,7 @@ import window.SceneManager;
 public class GameManager {
 
 	private static Hero currentCha;
-	private static Monster currentMon, monster;
+	private static Monster currentMonKnight, currentMonSpell, currentMonPriest, currentMonClown, currentMon;
 	private static int currentNumMon;
 	private static int currentBoss;
 	private static Hero knight;
@@ -46,9 +46,19 @@ public class GameManager {
 		clown = new Clown("Clown", 1, "skill3");
 		priest = new Priest("Priest", 1, "skill4");
 		heroes = new ArrayList<>();
-		monster = new Monster("Monster", 1);
 		boss = new Boss("Boss", 1, "skillBoss");
 		field = new Field();
+
+		heroes.add(knight);
+		heroes.add(spellCaster);
+		heroes.add(clown);
+		heroes.add(priest);
+
+		currentMonClown = new Monster("Monster", 1);
+		currentMonKnight = new Monster("Monster", 1);
+		currentMonSpell = new Monster("Monster", 1);
+		currentMonPriest = new Monster("Monster", 1);
+		currentMon = new Monster("Monster", 1);
 
 		currentCha = knight;
 		RenderableHolder.getInstance().add(knight);
@@ -90,7 +100,7 @@ public class GameManager {
 		return currentCha;
 	}
 
-	public static synchronized void setCurrentCha(String hero) {
+	public static synchronized void setCurrentCha(String hero, int f) {
 		Hero lastHero = currentCha;
 		for (IRenderable i : RenderableHolder.getInstance().getiRenderable()) {
 			if (i instanceof Hero && ((Hero) i).getName().compareTo(hero) != 0) {
@@ -98,6 +108,7 @@ public class GameManager {
 			} else if (i instanceof Hero && ((Hero) i).getName().compareTo(hero) == 0) {
 				((Hero) i).setVisible(true);
 			}
+
 		}
 		if (hero == "Knight") {
 			currentCha = knight;
@@ -111,12 +122,13 @@ public class GameManager {
 
 		if (GamePlayScreen.getIsCreated() == true)
 			GamePlayScreen.getInstance().changeHero(lastHero, currentCha);
-		field.setBg();
-		scoreBefore.set(0, currentCha.getLevel() * 1.0);
-		scoreBefore.set(1, currentCha.getAtk());
-		scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
-		scoreBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
-
+		if (f == 0) {
+			field.setBg();
+			scoreBefore.set(0, currentCha.getLevel() * 1.0);
+			scoreBefore.set(1, currentCha.getAtk());
+			scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
+			scoreBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
+		}
 	}
 
 	public static int getCurrentBoss() {
@@ -132,29 +144,37 @@ public class GameManager {
 	}
 
 	public static void setCurrentMode(String mode) {
-		RenderableHolder.getInstance().getiRenderable().remove(currentMon);
+
 		currentMode = mode;
 		if (currentMode.compareTo("Farm") == 0) {
-			currentMon = monster;
 
 		} else {
+			RenderableHolder.getInstance().getiRenderable().remove(currentMon);
 			currentMon = boss;
-			heroes.add(knight);
-			heroes.add(spellCaster);
-			heroes.add(clown);
-			heroes.add(priest);
-			setCurrentCha(heroes.get(random.nextInt(4)).getName());
+			String rhHero = heroes.get(random.nextInt(4)).getName();
 
+			setCurrentCha(rhHero, 0);
+			RenderableHolder.getInstance().add(currentMon);
 		}
-		RenderableHolder.getInstance().add(currentMon);
+
 	}
 
 	public static Monster getCurrentMon() {
 		return currentMon;
 	}
 
-	public static void setCurrentMon(Monster currentMon) {
-		GameManager.currentMon = currentMon;
+	public static void setCurrentMon() {
+		RenderableHolder.getInstance().getiRenderable().remove(currentMon);
+		if (currentCha.getName().compareTo("Knight") == 0)
+			currentMon = currentMonKnight;
+		if (currentCha.getName().compareTo("Priest") == 0)
+			currentMon = currentMonPriest;
+		if (currentCha.getName().compareTo("Clown") == 0)
+			currentMon = currentMonClown;
+		if (currentCha.getName().compareTo("SpellCaster") == 0)
+			currentMon = currentMonSpell;
+		RenderableHolder.getInstance().add(currentMon);
+
 	}
 
 	public static int getcurrentNumMon() {

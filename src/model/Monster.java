@@ -28,8 +28,10 @@ public class Monster extends Entity {
 	private static Image hurtedmonImg2 = new Image("hurted_mon2.png");
 	private static Image hurtedmonImg3 = new Image("hurted_mon3.png");
 	protected static Image hurtedbossImg = new Image("hurted_boss.png");
+	protected boolean alreadyDead;
 
 	public Monster(String name, int level) {
+
 		super(name, level);
 		setmaxHp();
 		setMultipleHp();
@@ -38,12 +40,15 @@ public class Monster extends Entity {
 		this.currentHp = (double) this.currentMaxHp;
 		this.currentExp = this.Exp.get(0);
 		this.isVisible = true;
+		this.alreadyDead = false;
 	}
 
 	public void setmaxHp() {
-		this.maxHp.add(500.0);
-		this.maxHp.add(1000.0);
-		this.maxHp.add(1500.0);
+		this.maxHp.add(50.0);
+		for (int i = 1; i < 20; i++) {
+			this.maxHp.add(Math.pow(this.maxHp.get(i - 1), 1.055));
+		}
+
 	}
 
 	public void setMultipleHp() {
@@ -57,9 +62,11 @@ public class Monster extends Entity {
 	}
 
 	public void setExp() {
-		this.Exp.add(100);
-		this.Exp.add(300);
-		this.Exp.add(500);
+		this.Exp.add(1000);
+		for (int i = 1; i < 20; i++) {
+			this.Exp.add((int) Math.pow(this.Exp.get(i - 1), 1.04));
+		}
+
 	}
 
 	public List<Double> getMultipleHp() {
@@ -164,10 +171,10 @@ public class Monster extends Entity {
 		}
 
 		for (int i = 0; i < this.maxHp.size(); i++) {
-			this.maxHp.set(i, this.maxHp.get(i) * this.multipleHp.get(index));
+			this.maxHp.set(i, this.maxHp.get(GameManager.getCurrentCha().getLevel()) * this.multipleHp.get(index));
 		}
 		for (int i = 0; i < this.Exp.size(); i++) {
-			this.Exp.set(i, this.Exp.get(i) * this.multipleExp);
+			this.Exp.set(i, this.Exp.get(GameManager.getCurrentCha().getLevel()) * this.multipleExp);
 		}
 		this.currentMaxHp = this.maxHp.get(0);
 		this.currentHp = this.currentMaxHp;
@@ -258,4 +265,7 @@ public class Monster extends Entity {
 		}
 	}
 
+	public void setAlreadyDead(Boolean x) {
+		this.alreadyDead = false;
+	}
 }

@@ -26,12 +26,12 @@ public class Main extends Application {
 	@Override
 	public void stop() {
 
-		SceneManager.getBGM().stop();
+		SceneManager.getBgMediaPlayer().stop();
 		for (int i = 0; i < ThreadHolder.threads.size(); i++) {
 			try {
 				ThreadHolder.threads.get(i).interrupt();
 			} catch (Exception e) {
-				System.out.println(1);
+
 			}
 		}
 

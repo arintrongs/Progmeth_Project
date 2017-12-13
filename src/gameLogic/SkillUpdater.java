@@ -13,10 +13,19 @@ public class SkillUpdater extends Thread {
 	private static ArrayList<Thread> toActivate = new ArrayList<>();
 	private boolean stillActivate = false;
 
+	public SkillUpdater() {
+
+	}
+
 	public void run() {
+		skills = new ArrayList<>();
+		toActivate = new ArrayList<>();
+		stillActivate = false;
+
 		activateskills();
 		try {
 			while (true) {
+
 				Thread.sleep(150);
 
 				if (GameManager.getCurrentMode().compareTo("Boss") == 0) {
@@ -31,7 +40,6 @@ public class SkillUpdater extends Thread {
 						Platform.runLater(() -> {
 							((Boss) GameManager.getCurrentMon()).activate();
 						});
-
 					}
 
 				} else {
@@ -50,7 +58,7 @@ public class SkillUpdater extends Thread {
 
 	public void activateskills() {
 		Thread thread = new Thread(() -> {
-			int idx = 0;
+			int idx = 0, check = 0;
 			try {
 				while (true) {
 					try {
@@ -59,6 +67,7 @@ public class SkillUpdater extends Thread {
 						break;
 					}
 					while (idx < skills.size()) {
+
 						skills.get(idx).start();
 						try {
 							Thread.sleep(1000);

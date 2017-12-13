@@ -20,6 +20,7 @@ public class Knight extends Hero {
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {
+		gc.clearRect(0, 0, 300, 300);
 		gc.drawImage(heroImg, x, y, heroImg.getWidth() / 3, heroImg.getHeight() / 3);
 	}
 
@@ -30,7 +31,7 @@ public class Knight extends Hero {
 			this.isSkillActivated = true;
 			skill = new Thread(() -> {
 				Platform.runLater(() -> {
-					GameManager.setCurrentCha(name);
+					GameManager.setCurrentCha(name, 1);
 					GamePlayScreen.showSkillActivated();
 				});
 
@@ -47,16 +48,17 @@ public class Knight extends Hero {
 
 		} else {
 			System.out.println("Knight Fail!!");
+			this.isSkillActivated = true;
 			skill = new Thread(() -> {
 				try {
-					this.isSkillActivated = true;
+
 					Thread.sleep(10000);
 					this.isSkillActivated = false;
 				} catch (Exception e) {
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
 		}
 	}
 
@@ -73,7 +75,7 @@ public class Knight extends Hero {
 				}
 			});
 			ThreadHolder.threads.add(skill);
-			skill.start();
+			SkillUpdater.getSkills().add(skill);
 
 		}
 

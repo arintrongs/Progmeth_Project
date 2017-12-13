@@ -101,7 +101,7 @@ public class SceneManager {
 		return fadein;
 	}
 
-	public static MediaPlayer getBGM() {
+	public static MediaPlayer getBgMediaPlayer() {
 		return bgMediaPlayer;
 	}
 }

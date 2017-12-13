@@ -164,7 +164,7 @@ public class CharacterSelectScreen extends Pane {
 		canvas.setOnMouseClicked((MouseEvent event) -> {
 
 			if (name != "Start" && name != "Back") {
-				GameManager.setCurrentCha(name);
+				GameManager.setCurrentCha(name, 0);
 				this.name = name;
 				if (name != "Knight")
 					undrawHoverIndicator(boardCha1, name);
@@ -177,6 +177,7 @@ public class CharacterSelectScreen extends Pane {
 			} else if (GameManager.getCurrentCha() != NULL) {
 
 				if (name == "Start") {
+					GameManager.setCurrentMon();
 					Pane gamePlay = new GamePlayScreen();
 
 					SceneManager.gotoSceneOf(gamePlay);

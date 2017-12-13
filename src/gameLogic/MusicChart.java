@@ -23,7 +23,6 @@ public class MusicChart {
 		this.songname = name;
 		this.notesPerBar = notesperbar;
 		this.bpm = bpm * notesperbar / 4;
-
 		hitPerSecond = this.bpm / 60;
 		delayPerHit = 1 / hitPerSecond;
 		chart = new ArrayList<>();
