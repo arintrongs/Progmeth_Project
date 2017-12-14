@@ -9,24 +9,16 @@ import sharedObject.ThreadHolder;
 
 public class SkillUpdater extends Thread {
 
-	private static ArrayList<Thread> skills = new ArrayList<>();
-	private static ArrayList<Thread> toActivate = new ArrayList<>();
+	private static ArrayList<Thread> skills;
 	private boolean stillActivate = false;
-
-	public SkillUpdater() {
-
-	}
 
 	public void run() {
 		skills = new ArrayList<>();
-		toActivate = new ArrayList<>();
 		stillActivate = false;
-
-		activateskills();
+		activateSkills();
 		try {
 			while (true) {
 				Thread.sleep(150);
-
 				if (GameManager.getCurrentMode().compareTo("Boss") == 0) {
 					for (Hero i : GameManager.getHeroes()) {
 						if (i.getIsSkillActivated() == false) {
@@ -55,7 +47,7 @@ public class SkillUpdater extends Thread {
 
 	}
 
-	public void activateskills() {
+	public void activateSkills() {
 		Thread thread = new Thread(() -> {
 			int idx = 0, check = 0;
 			try {
@@ -66,7 +58,6 @@ public class SkillUpdater extends Thread {
 						break;
 					}
 					while (idx < skills.size()) {
-
 						skills.get(idx).start();
 						try {
 							Thread.sleep(1000);

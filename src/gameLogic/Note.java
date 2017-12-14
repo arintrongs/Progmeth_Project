@@ -12,7 +12,6 @@ public class Note {
 	private Image image;
 
 	public Note(Integer type, KeyCode direction) {
-		// TODO Auto-generated constructor stub
 
 		if (direction == KeyCode.UP)
 			this.image = GameManager.getnotesImages().get(0);
@@ -40,16 +39,8 @@ public class Note {
 		this.startTime = startTime;
 	}
 
-	public int getZ() {
-		return 1;
-	}
-
 	public Canvas getCanvas() {
 		return this.canvas;
-	}
-
-	public boolean isVisible() {
-		return false;
 	}
 
 	public KeyCode getDirection() {

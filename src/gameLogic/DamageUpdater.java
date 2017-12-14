@@ -7,12 +7,7 @@ import scene.GamePlayScreen;
 
 public class DamageUpdater extends Thread {
 
-	private GamePlayScreen gamePlayScreen;
 	private ArrayList<Integer> judgeResult;
-
-	public DamageUpdater(GamePlayScreen gamePlayScreen) {
-		this.gamePlayScreen = gamePlayScreen;
-	}
 
 	public void run() {
 		try {
@@ -20,16 +15,16 @@ public class DamageUpdater extends Thread {
 				this.sleep(1000);
 				this.judgeResult = MusicControl.getJudgeResult();
 				Platform.runLater(() -> {
-					GameManager.update(this.judgeResult, gamePlayScreen);
+					GameManager.update(this.judgeResult, GamePlayScreen.instance);
 				});
-				MusicControl.setJudgeResult();
+				MusicControl.resetJudgeResult();
 			}
 		} catch (InterruptedException e) {
 			this.judgeResult = MusicControl.getJudgeResult();
 			Platform.runLater(() -> {
-				GameManager.update(judgeResult, gamePlayScreen);
+				GameManager.update(judgeResult, GamePlayScreen.instance);
 			});
-			MusicControl.setJudgeResult();
+			MusicControl.resetJudgeResult();
 			this.interrupt();
 		}
 

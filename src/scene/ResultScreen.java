@@ -30,13 +30,13 @@ public class ResultScreen extends Pane {
 
 	public ResultScreen() {
 		super();
+		bg = new Image("bg15.png");
+		ivBg = new ImageView(bg);
+
 		ivBg.setFitWidth(width);
 		ivBg.setFitHeight(height);
 		ivBg.setTranslateX(0);
 		ivBg.setTranslateY(0);
-
-		bg = new Image("bg15.png");
-		ivBg = new ImageView(bg);
 
 		title = draw("Result", width * 4 / 7, height / 5, width / 16, 0);
 		addCanvasEvents(title, "Result");

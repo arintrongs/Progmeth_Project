@@ -7,36 +7,23 @@ import javafx.scene.input.KeyCode;
 
 public class MusicChart {
 	private ArrayList<Note> chart;
-	private String songname;
 	private Double bpm;
 	private Integer notesPerBar;
 	private Double hitPerSecond;
 	private Double delayPerHit;
-	private double mediaStartTime;
-	private double duration;
-	public static int currentNoteIdx;
+	private Double duration;
+	private static int currentNoteIdx;
 	public static final double NANO = 1000000000.0;
-	private Note current_note;
-	private double offset;
 
-	public MusicChart(String name, Double bpm, int notesperbar, double duration) {
+	public MusicChart(Double bpm, int notesperbar, double duration) {
 		this.currentNoteIdx = 0;
-		this.songname = name;
 		this.notesPerBar = notesperbar;
 		this.bpm = bpm * notesperbar / 4;
 		hitPerSecond = this.bpm / 60;
 		delayPerHit = 1 / hitPerSecond;
 		chart = new ArrayList<>();
 		this.duration = duration;
-		addChart();
-	}
-
-	public void setOffset(double offset) {
-		this.offset = offset;
-	}
-
-	public double getMediaStartTime() {
-		return mediaStartTime;
+		generateChart();
 	}
 
 	public ArrayList<Note> getChart() {
@@ -87,19 +74,13 @@ public class MusicChart {
 		this.currentNoteIdx = currentNoteIdx;
 	}
 
-	public void setMediaStartTime(double mediaStartTime) {
-		this.mediaStartTime = mediaStartTime;
-	}
-
-	public void addChart() {
+	public void generateChart() {
 		ArrayList<KeyCode> direction = new ArrayList<>();
 		direction.add(KeyCode.UP);
 		direction.add(KeyCode.DOWN);
 		direction.add(KeyCode.LEFT);
 		direction.add(KeyCode.RIGHT);
-
 		int noteCount = (int) (duration / delayPerHit);
-		System.out.println("Note count : " + noteCount + " " + duration + " " + delayPerHit);
 		Random random = new Random();
 
 		for (int i = 0; i < notesPerBar; i++) {

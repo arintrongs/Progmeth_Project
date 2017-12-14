@@ -29,6 +29,7 @@ public class MainMenuScreen extends Pane {
 
 		bg = new Image("bg22.png");
 		ivBg = new ImageView(bg);
+
 		ivBg.setFitWidth(width);
 		ivBg.setFitHeight(height);
 		ivBg.setTranslateX(0);
@@ -83,7 +84,6 @@ public class MainMenuScreen extends Pane {
 		} else if (name == "BoardCha") {
 			gc.setFill(Color.BISQUE);
 			gc.fillRect(0, 0, width, height);
-			// btn.setOpacity(1);
 
 		}
 

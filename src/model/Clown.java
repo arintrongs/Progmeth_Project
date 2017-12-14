@@ -40,7 +40,7 @@ public class Clown extends Hero {
 		int d = this.random.nextInt(4);
 		int count = 5 + this.random.nextInt(11);
 
-		ArrayList<Note> notes = MusicControl.getNotes();
+		ArrayList<Note> notes = MusicControl.getfirstTypeNotes();
 		if (rnd == 1 && isSkillActivated == false) {
 			this.isSkillActivated = true;
 			skill = new Thread(() -> {

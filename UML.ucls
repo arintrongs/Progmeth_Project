@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.0" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="false" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="gameLogic.NoteManager" project="JadeEyes" 
-    file="/JadeEyes/src/gameLogic/NoteManager.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="101" width="194" x="4174" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="gameLogic.DamageUpdater" project="JadeEyes" 
+  <class id="1" language="java" name="gameLogic.DamageUpdater" project="JadeEyes" 
     file="/JadeEyes/src/gameLogic/DamageUpdater.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="137" width="219" x="4776" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -19,7 +10,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="gameLogic.MusicControl" project="JadeEyes" 
+  <class id="2" language="java" name="gameLogic.MusicControl" project="JadeEyes" 
     file="/JadeEyes/src/gameLogic/MusicControl.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="767" width="220" x="3914" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -28,7 +19,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="gameLogic.MusicChart" project="JadeEyes" 
+  <class id="3" language="java" name="gameLogic.MusicChart" project="JadeEyes" 
     file="/JadeEyes/src/gameLogic/MusicChart.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="569" width="196" x="3310" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -37,7 +28,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="gameLogic.SkillUpdater" project="JadeEyes" 
+  <class id="4" language="java" name="gameLogic.SkillUpdater" project="JadeEyes" 
     file="/JadeEyes/src/gameLogic/SkillUpdater.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="191" width="185" x="987" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -46,7 +37,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="gameLogic.Note" project="JadeEyes" file="/JadeEyes/src/gameLogic/Note.java" 
+  <class id="5" language="java" name="gameLogic.Note" project="JadeEyes" file="/JadeEyes/src/gameLogic/Note.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="317" width="173" x="1506" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -55,7 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="gameLogic.GameManager" project="JadeEyes" 
+  <class id="6" language="java" name="gameLogic.GameManager" project="JadeEyes" 
     file="/JadeEyes/src/gameLogic/GameManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="803" width="264" x="41" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -64,7 +55,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="application.Main" project="JadeEyes" file="/JadeEyes/src/application/Main.java" 
+  <class id="7" language="java" name="application.Main" project="JadeEyes" file="/JadeEyes/src/application/Main.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="137" width="124" x="3146" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -73,7 +64,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="model.Field" project="JadeEyes" file="/JadeEyes/src/model/Field.java" 
+  <class id="8" language="java" name="model.Field" project="JadeEyes" file="/JadeEyes/src/model/Field.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="227" width="254" x="1212" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -82,7 +73,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="model.Knight" project="JadeEyes" file="/JadeEyes/src/model/Knight.java" 
+  <class id="9" language="java" name="model.Knight" project="JadeEyes" file="/JadeEyes/src/model/Knight.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="173" width="254" x="4954" y="1813"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -91,7 +82,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="model.Monster" project="JadeEyes" file="/JadeEyes/src/model/Monster.java" 
+  <class id="10" language="java" name="model.Monster" project="JadeEyes" file="/JadeEyes/src/model/Monster.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="767" width="254" x="5248" y="1006"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -100,7 +91,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="model.Priest" project="JadeEyes" file="/JadeEyes/src/model/Priest.java" 
+  <class id="11" language="java" name="model.Priest" project="JadeEyes" file="/JadeEyes/src/model/Priest.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="191" width="254" x="4051" y="1813"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -109,7 +100,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="model.JudgeStyle" project="JadeEyes" file="/JadeEyes/src/model/JudgeStyle.java" 
+  <class id="12" language="java" name="model.JudgeStyle" project="JadeEyes" file="/JadeEyes/src/model/JudgeStyle.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="137" width="219" x="1719" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -118,7 +109,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="14" language="java" name="model.Skillable" project="JadeEyes" file="/JadeEyes/src/model/Skillable.java" 
+  <interface id="13" language="java" name="model.Skillable" project="JadeEyes" file="/JadeEyes/src/model/Skillable.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="101" width="115" x="4326" y="2296"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -127,7 +118,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="15" language="java" name="model.Clown" project="JadeEyes" file="/JadeEyes/src/model/Clown.java" 
+  <class id="14" language="java" name="model.Clown" project="JadeEyes" file="/JadeEyes/src/model/Clown.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="209" width="254" x="4366" y="1813"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -136,7 +127,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="model.Entity" project="JadeEyes" file="/JadeEyes/src/model/Entity.java" 
+  <class id="15" language="java" name="model.Entity" project="JadeEyes" file="/JadeEyes/src/model/Entity.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="299" width="154" x="5248" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -145,7 +136,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="model.SpellCaster" project="JadeEyes" file="/JadeEyes/src/model/SpellCaster.java" 
+  <class id="16" language="java" name="model.SpellCaster" project="JadeEyes" file="/JadeEyes/src/model/SpellCaster.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="191" width="254" x="4660" y="1813"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -154,7 +145,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="model.Boss" project="JadeEyes" file="/JadeEyes/src/model/Boss.java" 
+  <class id="17" language="java" name="model.Boss" project="JadeEyes" file="/JadeEyes/src/model/Boss.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="443" width="254" x="5248" y="1813"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -163,7 +154,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="model.Hero" project="JadeEyes" file="/JadeEyes/src/model/Hero.java" 
+  <class id="18" language="java" name="model.Hero" project="JadeEyes" file="/JadeEyes/src/model/Hero.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="551" width="178" x="4366" y="1006"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -172,7 +163,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="scene.GamePlayScreen" project="JadeEyes" 
+  <class id="19" language="java" name="scene.GamePlayScreen" project="JadeEyes" 
     file="/JadeEyes/src/scene/GamePlayScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="929" width="328" x="1978" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -181,7 +172,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="scene.MainMenuScreen" project="JadeEyes" 
+  <class id="20" language="java" name="scene.MainMenuScreen" project="JadeEyes" 
     file="/JadeEyes/src/scene/MainMenuScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="461" width="325" x="622" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -190,7 +181,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="scene.ResultScreen" project="JadeEyes" 
+  <class id="21" language="java" name="scene.ResultScreen" project="JadeEyes" 
     file="/JadeEyes/src/scene/ResultScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="407" width="328" x="3546" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -199,7 +190,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="scene.WelcomeScreen" project="JadeEyes" 
+  <class id="22" language="java" name="scene.WelcomeScreen" project="JadeEyes" 
     file="/JadeEyes/src/scene/WelcomeScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="155" width="173" x="5035" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -208,7 +199,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="scene.ResultScreen2" project="JadeEyes" 
+  <class id="23" language="java" name="scene.ResultScreen2" project="JadeEyes" 
     file="/JadeEyes/src/scene/ResultScreen2.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="425" width="328" x="2558" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -217,7 +208,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="25" language="java" name="scene.CharacterSelectScreen" project="JadeEyes" 
+  <class id="24" language="java" name="scene.CharacterSelectScreen" project="JadeEyes" 
     file="/JadeEyes/src/scene/CharacterSelectScreen.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="515" width="328" x="4408" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -226,7 +217,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="sharedObject.RenderableHolder" project="JadeEyes" 
+  <class id="25" language="java" name="sharedObject.RenderableHolder" project="JadeEyes" 
     file="/JadeEyes/src/sharedObject/RenderableHolder.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="191" width="237" x="345" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -235,16 +226,16 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="27" language="java" name="sharedObject.IRenderable" project="JadeEyes" 
+  <interface id="26" language="java" name="sharedObject.IRenderable" project="JadeEyes" 
     file="/JadeEyes/src/sharedObject/IRenderable.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="119" width="254" x="3230" y="1006"/>    
+    <position height="-1" width="-1" x="2343" y="1811"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="28" language="java" name="sharedObject.ThreadHolder" project="JadeEyes" 
+  <class id="27" language="java" name="sharedObject.ThreadHolder" project="JadeEyes" 
     file="/JadeEyes/src/sharedObject/ThreadHolder.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="101" width="172" x="2346" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -253,7 +244,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="29" language="java" name="scene.SceneManager" project="JadeEyes" 
+  <class id="28" language="java" name="scene.SceneManager" project="JadeEyes" 
     file="/JadeEyes/src/scene/SceneManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="371" width="180" x="2926" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -262,51 +253,51 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <realization id="30">    
+  <generalization id="29">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="27"/>  
-  </realization>  
-  <realization id="31">    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <realization id="30">    
+    <bendpoint x="4335" y="1813"/>    
     <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="14"/>  
+    <end type="TARGET" refId="13"/>  
   </realization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
   <generalization id="32">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="19"/>  
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="18"/>  
   </generalization>  
   <generalization id="33">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="16"/>  
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="15"/>  
   </generalization>  
   <generalization id="34">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="19"/>  
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="18"/>  
   </generalization>  
   <generalization id="35">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="15"/>  
   </generalization>  
-  <realization id="36">    
-    <bendpoint x="4335" y="1813"/>    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="14"/>  
-  </realization>  
-  <generalization id="37">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="19"/>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="18"/>  
   </generalization>  
-  <generalization id="38">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="16"/>  
-  </generalization>  
-  <realization id="39">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="27"/>  
-  </realization>  
-  <generalization id="40">    
+  <realization id="37">    
     <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="19"/>  
-  </generalization>  
+    <end type="TARGET" refId="13"/>  
+  </realization>  
+  <realization id="38">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
+  <realization id="39">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

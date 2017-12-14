@@ -34,7 +34,7 @@ public class GameManager {
 	private static Field field;
 	private static String currentMode;
 	private static List<Integer> gameResult;
-	private static List<Double> scoreBefore;
+	private static List<Double> statusBefore;
 	private static ArrayList<Image> notesImage;
 	private static ArrayList<Hero> heroes;
 	private static Random random = new Random();
@@ -72,7 +72,7 @@ public class GameManager {
 		currentNumMon = 1;
 		SceneManager.gotoSceneOf(new MainMenuScreen());
 		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
-		scoreBefore = new ArrayList<>(Collections.nCopies(5, 0.0));
+		statusBefore = new ArrayList<>(Collections.nCopies(5, 0.0));
 		notesImage = new ArrayList<>();
 		notesImage.add(new Image("up-arrow.png"));
 		notesImage.add(new Image("down-arrow.png"));
@@ -81,21 +81,21 @@ public class GameManager {
 
 	}
 
-	public static void UpdateScoreBefore() {
-		scoreBefore.set(0, currentCha.getLevel() * 1.0);
-		scoreBefore.set(1, currentCha.getAtk());
-		scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
-		scoreBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
+	public static void UpdateStatusBefore() {
+		statusBefore.set(0, currentCha.getLevel() * 1.0);
+		statusBefore.set(1, currentCha.getAtk());
+		statusBefore.set(2, currentCha.getCurrentExp() * 1.0);
+		statusBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
 		currentCha = knight;
 		gameResult = new ArrayList<>(Collections.nCopies(5, 0));
 	}
 
-	public static List<Double> getScoreBefore() {
-		return scoreBefore;
+	public static List<Double> getStatusBefore() {
+		return statusBefore;
 	}
 
-	public static void setScoreBefore(List<Double> scoreBefore) {
-		GameManager.scoreBefore = scoreBefore;
+	public static void setStatusBefore(List<Double> statusBefore) {
+		GameManager.statusBefore = statusBefore;
 	}
 
 	public static Hero getCurrentCha() {
@@ -126,10 +126,10 @@ public class GameManager {
 			GamePlayScreen.instance.changeHero(currentCha);
 		if (f == 0) {
 			field.setBg();
-			scoreBefore.set(0, currentCha.getLevel() * 1.0);
-			scoreBefore.set(1, currentCha.getAtk());
-			scoreBefore.set(2, currentCha.getCurrentExp() * 1.0);
-			scoreBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
+			statusBefore.set(0, currentCha.getLevel() * 1.0);
+			statusBefore.set(1, currentCha.getAtk());
+			statusBefore.set(2, currentCha.getCurrentExp() * 1.0);
+			statusBefore.set(3, currentCha.getCurrentMaxExp() * 1.0);
 		}
 	}
 

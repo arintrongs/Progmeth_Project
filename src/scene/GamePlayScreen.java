@@ -265,7 +265,7 @@ public class GamePlayScreen extends Pane {
 	}
 
 	public void start() {
-		musicControl = new MusicControl(this);
+		musicControl = new MusicControl();
 		musicControl.getMediaPlayer().setOnReady(() -> {
 			musicControl.setDuration(musicControl.getMediaPlayer().getTotalDuration().toSeconds());
 			musicControl.setMusicChart();

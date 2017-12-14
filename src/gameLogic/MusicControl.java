@@ -1,13 +1,11 @@
 package gameLogic;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Boss;
@@ -20,37 +18,34 @@ import sharedObject.ThreadHolder;
 
 public class MusicControl extends AnimationTimer {
 
-	private double speed, temps, startTime;
+	private static final ArrayList<Double> BPM_LIST = new ArrayList<>();
+	public static final double NANO = 1000000000.0;
+	private static ArrayList<Note> firstTypeNotes;
+	private static ArrayList<Integer> judgeResult;
+	private static boolean guaranteePerfect = false;
+	private static int currentCombo = 0, toRenderIdx = 0;
+	private double startTime;
 	private MusicChart musicChart;
-	private File filestring;
 	private Media file;
 	private MediaPlayer mediaPlayer;
-	private GamePlayScreen gamePlayScreen;
-	private ArrayList<Note> render;
-	private static ArrayList<Note> notes;
-	private static ArrayList<Integer> judgeResult;
-	private static final ArrayList<Double> BPM_LIST = new ArrayList<>();
-	private Note current_note;
-	private int idx, offsetCheck = 0, judges = 0, isSleep = 0, combo = 0;
-	private static int currentCombo = 0, toRenderIdx = 0;
-	public static final double NANO = 1000000000.0;
-	private static boolean guaranteePerfect = false;
+	private ArrayList<Note> toRender;
+	private Note currentNote;
+	private int currentNoteIdx, offsetCheck = 0, judges = 0;
 	private DamageUpdater damageUpdater;
 	private boolean isComboBreak = false;
 	private SkillUpdater skillUpdater;
 	private Random random = new Random();
-	public int check = 0, musicNumber;
+	public int musicNumber;
 	private double duration;
 
-	public MusicControl(Pane pane) {
+	public MusicControl() {
 		generateBPMList();
 		randomMusic();
 		mediaPlayer = new MediaPlayer(file);
-		this.gamePlayScreen = (GamePlayScreen) pane;
 		this.judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
-		this.render = new ArrayList<>();
-		this.notes = new ArrayList<>();
-		this.damageUpdater = new DamageUpdater(gamePlayScreen);
+		this.toRender = new ArrayList<>();
+		this.firstTypeNotes = new ArrayList<>();
+		this.damageUpdater = new DamageUpdater();
 		this.skillUpdater = new SkillUpdater();
 		this.currentCombo = 0;
 		this.toRenderIdx = 0;
@@ -78,35 +73,35 @@ public class MusicControl extends AnimationTimer {
 		if (current_time >= duration + 4) {
 			end();
 		}
-		while (toRenderIdx < notes.size() && current_time >= notes.get(toRenderIdx).getStartTime()) {
-			gamePlayScreen.getChildren().add(notes.get(toRenderIdx++).getCanvas());
+		while (toRenderIdx < firstTypeNotes.size() && current_time >= firstTypeNotes.get(toRenderIdx).getStartTime()) {
+			GamePlayScreen.instance.getChildren().add(firstTypeNotes.get(toRenderIdx++).getCanvas());
 		}
-		if (current_time >= musicChart.currentNoteIdx * musicChart.getDelayPerHit() + 0.15) {
-			musicChart.currentNoteIdx++;
+		if (current_time >= musicChart.getCurrentNoteIdx() * musicChart.getDelayPerHit() + 0.15) {
+			musicChart.setCurrentNoteIdx(musicChart.getCurrentNoteIdx() + 1);
 		}
-		current_note = (idx < notes.size()) ? notes.get(idx) : null;
-		if (current_note != null && current_note.getStartTime() <= current_time && current_note.getType() == 1) {
-			render.add(current_note);
-			idx++;
+		currentNote = (currentNoteIdx < firstTypeNotes.size()) ? firstTypeNotes.get(currentNoteIdx) : null;
+		if (currentNote != null && currentNote.getStartTime() <= current_time && currentNote.getType() == 1) {
+			toRender.add(currentNote);
+			currentNoteIdx++;
 
 		}
 
-		for (int i = 0; i < render.size(); i++) {
-			Note current_render = render.get(i);
+		for (int i = 0; i < toRender.size(); i++) {
+			Note current_render = toRender.get(i);
 			double pos_x = 665 * (current_time - current_render.getStartTime()) / 2.0;
 
 			if (pos_x >= 0 && pos_x <= 750) {
 				current_render.getCanvas().setTranslateX(pos_x);
 			}
 			if (pos_x >= 750) {
-				new JudgeStyle(4, gamePlayScreen).show();
+				new JudgeStyle(4, GamePlayScreen.instance).show();
 				judgeResult.set(4, judgeResult.get(4) + 1);
 				isComboBreak = true;
 				currentCombo = 0;
-				gamePlayScreen.getChildren().remove(current_render.getCanvas());
-				render.remove(current_render);
-				gamePlayScreen.getChildren().remove(gamePlayScreen.getCombo());
-				gamePlayScreen.updateCombo();
+				GamePlayScreen.instance.getChildren().remove(current_render.getCanvas());
+				toRender.remove(current_render);
+				GamePlayScreen.instance.getChildren().remove(GamePlayScreen.instance.getCombo());
+				GamePlayScreen.instance.updateCombo();
 
 			}
 		}
@@ -116,19 +111,18 @@ public class MusicControl extends AnimationTimer {
 	public void run() {
 		startTime = System.nanoTime();
 		this.start();
-
 	}
 
 	public void judge(KeyEvent e) {
 
-		int idx = musicChart.getCurrentNoteIdx();
-		if (idx < musicChart.getChart().size()) {
+		int currentNoteIdx = musicChart.getCurrentNoteIdx();
+		if (currentNoteIdx < musicChart.getChart().size()) {
 			double current_tapped_time = (System.nanoTime() - startTime) / NANO;
-			Note current_note = musicChart.getChart().get(idx);
-			double judge_time = idx * musicChart.getDelayPerHit();
+			Note currentNote = musicChart.getChart().get(currentNoteIdx);
+			double judge_time = currentNoteIdx * musicChart.getDelayPerHit();
 			double lower_bound = judge_time - 0.015;
 			double upper_bound = judge_time + 0.015;
-			if (current_note.getType() == 1 && e.getCode() == current_note.getDirection()
+			if (currentNote.getType() == 1 && e.getCode() == currentNote.getDirection()
 					&& current_tapped_time >= judge_time - 2.0 && current_tapped_time <= judge_time + 2.0) {
 				if (current_tapped_time >= lower_bound && current_tapped_time <= upper_bound) {
 					judgeResult.set(0, judgeResult.get(0) + 1);
@@ -157,11 +151,11 @@ public class MusicControl extends AnimationTimer {
 					}
 				}
 				currentCombo++;
-				musicChart.currentNoteIdx++;
-				render.remove(current_note);
-				gamePlayScreen.getChildren().remove(current_note.getCanvas());
-				new JudgeStyle(judges, gamePlayScreen).show();
-				gamePlayScreen.updateCombo();
+				musicChart.setCurrentNoteIdx(musicChart.getCurrentNoteIdx() + 1);
+				toRender.remove(currentNote);
+				GamePlayScreen.instance.getChildren().remove(currentNote.getCanvas());
+				new JudgeStyle(judges, GamePlayScreen.instance).show();
+				GamePlayScreen.instance.updateCombo();
 			}
 		}
 
@@ -187,7 +181,7 @@ public class MusicControl extends AnimationTimer {
 
 	}
 
-	public static void setJudgeResult() {
+	public static void resetJudgeResult() {
 		judgeResult = new ArrayList<>(Collections.nCopies(5, 0));
 
 	}
@@ -208,8 +202,8 @@ public class MusicControl extends AnimationTimer {
 		return currentCombo;
 	}
 
-	public static ArrayList<Note> getNotes() {
-		return notes;
+	public static ArrayList<Note> getfirstTypeNotes() {
+		return firstTypeNotes;
 	}
 
 	public static int gettoRenderIdx() {
@@ -226,14 +220,14 @@ public class MusicControl extends AnimationTimer {
 
 	public void setMusicChart() {
 		if (GameManager.getCurrentMode().compareTo("Boss") == 0)
-			musicChart = new MusicChart("Good Night Bad Luck", 285.0, 4, duration);
+			musicChart = new MusicChart(285.0, 4, duration);
 		else
-			musicChart = new MusicChart(Integer.toString(musicNumber), BPM_LIST.get(musicNumber), 4, duration);
+			musicChart = new MusicChart(BPM_LIST.get(musicNumber), 4, duration);
 		for (int i = 0; i < musicChart.getChart().size(); i++) {
-			current_note = musicChart.getChart().get(i);
-			if (current_note.getType() == 1) {
-				current_note.setStartTime(i * this.musicChart.getDelayPerHit() - 2.0);
-				this.notes.add(current_note);
+			currentNote = musicChart.getChart().get(i);
+			if (currentNote.getType() == 1) {
+				currentNote.setStartTime(i * this.musicChart.getDelayPerHit() - 2.0);
+				this.firstTypeNotes.add(currentNote);
 			}
 		}
 	}

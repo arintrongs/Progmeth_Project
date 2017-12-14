@@ -80,22 +80,22 @@ public class ResultScreen2 extends Pane {
 			gc.setFont(MENU_FONT);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 50, height / 2 - 60);
-			gc.fillText("Level : " + GameManager.getScoreBefore().get(0).intValue(), 50, height / 2 - 35);
-			gc.fillText("Atk : " + String.format("%.1f",GameManager.getScoreBefore().get(1)), 50, height / 2 - 10);
-			gc.fillText("Exp : " + GameManager.getScoreBefore().get(2).intValue(), 50, height / 2 + 15);
+			gc.fillText("Level : " + GameManager.getStatusBefore().get(0).intValue(), 50, height / 2 - 35);
+			gc.fillText("Atk : " + String.format("%.1f", GameManager.getStatusBefore().get(1)), 50, height / 2 - 10);
+			gc.fillText("Exp : " + GameManager.getStatusBefore().get(2).intValue(), 50, height / 2 + 15);
 
 			gc.fillRect(50, height / 2 + 40, 150, 20);
 			gc.setFill(Color.SANDYBROWN);
 			// let x be old exp
-			double x = (GameManager.getScoreBefore().get(2)*1.0/GameManager.getScoreBefore().get(3)*1.0)*150;
+			double x = (GameManager.getStatusBefore().get(2) * 1.0 / GameManager.getStatusBefore().get(3) * 1.0) * 150;
 			gc.fillRect(50, height / 2 + 40, x, 20);
 
 			gc.setFill(Color.BLACK);
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.setFont(SCORE_FONT);
-			gc.fillText(GameManager.getScoreBefore().get(2).intValue() + "/"
-					+ GameManager.getScoreBefore().get(3).intValue(), 125, height / 2 + 50);
+			gc.fillText(GameManager.getStatusBefore().get(2).intValue() + "/"
+					+ GameManager.getStatusBefore().get(3).intValue(), 125, height / 2 + 50);
 
 		}
 
@@ -109,15 +109,15 @@ public class ResultScreen2 extends Pane {
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 50, height / 2 - 60);
 			gc.fillText("Level : " + GameManager.getCurrentCha().getLevel(), 50, height / 2 - 35);
-			gc.fillText("Atk : " + String.format("%.1f",GameManager.getCurrentCha().getAtk()), 50, height / 2 - 10);
+			gc.fillText("Atk : " + String.format("%.1f", GameManager.getCurrentCha().getAtk()), 50, height / 2 - 10);
 			gc.fillText("Exp : " + GameManager.getCurrentCha().getCurrentExp(), 50, height / 2 + 15);
 			gc.fillRect(50, height / 2 + 40, 150, 20);
 
 			gc.setFill(Color.SANDYBROWN);
 			// let x be now exp
-			double x = (GameManager.getCurrentCha().getCurrentExp()*1.0 /GameManager.getCurrentCha().getCurrentMaxExp()*1.0)*150;
-			
-			
+			double x = (GameManager.getCurrentCha().getCurrentExp() * 1.0
+					/ GameManager.getCurrentCha().getCurrentMaxExp() * 1.0) * 150;
+
 			gc.fillRect(50, height / 2 + 40, x, 20);
 
 			gc.setFill(Color.BLACK);
@@ -186,7 +186,7 @@ public class ResultScreen2 extends Pane {
 			if (name == "Next") {
 
 				SceneManager.gotoSceneOf(mainMenu);
-				GameManager.UpdateScoreBefore();
+				GameManager.UpdateStatusBefore();
 			} else if (name == "Back") {
 
 				SceneManager.gotoSceneOf(resultScreen);
