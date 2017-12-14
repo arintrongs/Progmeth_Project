@@ -11,7 +11,7 @@ import sharedObject.ThreadHolder;
 public class Knight extends Hero {
 
 	private Image heroImg;
-	Thread skill;
+	private Thread skill;
 
 	public Knight(String name, int level, String skillName) {
 		super(name, level, skillName);
@@ -31,11 +31,11 @@ public class Knight extends Hero {
 			this.isSkillActivated = true;
 			skill = new Thread(() -> {
 				Platform.runLater(() -> {
-					GameManager.setCurrentCha(name, 1);
+					GameManager.setCurrentCha(name, false);
 					GamePlayScreen.showSkillActivated();
 				});
 
-				this.atk *= this.growthRateAtk;
+				this.atk *= this.GROWTH_RATE_ATK;
 				System.out.println("Knight Skill Activated!!");
 				try {
 					Thread.sleep(5000);
@@ -43,7 +43,7 @@ public class Knight extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 
 		} else {
@@ -57,7 +57,7 @@ public class Knight extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 		}
 	}
@@ -74,7 +74,7 @@ public class Knight extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 
 		}

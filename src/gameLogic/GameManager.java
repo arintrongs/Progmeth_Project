@@ -102,7 +102,7 @@ public class GameManager {
 		return currentCha;
 	}
 
-	public static synchronized void setCurrentCha(String hero, int f) {
+	public static synchronized void setCurrentCha(String hero, boolean isGameStart) {
 		Hero lastHero = currentCha;
 		for (IRenderable i : RenderableHolder.getInstance().getiRenderable()) {
 			if (i instanceof Hero && ((Hero) i).getName().compareTo(hero) != 0) {
@@ -124,7 +124,7 @@ public class GameManager {
 
 		if (GamePlayScreen.getIsCreated() == true)
 			GamePlayScreen.instance.changeHero(currentCha);
-		if (f == 0) {
+		if (isGameStart == true) {
 			field.setBg();
 			statusBefore.set(0, currentCha.getLevel() * 1.0);
 			statusBefore.set(1, currentCha.getAtk());
@@ -137,7 +137,7 @@ public class GameManager {
 		return currentBoss;
 	}
 
-	public void setCurrentBoss(int currentBoss) {
+	public static void setCurrentBoss(int currentBoss) {
 		GameManager.currentBoss = currentBoss;
 	}
 
@@ -155,7 +155,7 @@ public class GameManager {
 			currentMon = boss;
 			String rhHero = heroes.get(random.nextInt(4)).getName();
 
-			setCurrentCha(rhHero, 0);
+			setCurrentCha(rhHero, true);
 			RenderableHolder.getInstance().add(currentMon);
 		}
 

@@ -12,7 +12,7 @@ import sharedObject.ThreadHolder;
 public class SpellCaster extends Hero {
 
 	private Image heroImg, bg;
-	Thread skill;
+	private Thread skill;
 
 	public SpellCaster(String name, int level, String skillName) {
 		super(name, level, skillName);
@@ -32,7 +32,7 @@ public class SpellCaster extends Hero {
 			this.isSkillActivated = true;
 			skill = new Thread(() -> {
 				Platform.runLater(() -> {
-					GameManager.setCurrentCha(name, 1);
+					GameManager.setCurrentCha(name, false);
 					GamePlayScreen.showSkillActivated();
 				});
 
@@ -44,7 +44,7 @@ public class SpellCaster extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 		} else {
 			this.isSkillActivated = true;
@@ -57,7 +57,7 @@ public class SpellCaster extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 		}
 	}
@@ -74,7 +74,7 @@ public class SpellCaster extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 
 		}

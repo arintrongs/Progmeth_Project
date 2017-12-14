@@ -15,14 +15,14 @@ import javafx.scene.text.TextAlignment;
 public class ResultScreen2 extends Pane {
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 30);
-	private static final Font MENU_FONT = new Font("Monospace", 20);
+	private static final Font STATUS_FONT = new Font("Monospace", 20);
 	private static final Font SCORE_FONT = new Font("Monospace", 15);
 	private Canvas title;
 	private Canvas before;
 	private Canvas after;
 	private Canvas nextBtn;
 	private Canvas backBtn;
-	private Canvas boardBefore, boardAfter;
+	private Canvas opacityBefore, opacityAfter;
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
 	private Image bg = new Image("bg17.png");
@@ -35,30 +35,30 @@ public class ResultScreen2 extends Pane {
 		ivBg.setTranslateX(0);
 		ivBg.setTranslateY(0);
 
-		title = drawButton("Well Done!", width, height / 5, 0, 0);
+		title = draw("Well Done!", width, height / 5, 0, 0);
 		addCanvasEvents(title, "Well Done!");
 
-		boardBefore = drawButton("BoardBefore", width / 3, height / 2, width / 12, height / 4 - 10);
-		addCanvasEvents(boardBefore, "BoardBefore");
-		before = drawButton("Before", width / 3, height / 2, width / 12, height / 4 - 10);
+		opacityBefore = draw("BoardBefore", width / 3, height / 2, width / 12, height / 4 - 10);
+		addCanvasEvents(opacityBefore, "BoardBefore");
+		before = draw("Before", width / 3, height / 2, width / 12, height / 4 - 10);
 		addCanvasEvents(before, "Before");
 
-		boardAfter = drawButton("BoardAfter", width / 3, height / 2, width - width / 12 - width / 3, height / 4 - 10);
-		addCanvasEvents(boardAfter, "BoardAfter");
-		after = drawButton("After", width / 3, height / 2, width - width / 12 - width / 3, height / 4 - 10);
+		opacityAfter = draw("BoardAfter", width / 3, height / 2, width - width / 12 - width / 3, height / 4 - 10);
+		addCanvasEvents(opacityAfter, "BoardAfter");
+		after = draw("After", width / 3, height / 2, width - width / 12 - width / 3, height / 4 - 10);
 		addCanvasEvents(after, "After");
 
-		nextBtn = drawButton("Next", width / 6, height / 9, width - width / 4 - width / 6 + 60, height * 5 / 6 - 20);
+		nextBtn = draw("Next", width / 6, height / 9, width - width / 4 - width / 6 + 60, height * 5 / 6 - 20);
 		addCanvasEvents(nextBtn, "Next");
 
-		backBtn = drawButton("Back", width / 6, height / 9, width / 8 + 40, height * 5 / 6 - 20);
+		backBtn = draw("Back", width / 6, height / 9, width / 8 + 40, height * 5 / 6 - 20);
 		addCanvasEvents(backBtn, "Back");
 
-		this.getChildren().addAll(ivBg, title, boardBefore, boardAfter, before, after, nextBtn, backBtn);
+		this.getChildren().addAll(ivBg, title, opacityBefore, opacityAfter, before, after, nextBtn, backBtn);
 
 	}
 
-	public Canvas drawButton(String name, double width, double height, double posX, double posY) {
+	public Canvas draw(String name, double width, double height, double posX, double posY) {
 		Canvas canvas = new Canvas(width, height);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -77,7 +77,7 @@ public class ResultScreen2 extends Pane {
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, width - 10, height - 10, 50, 50);
 			gc.setFill(Color.WHITE);
-			gc.setFont(MENU_FONT);
+			gc.setFont(STATUS_FONT);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 50, height / 2 - 60);
 			gc.fillText("Level : " + GameManager.getStatusBefore().get(0).intValue(), 50, height / 2 - 35);
@@ -105,7 +105,7 @@ public class ResultScreen2 extends Pane {
 			gc.setLineWidth(10);
 			gc.strokeRoundRect(5, 5, width - 10, height - 10, 50, 50);
 			gc.setFill(Color.WHITE);
-			gc.setFont(MENU_FONT);
+			gc.setFont(STATUS_FONT);
 			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText("Name : " + GameManager.getCurrentCha().getName(), 50, height / 2 - 60);
 			gc.fillText("Level : " + GameManager.getCurrentCha().getLevel(), 50, height / 2 - 35);

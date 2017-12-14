@@ -85,8 +85,8 @@ public class SceneManager {
 					bgMediaPlayer.play();
 			});
 		});
-		ThreadHolder.threads.add(fadein);
-		ThreadHolder.threads.add(fadeout);
+		ThreadHolder.instance.getThreads().add(fadein);
+		ThreadHolder.instance.getThreads().add(fadeout);
 		fadeout.start();
 		fadein.start();
 

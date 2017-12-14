@@ -14,9 +14,10 @@ import javafx.scene.text.TextAlignment;
 import model.Hero;
 
 public class CharacterSelectScreen extends Pane {
-	private static final Font TITLE_FONT = Font.loadFont("file:res/font/south park.ttf", 60);
-	private static final Font BTN_FONT = Font.loadFont("file:res/font/crayon kids.ttf", 35);
-	private static final Font MENU_FONT_BOLD = Font.loadFont("file:res/font/crayon kids.ttf", 30);
+	private static final Font TITLE_FONT = Font.loadFont(ClassLoader.getSystemResourceAsStream("south park.ttf"), 60);
+	private static final Font BTN_FONT = Font.loadFont(ClassLoader.getSystemResourceAsStream("crayon kids.ttf"), 35);
+	private static final Font MENU_FONT_BOLD = Font.loadFont(ClassLoader.getSystemResourceAsStream("crayon kids.ttf"),
+			30);
 	private static final Hero NULL = null;
 	private Canvas title;
 	private Canvas knightCanvas, spellCasterCanvas, clownCanvas, priestCanvas;
@@ -26,11 +27,14 @@ public class CharacterSelectScreen extends Pane {
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
 	private Canvas opacityKnightCanvas, opacitySpellCasterCanvas, opacityClownCanvas, opacitypriestCanvas;
-	private Image bg = new Image("bg24.jpg");
-	private ImageView ivBg = new ImageView(bg);
+	private Image bg;
+	Image img;
+	private ImageView ivBg;
 
 	public CharacterSelectScreen() {
 		super();
+		bg = new Image("bg24.jpg");
+		ivBg = new ImageView(bg);
 		ivBg.setFitWidth(width);
 		ivBg.setFitHeight(height);
 		ivBg.setTranslateX(0);
@@ -90,7 +94,7 @@ public class CharacterSelectScreen extends Pane {
 
 			gc.fillText(name, width / 2, height / 2);
 		} else if (name == "Knight" || name == "SpellCaster" || name == "Clown" || name == "Priest") {
-			Image img;
+
 			if (name == "Knight")
 				img = new Image("Knight1_head.png");
 			else if (name == "SpellCaster")
@@ -164,7 +168,7 @@ public class CharacterSelectScreen extends Pane {
 		canvas.setOnMouseClicked((MouseEvent event) -> {
 
 			if (name != "Start" && name != "Back") {
-				GameManager.setCurrentCha(name, 0);
+				GameManager.setCurrentCha(name, true);
 				this.currentCharName = name;
 				if (name != "Knight")
 					undrawHoverIndicator(opacityKnightCanvas, name);
@@ -179,7 +183,6 @@ public class CharacterSelectScreen extends Pane {
 				if (name == "Start") {
 					GameManager.setCurrentMon();
 					Pane gamePlay = new GamePlayScreen();
-
 					SceneManager.gotoSceneOf(gamePlay);
 					gamePlay.setFocusTraversable(true);
 					new Thread(() -> {

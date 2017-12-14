@@ -11,7 +11,7 @@ import sharedObject.ThreadHolder;
 public class Priest extends Hero {
 
 	private Image heroImg, bg;
-	Thread skill;
+	private Thread skill;
 
 	public Priest(String name, int level, String skillName) {
 		super(name, level, skillName);
@@ -27,12 +27,12 @@ public class Priest extends Hero {
 
 	public void activate() {
 		if (GameManager.getCurrentMode().compareTo("Boss") == 0) {
-			int rnd = random.nextInt(2);
-			if (isSkillActivated == false) {
+			int rnd = random.nextInt(3);
+			if (rnd == 1 && isSkillActivated == false) {
 				isSkillActivated = true;
 				skill = new Thread(() -> {
 					Platform.runLater(() -> {
-						GameManager.setCurrentCha(name, 1);
+						GameManager.setCurrentCha(name, false);
 						GamePlayScreen.showSkillActivated();
 					});
 					Boss boss = ((Boss) GameManager.getCurrentMon());
@@ -46,7 +46,7 @@ public class Priest extends Hero {
 					} catch (Exception e) {
 					}
 				});
-				ThreadHolder.threads.add(skill);
+				ThreadHolder.instance.getThreads().add(skill);
 				SkillUpdater.getSkills().add(skill);
 			} else {
 				System.out.println("Priest Fail!!");
@@ -54,12 +54,12 @@ public class Priest extends Hero {
 				skill = new Thread(() -> {
 					try {
 
-						Thread.sleep(15000);
+						Thread.sleep(10000);
 						this.isSkillActivated = false;
 					} catch (Exception e) {
 					}
 				});
-				ThreadHolder.threads.add(skill);
+				ThreadHolder.instance.getThreads().add(skill);
 				SkillUpdater.getSkills().add(skill);
 			}
 		}
@@ -71,12 +71,12 @@ public class Priest extends Hero {
 		((Boss) GameManager.getCurrentMon()).setSilence(false);
 		skill = new Thread(() -> {
 			try {
-				Thread.sleep(15000);
+				Thread.sleep(10000);
 				isSkillActivated = false;
 			} catch (Exception e) {
 			}
 		});
-		ThreadHolder.threads.add(skill);
+		ThreadHolder.instance.getThreads().add(skill);
 		SkillUpdater.getSkills().add(skill);
 	}
 }

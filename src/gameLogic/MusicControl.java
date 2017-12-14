@@ -61,8 +61,8 @@ public class MusicControl extends AnimationTimer {
 			mediaPlayer.play();
 			damageUpdater.start();
 			skillUpdater.start();
-			ThreadHolder.threads.add(damageUpdater);
-			ThreadHolder.threads.add(skillUpdater);
+			ThreadHolder.instance.getThreads().add(damageUpdater);
+			ThreadHolder.instance.getThreads().add(skillUpdater);
 
 		}
 		if (current_time >= duration + 2 && GameManager.isGameFinished() == false
@@ -93,8 +93,8 @@ public class MusicControl extends AnimationTimer {
 			if (pos_x >= 0 && pos_x <= 750) {
 				current_render.getCanvas().setTranslateX(pos_x);
 			}
-			if (pos_x >= 750) {
-				new JudgeStyle(4, GamePlayScreen.instance).show();
+			if (current_time >= current_render.getStartTime() + 2.2) {
+				new JudgeStyle(4).show();
 				judgeResult.set(4, judgeResult.get(4) + 1);
 				isComboBreak = true;
 				currentCombo = 0;
@@ -154,7 +154,7 @@ public class MusicControl extends AnimationTimer {
 				musicChart.setCurrentNoteIdx(musicChart.getCurrentNoteIdx() + 1);
 				toRender.remove(currentNote);
 				GamePlayScreen.instance.getChildren().remove(currentNote.getCanvas());
-				new JudgeStyle(judges, GamePlayScreen.instance).show();
+				new JudgeStyle(judges).show();
 				GamePlayScreen.instance.updateCombo();
 			}
 		}
@@ -167,17 +167,17 @@ public class MusicControl extends AnimationTimer {
 		this.stop();
 		damageUpdater.interrupt();
 		skillUpdater.interrupt();
-		for (Thread i : ThreadHolder.threads) {
+		for (Thread i : ThreadHolder.instance.getThreads()) {
 			i.interrupt();
 		}
-		ThreadHolder.threads.clear();
+		ThreadHolder.instance.getThreads().clear();
 		for (Hero i : GameManager.getHeroes())
 			i.setIsSkillActive(false);
 		Thread nextScene = new Thread(() -> {
 			SceneManager.gotoSceneOf(new ResultScreen());
 		});
 		nextScene.start();
-		ThreadHolder.threads.add(nextScene);
+		ThreadHolder.instance.getThreads().add(nextScene);
 
 	}
 

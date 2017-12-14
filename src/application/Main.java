@@ -9,9 +9,10 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) {
 		try {
+			ThreadHolder.instance = new ThreadHolder();
 			SceneManager.initialize(primaryStage);
 			primaryStage.setResizable(false);
-			primaryStage.setTitle("GAME");
+			primaryStage.setTitle("Train to the beat!");
 			primaryStage.centerOnScreen();
 
 		} catch (Exception e) {
@@ -28,9 +29,9 @@ public class Main extends Application {
 	public void stop() {
 
 		SceneManager.getBgMediaPlayer().stop();
-		for (int i = 0; i < ThreadHolder.threads.size(); i++) {
+		for (int i = 0; i < ThreadHolder.instance.getThreads().size(); i++) {
 			try {
-				ThreadHolder.threads.get(i).interrupt();
+				ThreadHolder.instance.getThreads().get(i).interrupt();
 			} catch (Exception e) {
 
 			}

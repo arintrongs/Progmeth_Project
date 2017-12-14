@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -31,7 +30,8 @@ public class GamePlayScreen extends Pane {
 	private static final Font TITLE_FONT = new Font("Monospace", 55);
 	private static final Font BTN_FONT = new Font("Monospace", 15);
 	private static final Font MENU_FONT = new Font("Monospace", 17);
-	private static final Font COMBO_FONT = Font.loadFont("file:res/font/Education-Pencil.ttf", 30);
+	private static final Font COMBO_FONT = Font.loadFont(ClassLoader.getSystemResourceAsStream("Education-Pencil.ttf"),
+			30);
 	private static final Image SKILL_ACTIVATED = new Image("skill.png");
 	private static final Image BOSS_SKILL_ACTIVATED = new Image("boss_skill.png");
 	private static final Image FAIL = new Image("fail.png");
@@ -79,17 +79,6 @@ public class GamePlayScreen extends Pane {
 
 		monsInfo = draw("MonsterInfo", width / 2, height / 10, width / 2, 0);
 		heroInfo = draw("HeroInfo", width / 2, height / 10, 0, 0);
-		exitMenu = draw("Exit", width / 3 + 40, height / 6, width / 3 - 20, height / 3);
-		addCanvasEvents(exitMenu, "Exit");
-		exitMenu.setVisible(false);
-
-		yesBtn = draw("Yes", width / 12, height / 18, width / 3 + 60, height / 3 + 50);
-		addCanvasEvents(yesBtn, "Yes");
-		yesBtn.setVisible(false);
-
-		noBtn = draw("No", width / 12, height / 18, width / 3 + width / 3 - width / 12 - 60, height / 3 + 50);
-		addCanvasEvents(noBtn, "No");
-		noBtn.setVisible(false);
 
 		gamePlay = draw("gamePlay", width, height * 1 / 3, 0, height * 2 / 3);
 		gamePlay.setFocusTraversable(true);
@@ -99,7 +88,7 @@ public class GamePlayScreen extends Pane {
 		setIv();
 		this.getChildren().clear();
 		this.getChildren().addAll(bg, heroCanvas, monCanvas, ivPlayzone, gamePlay, ivTapZone, monsInfo, heroInfo,
-				exitMenu, yesBtn, noBtn, eventCanvas, skillCanvas, bossSkillCanvas);
+				eventCanvas, skillCanvas, bossSkillCanvas);
 
 	}
 
@@ -236,19 +225,6 @@ public class GamePlayScreen extends Pane {
 
 		}
 
-		else if (name == "Exit") {
-			gc.setStroke(Color.TAN);
-			gc.setLineWidth(10);
-			gc.strokeRoundRect(5, 5, width - 10, height - 10, 50, 50);
-			gc.setFill(Color.BISQUE);
-			gc.fillRoundRect(5, 5, width - 10, height - 10, 50, 50);
-			gc.setFill(Color.BLACK);
-			gc.setTextAlign(TextAlignment.CENTER);
-			gc.setTextBaseline(VPos.CENTER);
-			gc.setFont(MENU_FONT);
-			gc.fillText("Do you want to exit the game ?", width / 2, height / 4);
-		}
-
 		else {
 
 			gc.setFill(Color.DARKSALMON);
@@ -281,14 +257,6 @@ public class GamePlayScreen extends Pane {
 				singlepulse = true;
 			}
 			if (e.getCode() == KeyCode.ESCAPE) {
-				exitMenu.toFront();
-				yesBtn.toFront();
-				noBtn.toFront();
-				this.exitMenu.setVisible(true);
-				this.yesBtn.setVisible(true);
-				this.noBtn.setVisible(true);
-			}
-			if (e.getCode() == KeyCode.E) {
 				musicControl.end();
 			}
 
@@ -300,20 +268,6 @@ public class GamePlayScreen extends Pane {
 			}
 		});
 
-		canvas.setOnMouseClicked((MouseEvent e) -> {
-			Pane mainMenu = new MainMenuScreen();
-
-			if (name == "No") {
-
-				this.exitMenu.setVisible(false);
-				this.yesBtn.setVisible(false);
-				this.noBtn.setVisible(false);
-
-			} else if (name == "Yes") {
-				musicControl.end();
-				SceneManager.gotoSceneOf(mainMenu);
-			}
-		});
 	}
 
 	public void setMonsInfo() {
@@ -358,7 +312,6 @@ public class GamePlayScreen extends Pane {
 			try {
 				Thread.sleep(600);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			gc.clearRect(0, 0, 200, 100);
@@ -390,7 +343,6 @@ public class GamePlayScreen extends Pane {
 			try {
 				Thread.sleep(800);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			gc.clearRect(0, 0, 600, 300);
@@ -405,7 +357,6 @@ public class GamePlayScreen extends Pane {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			gc.clearRect(0, 0, 600, 300);

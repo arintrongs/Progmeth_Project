@@ -13,15 +13,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 public class MainMenuScreen extends Pane {
-	private static final Font MODE_FONT = Font.loadFont("file:res/font/south park.ttf", 80);
-	private static final Font CHA_INFO_FONT = Font.loadFont("file:res/font/Inconsolata-Regular.ttf", 18);
-	private static final Font CHA_NAME_FONT = Font.loadFont("file:res/font/Inconsolata-Bold.ttf", 20);
+	private static final Font MODE_FONT = Font.loadFont(ClassLoader.getSystemResourceAsStream("south park.ttf"), 80);
+	private static final Font CHA_INFO_FONT = Font
+			.loadFont(ClassLoader.getSystemResourceAsStream("Inconsolata-Regular.ttf"), 18);
+	private static final Font CHA_NAME_FONT = Font
+			.loadFont(ClassLoader.getSystemResourceAsStream("Inconsolata-Bold.ttf"), 20);
 	private Canvas knightCanvas, spellCasterCanvas, clownCanvas, priestCanvas, farm, boss;
-	private Canvas hoverChaCanvas, hoverFarmCanvas, hoverBossCanvas;
+	private Canvas opacityChaCanvas, opacityFarmCanvas, opacityBossCanvas;
 
 	private int width = SceneManager.SCENE_WIDTH;
 	private int height = SceneManager.SCENE_HEIGHT;
-	private Image bg;
+	private Image bg, img;
 	private ImageView ivBg;
 
 	public MainMenuScreen() {
@@ -35,10 +37,10 @@ public class MainMenuScreen extends Pane {
 		ivBg.setTranslateX(0);
 		ivBg.setTranslateY(0);
 
-		hoverChaCanvas = draw("BoardCha", width, 150, 0, 0);
+		opacityChaCanvas = draw("BoardCha", width, 150, 0, 0);
 
-		hoverFarmCanvas = draw("BoardFarm", width / 3, width * 2 / 5, width / 8, width / 4);
-		hoverBossCanvas = draw("BoardFarm", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
+		opacityFarmCanvas = draw("BoardFarm", width / 3, width * 2 / 5, width / 8, width / 4);
+		opacityBossCanvas = draw("BoardFarm", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
 
 		knightCanvas = draw("Knight", width / 4, 150, 0, 0);
 		spellCasterCanvas = draw("SpellCaster", width / 4, 150, width / 4, 0);
@@ -51,8 +53,8 @@ public class MainMenuScreen extends Pane {
 		boss = draw("BOSS", width / 3, width * 2 / 5, width - width / 8 - width / 3, width / 4);
 		addCanvasEvents(boss, "BOSS");
 
-		getChildren().addAll(ivBg, hoverChaCanvas, hoverFarmCanvas, hoverBossCanvas, knightCanvas, spellCasterCanvas,
-				clownCanvas, priestCanvas, farm, boss);
+		getChildren().addAll(ivBg, opacityChaCanvas, opacityFarmCanvas, opacityBossCanvas, knightCanvas,
+				spellCasterCanvas, clownCanvas, priestCanvas, farm, boss);
 
 	}
 
@@ -89,7 +91,6 @@ public class MainMenuScreen extends Pane {
 
 		else {
 
-			Image img;
 			if (name == "Knight")
 				img = new Image("Knight1_head.png");
 			else if (name == "SpellCaster")
@@ -193,9 +194,9 @@ public class MainMenuScreen extends Pane {
 			@Override
 			public void handle(MouseEvent event) {
 				if (canvasName == "FARM")
-					drawHoverIndicator(hoverFarmCanvas, canvasName);
+					drawHoverIndicator(opacityFarmCanvas, canvasName);
 				else {
-					drawHoverIndicator(hoverBossCanvas, canvasName);
+					drawHoverIndicator(opacityBossCanvas, canvasName);
 				}
 
 			}
@@ -208,9 +209,9 @@ public class MainMenuScreen extends Pane {
 				// TODO Auto-generated method stub
 
 				if (canvasName == "FARM")
-					undrawHoverIndicator(hoverFarmCanvas, canvasName);
+					undrawHoverIndicator(opacityFarmCanvas, canvasName);
 				else {
-					undrawHoverIndicator(hoverBossCanvas, canvasName);
+					undrawHoverIndicator(opacityBossCanvas, canvasName);
 				}
 
 			}

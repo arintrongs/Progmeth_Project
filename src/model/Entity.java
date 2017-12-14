@@ -5,8 +5,7 @@ import sharedObject.IRenderable;
 public abstract class Entity implements IRenderable {
 	protected String name;
 	protected int level;
-	private int z;
-	boolean isVisible;
+	protected boolean isVisible;
 
 	public Entity(String name, int level) {
 		this.name = name;
@@ -34,11 +33,6 @@ public abstract class Entity implements IRenderable {
 	@Override
 	public boolean isVisible() {
 		return isVisible;
-	}
-
-	@Override
-	public int getZ() {
-		return z;
 	}
 
 	public void setVisible(boolean isVisible) {

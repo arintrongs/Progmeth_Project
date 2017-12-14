@@ -15,7 +15,6 @@ public class Boss extends Monster implements Skillable {
 	private String skillName;
 	final private List<Integer> maxBossHp = new ArrayList<>();
 	final private List<Integer> BossExp = new ArrayList<>();
-	private int Boss_no;
 	private double lastAtk;
 	private Hero lastHero;
 	protected boolean isSkillActivated, isSilence;
@@ -28,7 +27,6 @@ public class Boss extends Monster implements Skillable {
 		setBossExp();
 		this.currentMaxHp = this.maxBossHp.get(0);
 		this.currentHp = this.currentMaxHp;
-		this.Boss_no = 0;
 		this.isVisible = true;
 		this.isSkillActivated = false;
 		this.isSilence = false;
@@ -55,12 +53,6 @@ public class Boss extends Monster implements Skillable {
 
 	public void setSkillName(String skillName) {
 		this.skillName = skillName;
-	}
-
-	public void newBoss() {
-		this.Boss_no++;
-		this.currentMaxHp = this.maxBossHp.get(this.Boss_no);
-		this.currentHp = this.currentMaxHp;
 	}
 
 	@Override
@@ -95,7 +87,7 @@ public class Boss extends Monster implements Skillable {
 					}
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 
 		} else {
@@ -105,12 +97,12 @@ public class Boss extends Monster implements Skillable {
 			Thread skill = new Thread(() -> {
 				try {
 
-					Thread.sleep(15000);
+					Thread.sleep(8000);
 					isSkillActivated = false;
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 		}
 	}
@@ -121,13 +113,13 @@ public class Boss extends Monster implements Skillable {
 			lastHero.setAtk(lastAtk);
 			Thread skill = new Thread(() -> {
 				try {
-					Thread.sleep(15000);
+					Thread.sleep(8000);
 					this.isSkillActivated = false;
 				} catch (InterruptedException e) {
 
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 		}
 	}

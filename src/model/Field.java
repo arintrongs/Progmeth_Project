@@ -7,7 +7,6 @@ import scene.SceneManager;
 import sharedObject.IRenderable;
 
 public class Field implements IRenderable {
-	private int z = -999;
 	private boolean isVisible;
 	private Image bg;
 
@@ -31,10 +30,6 @@ public class Field implements IRenderable {
 		} else {
 			bg = new Image("bg18.png");
 		}
-	}
-
-	public int getZ() {
-		return z;
 	}
 
 	public void draw(GraphicsContext gc, double x, double y) {

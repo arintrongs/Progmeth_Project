@@ -15,11 +15,11 @@ public class Monster extends Entity {
 	protected double currentExp;
 	private List<Double> maxHp = new ArrayList<>();
 	private List<Integer> Exp = new ArrayList<>();
-	final private List<Double> multipleHp = new ArrayList<>();
-	final private int multipleExp = 3;
-	final private double growthRateHp = 1.2;
-	final private double growthRateExp = 1.2;
-	final private int numMonster = 4;
+	final private List<Double> MULTIPLE_HP = new ArrayList<>();
+	final private int MULTIPLE_EXP = 3;
+	final private double GROWTH_RATE_HP = 1.2;
+	final private double GROWTH_RATE_EXP = 1.2;
+	final private int NUMMONSTER = 4;
 	private static Image monImg1 = new Image("monster1.png");
 	private static Image monImg2 = new Image("monster2.png");
 	private static Image monImg3 = new Image("monster3.png");
@@ -52,12 +52,12 @@ public class Monster extends Entity {
 	}
 
 	public void setMultipleHp() {
-		this.multipleHp.add(2.5);
-		this.multipleHp.add(2.0);
-		this.multipleHp.add(1.8);
-		this.multipleHp.add(15.0 / 9.00);
-		this.multipleHp.add(22.0 / 15.00);
-		this.multipleHp.add(32.0 / 22.00);
+		this.MULTIPLE_HP.add(2.5);
+		this.MULTIPLE_HP.add(2.0);
+		this.MULTIPLE_HP.add(1.8);
+		this.MULTIPLE_HP.add(15.0 / 9.00);
+		this.MULTIPLE_HP.add(22.0 / 15.00);
+		this.MULTIPLE_HP.add(32.0 / 22.00);
 
 	}
 
@@ -70,11 +70,11 @@ public class Monster extends Entity {
 	}
 
 	public List<Double> getMultipleHp() {
-		return multipleHp;
+		return MULTIPLE_HP;
 	}
 
 	public int getMultipleExp() {
-		return multipleExp;
+		return MULTIPLE_EXP;
 	}
 
 	public double getCurrentMaxHp() {
@@ -171,10 +171,10 @@ public class Monster extends Entity {
 		}
 
 		for (int i = 0; i < this.maxHp.size(); i++) {
-			this.maxHp.set(i, this.maxHp.get(GameManager.getCurrentCha().getLevel()) * this.multipleHp.get(index));
+			this.maxHp.set(i, this.maxHp.get(GameManager.getCurrentCha().getLevel()) * this.MULTIPLE_HP.get(index));
 		}
 		for (int i = 0; i < this.Exp.size(); i++) {
-			this.Exp.set(i, this.Exp.get(GameManager.getCurrentCha().getLevel()) * this.multipleExp);
+			this.Exp.set(i, this.Exp.get(GameManager.getCurrentCha().getLevel()) * this.MULTIPLE_EXP);
 		}
 		this.currentMaxHp = this.maxHp.get(0);
 		this.currentHp = this.currentMaxHp;
@@ -186,10 +186,10 @@ public class Monster extends Entity {
 	public void levelUp() {
 
 		for (int i = 0; i < this.maxHp.size(); i++) {
-			this.maxHp.set(i, this.maxHp.get(i) * this.growthRateHp);
+			this.maxHp.set(i, this.maxHp.get(i) * this.GROWTH_RATE_HP);
 		}
 		for (int i = 0; i < this.Exp.size(); i++) {
-			this.Exp.set(i, (int) (this.Exp.get(i) * this.growthRateExp));
+			this.Exp.set(i, (int) (this.Exp.get(i) * this.GROWTH_RATE_EXP));
 		}
 
 	}
@@ -266,6 +266,6 @@ public class Monster extends Entity {
 	}
 
 	public void setAlreadyDead(Boolean x) {
-		this.alreadyDead = false;
+		this.alreadyDead = x;
 	}
 }

@@ -15,8 +15,8 @@ import sharedObject.ThreadHolder;
 
 public class Clown extends Hero {
 	private Image heroImg, bg;
-	ArrayList<KeyCode> direction;
-	Thread skill;
+	private ArrayList<KeyCode> direction;
+	private Thread skill;
 
 	public Clown(String name, int level, String skillName) {
 		super(name, level, skillName);
@@ -56,7 +56,7 @@ public class Clown extends Hero {
 					});
 				}
 				Platform.runLater(() -> {
-					GameManager.setCurrentCha(name, 1);
+					GameManager.setCurrentCha(name, false);
 					GamePlayScreen.showSkillActivated();
 				});
 				deactivate();
@@ -74,7 +74,7 @@ public class Clown extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 		}
 	}
@@ -90,7 +90,7 @@ public class Clown extends Hero {
 				} catch (Exception e) {
 				}
 			});
-			ThreadHolder.threads.add(skill);
+			ThreadHolder.instance.getThreads().add(skill);
 			SkillUpdater.getSkills().add(skill);
 
 		}

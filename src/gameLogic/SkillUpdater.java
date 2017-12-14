@@ -74,7 +74,7 @@ public class SkillUpdater extends Thread {
 
 		});
 		thread.start();
-		ThreadHolder.threads.add(thread);
+		ThreadHolder.instance.getThreads().add(thread);
 
 	}
 

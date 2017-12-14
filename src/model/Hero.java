@@ -11,9 +11,9 @@ public abstract class Hero extends Entity implements Skillable {
 	protected String skillName;
 	protected int currentExp;
 	protected int currentMaxExp;
-	final protected List<Integer> maxExp = new ArrayList<>();
+	final protected List<Integer> MAX_EXP = new ArrayList<>();
 	protected double atk = 10, originalAtk;
-	final protected double growthRateAtk = 1.2;
+	final protected double GROWTH_RATE_ATK = 1.2;
 
 	protected boolean isSkillActivated;
 	protected Random random = new Random();
@@ -23,32 +23,32 @@ public abstract class Hero extends Entity implements Skillable {
 		this.skillName = skillName;
 		this.currentExp = 0;
 		setMaxExp();
-		this.currentMaxExp = this.maxExp.get(0);
+		this.currentMaxExp = this.MAX_EXP.get(0);
 		this.originalAtk = atk;
 		this.isSkillActivated = false;
 	}
 
 	public void setMaxExp() {
-		maxExp.add(1000);
-		maxExp.add(1200);
-		maxExp.add(1400);
-		maxExp.add(1700);
-		maxExp.add(2000);
-		maxExp.add(3000);
-		maxExp.add(3500);
-		maxExp.add(4200);
-		maxExp.add(5000);
-		maxExp.add(9000);
-		maxExp.add(10000);
-		maxExp.add(13000);
-		maxExp.add(26000);
-		maxExp.add(31000);
-		maxExp.add(37000);
-		maxExp.add(80000);
-		maxExp.add(100000);
-		maxExp.add(250000);
-		maxExp.add(300000);
-		maxExp.add(700000);
+		MAX_EXP.add(1000);
+		MAX_EXP.add(1200);
+		MAX_EXP.add(1400);
+		MAX_EXP.add(1700);
+		MAX_EXP.add(2000);
+		MAX_EXP.add(3000);
+		MAX_EXP.add(3500);
+		MAX_EXP.add(4200);
+		MAX_EXP.add(5000);
+		MAX_EXP.add(9000);
+		MAX_EXP.add(10000);
+		MAX_EXP.add(13000);
+		MAX_EXP.add(26000);
+		MAX_EXP.add(31000);
+		MAX_EXP.add(37000);
+		MAX_EXP.add(80000);
+		MAX_EXP.add(100000);
+		MAX_EXP.add(250000);
+		MAX_EXP.add(300000);
+		MAX_EXP.add(700000);
 	}
 
 	public String getSkillName() {
@@ -76,7 +76,7 @@ public abstract class Hero extends Entity implements Skillable {
 	}
 
 	public List<Integer> getMaxExp() {
-		return maxExp;
+		return MAX_EXP;
 	}
 
 	public double getAtk() {
@@ -89,9 +89,9 @@ public abstract class Hero extends Entity implements Skillable {
 
 	public void levelUp() {
 		this.level++;
-		this.atk *= this.growthRateAtk;
+		this.atk *= this.GROWTH_RATE_ATK;
 		int oldExp = this.currentExp - this.currentMaxExp;
-		this.currentMaxExp = this.maxExp.get(this.getLevel());
+		this.currentMaxExp = this.MAX_EXP.get(this.getLevel());
 		this.currentExp = 0;
 
 		this.originalAtk = this.atk;

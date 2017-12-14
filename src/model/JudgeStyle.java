@@ -7,29 +7,28 @@ import scene.GamePlayScreen;
 
 public class JudgeStyle extends ImageView {
 
-	private Image img;
-	private GamePlayScreen gamePlayScreen;
+	private Image image;
 
-	public JudgeStyle(int x, GamePlayScreen gamePlayScreen) {
-		this.gamePlayScreen = gamePlayScreen;
+	public JudgeStyle(int x) {
+
 		if (x == 0) {
-			this.img = new Image("Cri_Perfect.png");
+			this.image = new Image("Cri_Perfect.png");
 		}
 
 		if (x == 1) {
-			this.img = new Image("Perfect.png");
+			this.image = new Image("Perfect.png");
 		}
 		if (x == 2) {
-			this.img = new Image("Great.png");
+			this.image = new Image("Great.png");
 		}
 		if (x == 3) {
-			this.img = new Image("Good.png");
+			this.image = new Image("Good.png");
 		}
 		if (x == 4) {
-			this.img = new Image("Miss.png");
+			this.image = new Image("Miss.png");
 		}
 
-		this.setImage(img);
+		this.setImage(image);
 		this.setTranslateX(700 - 59);
 		this.setTranslateY(600 - 170);
 
@@ -38,14 +37,14 @@ public class JudgeStyle extends ImageView {
 	public void show() {
 		new Thread(() -> {
 			Platform.runLater(() -> {
-				gamePlayScreen.getChildren().add(this);
+				GamePlayScreen.instance.getChildren().add(this);
 			});
 			try {
 				Thread.sleep(150);
 			} catch (Exception e2) {
 			}
 			Platform.runLater(() -> {
-				gamePlayScreen.getChildren().remove(this);
+				GamePlayScreen.instance.getChildren().remove(this);
 			});
 		}).start();
 	}
